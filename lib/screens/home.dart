@@ -52,7 +52,7 @@ class Home extends StatelessWidget {
                             Text(
                               model.notes[index].formattedTime,
                               style:
-                                  TextStyle(color: Colors.black, fontSize: 18),
+                                  TextStyle(color: Colors.black, fontSize: 15),
                             ),
                           ]),
                     ),
