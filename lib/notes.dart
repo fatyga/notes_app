@@ -4,13 +4,7 @@ import 'dart:math';
 
 class Notes extends ChangeNotifier {
   final List<Note> _items = [];
-  int _currentNote = 0;
-
-  int get currentNote => _currentNote;
-
-  set currentNote(int index) {
-    _currentNote = index;
-  }
+  int currentNote = 0;
 
   List<Note> get notes => _items;
   int get notesCount => _items.length;
