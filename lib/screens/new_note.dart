@@ -14,6 +14,16 @@ class _NewNoteState extends State<NewNote> {
   String errorContent = '';
 
   @override
+  initState() {
+    var model = context.read<Notes>();
+    if (model.noteManipulationMode == 'edit_note') {
+      titleController.text = model.notes[model.currentNote].title;
+      contentController.text = model.notes[model.currentNote].content;
+    }
+    super.initState();
+  }
+
+  @override
   void dispose() {
     titleController.dispose();
     contentController.dispose();
@@ -37,12 +47,15 @@ class _NewNoteState extends State<NewNote> {
                 });
               } else {
                 var model = context.read<Notes>();
-
-                model.add(Note(
-                  time: DateTime.now(),
-                  title: titleController.text,
-                  content: contentController.text,
-                ));
+                if (model.noteManipulationMode == 'edit_note') {
+                  model.edit(titleController.text, contentController.text);
+                } else {
+                  model.add(Note(
+                    time: DateTime.now(),
+                    title: titleController.text,
+                    content: contentController.text,
+                  ));
+                }
                 Navigator.pop(context);
               }
             },

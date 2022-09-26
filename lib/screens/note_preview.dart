@@ -5,7 +5,7 @@ import 'package:notes_app/notes.dart';
 class NotePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final model = Provider.of<Notes>(context, listen: false);
+    final model = Provider.of<Notes>(context);
     return Scaffold(
       backgroundColor: Colors.grey[900],
       appBar: AppBar(
@@ -13,7 +13,10 @@ class NotePreview extends StatelessWidget {
         elevation: 0.0,
         actions: [
           TextButton(
-              onPressed: () {},
+              onPressed: () {
+                context.read<Notes>().noteManipulationMode = 'edit_note';
+                Navigator.pushNamed(context, '/newNote');
+              },
               child: Text("Edit",
                   style: TextStyle(
                       color: Colors.grey[100],

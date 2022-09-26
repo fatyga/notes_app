@@ -34,7 +34,6 @@ class Home extends StatelessWidget {
                     },
                     child: Container(
                       padding: const EdgeInsets.all(15),
-                      //margin: const EdgeInsets.only(bottom: 15),
                       decoration: BoxDecoration(
                         color: model.notes[index].backgroundColor,
                         borderRadius:
@@ -48,11 +47,11 @@ class Home extends StatelessWidget {
                                     color: Colors.grey[900],
                                     fontSize: 22,
                                     fontWeight: FontWeight.bold)),
-                            SizedBox(height: 15),
+                            const SizedBox(height: 15),
                             Text(
                               model.notes[index].formattedTime,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 15),
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 15),
                             ),
                           ]),
                     ),
@@ -66,9 +65,10 @@ class Home extends StatelessWidget {
         backgroundColor: Colors.grey[800],
         elevation: 12,
         onPressed: () {
+          context.read<Notes>().noteManipulationMode = 'new_note';
           Navigator.pushNamed(context, '/newNote');
         },
-        child: Icon(Icons.add, size: 40),
+        child: const Icon(Icons.add, size: 40),
       ),
     );
   }
