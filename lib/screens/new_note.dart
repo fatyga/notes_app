@@ -11,6 +11,8 @@ class _NewNoteState extends State<NewNote> {
   final titleController = TextEditingController();
   final contentController = TextEditingController();
 
+  String errorContent = '';
+
   @override
   void dispose() {
     titleController.dispose();
@@ -28,14 +30,21 @@ class _NewNoteState extends State<NewNote> {
         actions: [
           TextButton(
             onPressed: () {
-              var model = context.read<Notes>();
+              if (titleController.text.isEmpty ||
+                  contentController.text.isEmpty) {
+                setState(() {
+                  errorContent = 'You need to fill both fields';
+                });
+              } else {
+                var model = context.read<Notes>();
 
-              model.add(Note(
-                time: DateTime.now(),
-                title: titleController.text,
-                content: contentController.text,
-              ));
-              Navigator.pop(context);
+                model.add(Note(
+                  time: DateTime.now(),
+                  title: titleController.text,
+                  content: contentController.text,
+                ));
+                Navigator.pop(context);
+              }
             },
             child: Text("Save",
                 style: TextStyle(
@@ -46,34 +55,36 @@ class _NewNoteState extends State<NewNote> {
         ],
       ),
       body: Padding(
-          padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
           child: Column(
             children: <Widget>[
+              Text(errorContent, style: const TextStyle(color: Colors.red)),
               TextField(
                 controller: titleController,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
+                autofocus: true,
                 cursorColor: Colors.grey[100],
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     hintText: ("Title"),
                     hintStyle: TextStyle(fontSize: 30, color: Colors.grey),
                     border: InputBorder.none),
-                style: TextStyle(color: Colors.white, fontSize: 30),
+                style: const TextStyle(color: Colors.white, fontSize: 30),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: contentController,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 cursorColor: Colors.grey[100],
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     hintText: ("Type here.."),
                     hintStyle: TextStyle(
                       fontSize: 20,
                       color: Colors.grey,
                     ),
                     border: InputBorder.none),
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
             ],
           )),
