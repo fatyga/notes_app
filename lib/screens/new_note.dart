@@ -17,8 +17,8 @@ class _NewNoteState extends State<NewNote> {
   initState() {
     var model = context.read<Notes>();
     if (model.noteManipulationMode == 'edit_note') {
-      titleController.text = model.notes[model.currentNote].title;
-      contentController.text = model.notes[model.currentNote].content;
+      titleController.text = model.selectedNote?.title ?? 'No data';
+      contentController.text = model.selectedNote?.content ?? 'No data';
     }
     super.initState();
   }

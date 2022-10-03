@@ -29,7 +29,7 @@ class Home extends StatelessWidget {
                   InkWell(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     onTap: () {
-                      model.currentNote = index;
+                      model.selectedNote = model.notes[index];
                       Navigator.pushNamed(context, '/noteView');
                     },
                     child: Container(

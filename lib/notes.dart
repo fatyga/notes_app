@@ -4,7 +4,8 @@ import 'dart:math';
 
 class Notes extends ChangeNotifier {
   final List<Note> _items = [];
-  int currentNote = 0;
+  Note? selectedNote;
+
   String noteManipulationMode = '';
 
   List<Note> get notes => _items;
@@ -16,8 +17,8 @@ class Notes extends ChangeNotifier {
   }
 
   void edit(String editedTitle, String editedContent) {
-    _items[currentNote].title = editedTitle;
-    _items[currentNote].content = editedContent;
+    selectedNote?.title = editedTitle;
+    selectedNote?.content = editedContent;
     notifyListeners();
   }
 }

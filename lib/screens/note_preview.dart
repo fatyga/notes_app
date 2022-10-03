@@ -25,20 +25,20 @@ class NotePreview extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(model.notes[model.currentNote].title,
+            Text(model.selectedNote?.title ?? 'No data',
                 style: TextStyle(
                     color: Colors.grey[100],
                     fontSize: 25,
                     fontWeight: FontWeight.bold)),
             const SizedBox(height: 20),
-            Text(model.notes[model.currentNote].formattedTime,
+            Text(model.selectedNote?.formattedTime ?? 'No data',
                 style: TextStyle(color: Colors.grey[600])),
             const SizedBox(height: 20),
-            Text(model.notes[model.currentNote].content,
+            Text(model.selectedNote?.content ?? 'No data',
                 style: TextStyle(color: Colors.grey[100], fontSize: 15))
           ],
         ),
