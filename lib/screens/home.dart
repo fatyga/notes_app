@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:notes_app/notes.dart';
+import 'package:notes_app/components/note.dart';
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final model = Provider.of<Notes>(context);
+    var model = Provider.of<Notes>(context);
 
     return Scaffold(
       backgroundColor: Colors.grey[900],
@@ -21,44 +22,9 @@ class Home extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
         child: ListView.builder(
-            itemCount: model.notesCount,
+            itemCount: context.read<Notes>().notesCount,
             itemBuilder: (context, index) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  InkWell(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    onTap: () {
-                      model.selectedNote = model.notes[index];
-                      Navigator.pushNamed(context, '/noteView');
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: model.notes[index].backgroundColor,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(model.notes[index].title,
-                                style: TextStyle(
-                                    color: Colors.grey[900],
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 15),
-                            Text(
-                              model.notes[index].formattedTime,
-                              style: const TextStyle(
-                                  color: Colors.black, fontSize: 15),
-                            ),
-                          ]),
-                    ),
-                  ),
-                  const SizedBox(height: 15)
-                ],
-              );
+              return NoteWidget(noteInstance: model.notes[index]);
             }),
       ),
       floatingActionButton: FloatingActionButton(
