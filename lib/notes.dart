@@ -7,6 +7,7 @@ class Notes extends ChangeNotifier {
   Note? selectedNote;
 
   String noteManipulationMode = '';
+  String notesViewMode = 'all';
 
   List<Note> get notes => _items;
   int get notesCount => _items.length;
@@ -21,14 +22,26 @@ class Notes extends ChangeNotifier {
     selectedNote?.content = editedContent;
     notifyListeners();
   }
+
+  void pin_unpin() {
+    selectedNote!.isPinned = !selectedNote!.isPinned;
+    notifyListeners();
+  }
+
+  void changeViewMode(String newMode) {
+    notesViewMode = newMode;
+    notifyListeners();
+  }
 }
 
 class Note {
-  late DateTime time;
-  late String title;
-  late String content;
+  DateTime time;
+  String title;
+  String content;
   late String formattedTime;
-  late Color? backgroundColor;
+  Color? backgroundColor;
+
+  bool isPinned = false;
 
   Note({required this.time, required this.title, required this.content}) {
     formattedTime = DateFormat.yMMMd().format(time);

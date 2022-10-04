@@ -16,10 +16,19 @@ class NotePreview extends StatelessWidget {
         actions: [
           TextButton(
               onPressed: () {
-                context.read<Notes>().noteManipulationMode = 'edit_note';
+                model.noteManipulationMode = 'edit_note';
                 Navigator.pushNamed(context, '/newNote');
               },
               child: Text("Edit",
+                  style: TextStyle(
+                      color: Colors.grey[100],
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold))),
+          TextButton(
+              onPressed: () {
+                model.pin_unpin();
+              },
+              child: Text((model.selectedNote!.isPinned) ? "Unpin" : "Pin",
                   style: TextStyle(
                       color: Colors.grey[100],
                       fontSize: 16,
