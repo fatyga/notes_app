@@ -26,22 +26,24 @@ class NotePreview extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(model.selectedNote?.title ?? 'No data',
-                style: TextStyle(
-                    color: Colors.grey[100],
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold)),
-            const SizedBox(height: 20),
-            Text(model.selectedNote?.formattedTime ?? 'No data',
-                style: TextStyle(color: Colors.grey[600])),
-            const SizedBox(height: 20),
-            Text(model.selectedNote?.content ?? 'No data',
-                style: TextStyle(color: Colors.grey[100], fontSize: 15))
-          ],
-        ),
+        child: model.selectedNote == null
+            ? const Text('no data')
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(model.selectedNote!.title,
+                      style: TextStyle(
+                          color: Colors.grey[100],
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 20),
+                  Text(model.selectedNote!.formattedTime,
+                      style: TextStyle(color: Colors.grey[600])),
+                  const SizedBox(height: 20),
+                  Text(model.selectedNote!.content,
+                      style: TextStyle(color: Colors.grey[100], fontSize: 15))
+                ],
+              ),
       ),
     );
   }
