@@ -3,8 +3,9 @@ import 'package:notes_app/notes.dart';
 import 'package:provider/provider.dart';
 
 class NoteWidget extends StatelessWidget {
-  NoteWidget({super.key, required this.noteInstance});
-  Note noteInstance;
+  const NoteWidget({super.key, required this.noteInstance});
+
+  final Note noteInstance;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +44,5 @@ class NoteWidget extends StatelessWidget {
         const SizedBox(height: 15)
       ],
     );
-    ;
   }
 }

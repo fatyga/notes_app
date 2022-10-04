@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:notes_app/notes.dart';
 
 class NotePreview extends StatelessWidget {
+  const NotePreview({super.key});
+
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<Notes>(context);

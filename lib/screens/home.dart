@@ -4,6 +4,8 @@ import 'package:notes_app/notes.dart';
 import 'package:notes_app/components/note.dart';
 
 class Home extends StatelessWidget {
+  const Home({super.key});
+
   @override
   Widget build(BuildContext context) {
     var model = Provider.of<Notes>(context);

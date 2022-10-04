@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:notes_app/notes.dart';
 
 class NewNote extends StatefulWidget {
+  const NewNote({super.key});
+
   @override
   _NewNoteState createState() => _NewNoteState();
 }
