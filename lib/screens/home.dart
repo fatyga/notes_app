@@ -21,11 +21,23 @@ class Home extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
-        child: ListView.builder(
-            itemCount: context.read<Notes>().notesCount,
-            itemBuilder: (context, index) {
-              return NoteWidget(noteInstance: model.notes[index]);
-            }),
+        child: (model.notesCount == 0)
+            ? Center(
+                child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Icons.note, color: Colors.grey[500], size: 60),
+                  const SizedBox(height: 10),
+                  Text("There aren't any notes yet",
+                      style: TextStyle(color: Colors.grey[500], fontSize: 15))
+                ],
+              ))
+            : ListView.builder(
+                itemCount: model.notesCount,
+                itemBuilder: (context, index) {
+                  return NoteWidget(noteInstance: model.notes[index]);
+                }),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.grey[800],
