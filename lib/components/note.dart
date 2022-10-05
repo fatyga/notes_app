@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:notes_app/notes.dart';
-import 'package:provider/provider.dart';
 
 class NoteWidget extends StatelessWidget {
   const NoteWidget({super.key, required this.noteInstance});
@@ -15,9 +14,7 @@ class NoteWidget extends StatelessWidget {
         InkWell(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           onTap: () {
-            var model = Provider.of<Notes>(context, listen: false);
-            model.selectedNote = noteInstance;
-            Navigator.pushNamed(context, '/noteView');
+            Navigator.pushNamed(context, '/noteView', arguments: noteInstance);
           },
           child: Container(
             padding: const EdgeInsets.all(15),
@@ -35,7 +32,7 @@ class NoteWidget extends StatelessWidget {
                           fontWeight: FontWeight.bold)),
                   const SizedBox(height: 15),
                   Text(
-                    noteInstance.formattedTime,
+                    noteInstance.createdAt,
                     style: const TextStyle(color: Colors.black, fontSize: 15),
                   ),
                 ]),

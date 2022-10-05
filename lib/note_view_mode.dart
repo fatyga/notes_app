@@ -1,0 +1,1 @@
+enum NoteViewMode { pinned, all }

@@ -16,16 +16,6 @@ class _NewNoteState extends State<NewNote> {
   String errorContent = '';
 
   @override
-  initState() {
-    var model = context.read<Notes>();
-    if (model.noteManipulationMode == 'edit_note') {
-      titleController.text = model.selectedNote?.title ?? 'No data';
-      contentController.text = model.selectedNote?.content ?? 'No data';
-    }
-    super.initState();
-  }
-
-  @override
   void dispose() {
     titleController.dispose();
     contentController.dispose();
@@ -34,6 +24,12 @@ class _NewNoteState extends State<NewNote> {
 
   @override
   Widget build(BuildContext context) {
+    final model = ModalRoute.of(context)!.settings.arguments as Note?;
+    final provider = Provider.of<Notes>(context);
+
+    titleController.text = model?.title ?? '';
+    contentController.text = model?.content ?? '';
+
     return Scaffold(
       backgroundColor: Colors.grey[900],
       appBar: AppBar(
@@ -48,15 +44,22 @@ class _NewNoteState extends State<NewNote> {
                   errorContent = 'You need to fill both fields';
                 });
               } else {
-                var model = context.read<Notes>();
-                if (model.noteManipulationMode == 'edit_note') {
-                  model.edit(titleController.text, contentController.text);
+                if (model != null) {
+                  provider.edit(
+                    model,
+                    model.copyWith(
+                      title: titleController.text,
+                      content: contentController.text,
+                    ),
+                  );
                 } else {
-                  model.add(Note(
-                    time: DateTime.now(),
-                    title: titleController.text,
-                    content: contentController.text,
-                  ));
+                  provider.add(
+                    Note(
+                      dateTime: DateTime.now(),
+                      title: titleController.text,
+                      content: contentController.text,
+                    ),
+                  );
                 }
                 Navigator.pop(context);
               }

@@ -4,12 +4,9 @@ import 'dart:math';
 
 class Notes extends ChangeNotifier {
   final List<Note> _items = [];
-  Note? selectedNote;
-
-  String noteManipulationMode = '';
-  String notesViewMode = 'all';
 
   List<Note> get notes => _items;
+
   int get notesCount => _items.length;
 
   void add(Note newNote) {
@@ -17,35 +14,48 @@ class Notes extends ChangeNotifier {
     notifyListeners();
   }
 
-  void edit(String editedTitle, String editedContent) {
-    selectedNote?.title = editedTitle;
-    selectedNote?.content = editedContent;
+  void edit(Note oldNote, Note editedNote) {
+    final index = _items.indexOf(oldNote);
+    _items[index] = editedNote;
     notifyListeners();
   }
 
-  void pin_unpin() {
-    selectedNote!.isPinned = !selectedNote!.isPinned;
-    notifyListeners();
-  }
-
-  void changeViewMode(String newMode) {
-    notesViewMode = newMode;
+  void pinUnpin(Note note) {
+    final index = _items.indexOf(note);
+    final selectedNote = _items[index];
+    selectedNote.isPinned = !selectedNote.isPinned;
     notifyListeners();
   }
 }
 
 class Note {
-  DateTime time;
+  String createdAt;
   String title;
   String content;
-  late String formattedTime;
-  Color? backgroundColor;
-
+  Color backgroundColor;
   bool isPinned = false;
 
-  Note({required this.time, required this.title, required this.content}) {
-    formattedTime = DateFormat.yMMMd().format(time);
-    backgroundColor =
-        Colors.primaries[Random().nextInt(Colors.primaries.length)][300];
-  }
+  Note({
+    required DateTime dateTime,
+    required this.title,
+    required this.content,
+    Color? color,
+    isPinned = false,
+  })  : backgroundColor =
+            Colors.primaries[Random().nextInt(Colors.primaries.length)][300]!,
+        createdAt = DateFormat.yMMMd().format(dateTime);
+
+  Note copyWith({
+    String? title,
+    String? content,
+    bool? isPinned,
+    Color? backgroundColor,
+  }) =>
+      Note(
+        dateTime: DateTime.parse(createdAt),
+        title: title ?? this.title,
+        content: content ?? this.content,
+        color: backgroundColor ?? this.backgroundColor,
+        isPinned: isPinned ?? this.isPinned,
+      );
 }
