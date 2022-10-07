@@ -2,28 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:notes_app/notes.dart';
 
-class NewNote extends StatefulWidget {
-  const NewNote({super.key});
+class NoteManipulation extends StatefulWidget {
+  const NoteManipulation({super.key});
 
   @override
-  _NewNoteState createState() => _NewNoteState();
+  _NoteManipulationState createState() => _NoteManipulationState();
 }
 
-class _NewNoteState extends State<NewNote> {
+class _NoteManipulationState extends State<NoteManipulation> {
   final titleController = TextEditingController();
   final contentController = TextEditingController();
 
   String errorContent = '';
-
-  @override
-  initState() {
-    var model = context.read<Notes>();
-    if (model.noteManipulationMode == 'edit_note') {
-      titleController.text = model.selectedNote?.title ?? 'No data';
-      contentController.text = model.selectedNote?.content ?? 'No data';
-    }
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -34,6 +24,15 @@ class _NewNoteState extends State<NewNote> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<Notes>(context);
+    final selectedNoteIndex =
+        ModalRoute.of(context)!.settings.arguments as int?;
+
+    if (selectedNoteIndex != null) {
+      titleController.text = provider.notes[selectedNoteIndex].title;
+      contentController.text = provider.notes[selectedNoteIndex].content;
+    }
+
     return Scaffold(
       backgroundColor: Colors.grey[900],
       appBar: AppBar(
@@ -48,12 +47,12 @@ class _NewNoteState extends State<NewNote> {
                   errorContent = 'You need to fill both fields';
                 });
               } else {
-                var model = context.read<Notes>();
-                if (model.noteManipulationMode == 'edit_note') {
-                  model.edit(titleController.text, contentController.text);
+                if (selectedNoteIndex != null) {
+                  provider.edit(selectedNoteIndex, titleController.text,
+                      contentController.text);
                 } else {
-                  model.add(Note(
-                    time: DateTime.now(),
+                  provider.add(Note(
+                    dateTime: DateTime.now(),
                     title: titleController.text,
                     content: contentController.text,
                   ));

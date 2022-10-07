@@ -7,7 +7,6 @@ class Notes extends ChangeNotifier {
   Note? selectedNote;
 
   String noteManipulationMode = '';
-  String notesViewMode = 'all';
 
   List<Note> get notes => _items;
   int get notesCount => _items.length;
@@ -17,35 +16,49 @@ class Notes extends ChangeNotifier {
     notifyListeners();
   }
 
-  void edit(String editedTitle, String editedContent) {
-    selectedNote?.title = editedTitle;
-    selectedNote?.content = editedContent;
+  void edit(int index, String title, String content) {
+    notes[index].title = title;
+    notes[index].content = content;
+    // final index = notes.indexOf(oldNote);
+    // notes[index] = editedNote;
     notifyListeners();
   }
 
-  void pin_unpin() {
-    selectedNote!.isPinned = !selectedNote!.isPinned;
-    notifyListeners();
-  }
-
-  void changeViewMode(String newMode) {
-    notesViewMode = newMode;
+  void pinUnpin(int index) {
+    notes[index].isPinned = !notes[index].isPinned;
     notifyListeners();
   }
 }
 
 class Note {
-  DateTime time;
+  DateTime dateTime;
+  String createdAt;
   String title;
   String content;
-  late String formattedTime;
   Color? backgroundColor;
 
-  bool isPinned = false;
+  bool isPinned;
 
-  Note({required this.time, required this.title, required this.content}) {
-    formattedTime = DateFormat.yMMMd().format(time);
-    backgroundColor =
-        Colors.primaries[Random().nextInt(Colors.primaries.length)][300];
-  }
+  Note(
+      {required this.dateTime,
+      required this.title,
+      required this.content,
+      this.isPinned = false,
+      Color? backgroundColor})
+      : createdAt = DateFormat.yMMMd().format(dateTime),
+        backgroundColor =
+            Colors.primaries[Random().nextInt(Colors.primaries.length)][300];
+
+  // Note copyWith(
+  //         {DateTime? dateTime,
+  //         String? title,
+  //         bool? isPinned,
+  //         String? content,
+  //         Color? backgroundColor}) =>
+  //     Note(
+  //         dateTime: dateTime ?? this.dateTime,
+  //         title: title ?? this.title,
+  //         content: content ?? this.content,
+  //         backgroundColor: backgroundColor ?? this.backgroundColor,
+  //         isPinned: isPinned ?? this.isPinned);
 }

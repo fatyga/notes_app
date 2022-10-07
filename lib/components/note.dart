@@ -15,9 +15,9 @@ class NoteWidget extends StatelessWidget {
         InkWell(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           onTap: () {
-            var model = Provider.of<Notes>(context, listen: false);
-            model.selectedNote = noteInstance;
-            Navigator.pushNamed(context, '/noteView');
+            final provider = Provider.of<Notes>(context, listen: false);
+            Navigator.pushNamed(context, '/notePreview',
+                arguments: provider.notes.indexOf(noteInstance));
           },
           child: Container(
             padding: const EdgeInsets.all(15),
@@ -35,7 +35,7 @@ class NoteWidget extends StatelessWidget {
                           fontWeight: FontWeight.bold)),
                   const SizedBox(height: 15),
                   Text(
-                    noteInstance.formattedTime,
+                    noteInstance.createdAt,
                     style: const TextStyle(color: Colors.black, fontSize: 15),
                   ),
                 ]),

@@ -7,7 +7,11 @@ class NotePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = Provider.of<Notes>(context);
+    final provider = Provider.of<Notes>(context);
+    final selectedNoteIndex = ModalRoute.of(context)!.settings.arguments as int;
+
+    final selectedNote = provider.notes[selectedNoteIndex];
+
     return Scaffold(
       backgroundColor: Colors.grey[900],
       appBar: AppBar(
@@ -16,8 +20,8 @@ class NotePreview extends StatelessWidget {
         actions: [
           TextButton(
               onPressed: () {
-                model.noteManipulationMode = 'edit_note';
-                Navigator.pushNamed(context, '/newNote');
+                Navigator.pushNamed(context, '/noteManipulation',
+                    arguments: selectedNoteIndex);
               },
               child: Text("Edit",
                   style: TextStyle(
@@ -26,9 +30,9 @@ class NotePreview extends StatelessWidget {
                       fontWeight: FontWeight.bold))),
           TextButton(
               onPressed: () {
-                model.pin_unpin();
+                provider.pinUnpin(selectedNoteIndex);
               },
-              child: Text((model.selectedNote!.isPinned) ? "Unpin" : "Pin",
+              child: Text((selectedNote.isPinned) ? "Unpin" : "Pin",
                   style: TextStyle(
                       color: Colors.grey[100],
                       fontSize: 16,
@@ -37,24 +41,22 @@ class NotePreview extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-        child: model.selectedNote == null
-            ? const Text('no data')
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(model.selectedNote!.title,
-                      style: TextStyle(
-                          color: Colors.grey[100],
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 20),
-                  Text(model.selectedNote!.formattedTime,
-                      style: TextStyle(color: Colors.grey[600])),
-                  const SizedBox(height: 20),
-                  Text(model.selectedNote!.content,
-                      style: TextStyle(color: Colors.grey[100], fontSize: 15))
-                ],
-              ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(selectedNote.title,
+                style: TextStyle(
+                    color: Colors.grey[100],
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold)),
+            const SizedBox(height: 20),
+            Text(selectedNote.createdAt,
+                style: TextStyle(color: Colors.grey[600])),
+            const SizedBox(height: 20),
+            Text(selectedNote.content,
+                style: TextStyle(color: Colors.grey[100], fontSize: 15))
+          ],
+        ),
       ),
     );
   }
