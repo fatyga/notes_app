@@ -34,12 +34,10 @@ class _NoteManipulationState extends State<NoteManipulation> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.grey[900],
       appBar: AppBar(
-        backgroundColor: Colors.grey[900],
         elevation: 0,
         actions: [
-          TextButton(
+          IconButton(
             onPressed: () {
               if (titleController.text.isEmpty ||
                   contentController.text.isEmpty) {
@@ -60,11 +58,7 @@ class _NoteManipulationState extends State<NoteManipulation> {
                 Navigator.pop(context);
               }
             },
-            child: Text("Save",
-                style: TextStyle(
-                    color: Colors.grey[100],
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold)),
+            icon: const Icon(Icons.save_outlined),
           )
         ],
       ),
@@ -72,33 +66,20 @@ class _NoteManipulationState extends State<NoteManipulation> {
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
           child: Column(
             children: <Widget>[
-              Text(errorContent, style: const TextStyle(color: Colors.red)),
+              Text(errorContent),
               TextField(
                 controller: titleController,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 autofocus: true,
-                cursorColor: Colors.grey[100],
-                decoration: const InputDecoration(
-                    hintText: ("Title"),
-                    hintStyle: TextStyle(fontSize: 30, color: Colors.grey),
-                    border: InputBorder.none),
-                style: const TextStyle(color: Colors.white, fontSize: 30),
+                decoration: const InputDecoration(hintText: ("Title")),
               ),
               const SizedBox(height: 20),
               TextField(
                 controller: contentController,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
-                cursorColor: Colors.grey[100],
-                decoration: const InputDecoration(
-                    hintText: ("Type here.."),
-                    hintStyle: TextStyle(
-                      fontSize: 20,
-                      color: Colors.grey,
-                    ),
-                    border: InputBorder.none),
-                style: const TextStyle(color: Colors.white, fontSize: 20),
+                decoration: const InputDecoration(hintText: ("Type here..")),
               ),
             ],
           )),

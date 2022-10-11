@@ -13,30 +13,24 @@ class NotePreview extends StatelessWidget {
     final selectedNote = provider.notes[selectedNoteIndex];
 
     return Scaffold(
-      backgroundColor: Colors.grey[900],
       appBar: AppBar(
-        backgroundColor: Colors.grey[900],
         elevation: 0.0,
         actions: [
-          TextButton(
+          IconButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/noteManipulation',
                     arguments: selectedNoteIndex);
               },
-              child: Text("Edit",
-                  style: TextStyle(
-                      color: Colors.grey[100],
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold))),
-          TextButton(
+              icon: const Icon(Icons.edit)),
+          IconButton(
               onPressed: () {
                 provider.pinUnpin(selectedNoteIndex);
               },
-              child: Text((selectedNote.isPinned) ? "Unpin" : "Pin",
-                  style: TextStyle(
-                      color: Colors.grey[100],
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold))),
+              icon: Icon(
+                (selectedNote.isPinned)
+                    ? Icons.push_pin
+                    : Icons.push_pin_outlined,
+              )),
         ],
       ),
       body: Padding(
@@ -44,17 +38,17 @@ class NotePreview extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(selectedNote.title,
-                style: TextStyle(
-                    color: Colors.grey[100],
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold)),
+            Text(
+              selectedNote.title,
+            ),
             const SizedBox(height: 20),
-            Text(selectedNote.createdAt,
-                style: TextStyle(color: Colors.grey[600])),
+            Text(
+              selectedNote.createdAt,
+            ),
             const SizedBox(height: 20),
-            Text(selectedNote.content,
-                style: TextStyle(color: Colors.grey[100], fontSize: 15))
+            Text(
+              selectedNote.content,
+            )
           ],
         ),
       ),

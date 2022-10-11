@@ -8,15 +8,8 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
       appBar: AppBar(
-        backgroundColor: Colors.grey[900],
-        elevation: 0.0,
-        title: Text('Notes',
-            style: TextStyle(
-                color: Colors.grey[100],
-                fontSize: 30,
-                fontWeight: FontWeight.bold)),
+        title: const Text('Notes'),
       ),
       body: DefaultTabController(
         length: 2,
@@ -36,7 +29,6 @@ class Home extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.grey[800],
         elevation: 12,
         onPressed: () {
           Navigator.pushNamed(context, '/noteManipulation');
