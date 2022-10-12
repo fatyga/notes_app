@@ -38,17 +38,17 @@ class NotePreview extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              selectedNote.title,
-            ),
+            Text(selectedNote.title,
+                style: Theme.of(context).textTheme.headline5),
             const SizedBox(height: 20),
-            Text(
-              selectedNote.createdAt,
-            ),
+            Text(selectedNote.createdAt,
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle2!
+                    .copyWith(color: Colors.grey)),
             const SizedBox(height: 20),
-            Text(
-              selectedNote.content,
-            )
+            Text(selectedNote.content,
+                style: Theme.of(context).textTheme.bodyText1)
           ],
         ),
       ),

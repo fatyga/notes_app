@@ -66,7 +66,11 @@ class _NoteManipulationState extends State<NoteManipulation> {
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
           child: Column(
             children: <Widget>[
-              Text(errorContent),
+              Text(errorContent,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(color: Theme.of(context).errorColor)),
               TextField(
                 controller: titleController,
                 keyboardType: TextInputType.multiline,

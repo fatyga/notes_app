@@ -30,13 +30,11 @@ class NoteWidget extends StatelessWidget {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      noteInstance.title,
-                    ),
+                    Text(noteInstance.title,
+                        style: Theme.of(context).textTheme.titleLarge),
                     const SizedBox(height: 15),
-                    Text(
-                      noteInstance.createdAt,
-                    ),
+                    Text(noteInstance.createdAt,
+                        style: Theme.of(context).textTheme.subtitle2),
                   ]),
             ),
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/screens/home.dart';
 import 'package:notes_app/screens/note_manipulation.dart';
 import 'package:notes_app/screens/note_preview.dart';
+import 'package:notes_app/themes/dark_theme.dart';
 import 'package:notes_app/themes/light_theme.dart';
 
 class MyApp extends StatelessWidget {
@@ -11,6 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: lightTheme,
+      darkTheme: darkTheme,
       debugShowCheckedModeBanner: false,
       title: 'Notes App',
       initialRoute: '/',
