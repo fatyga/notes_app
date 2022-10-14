@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:notes_app/notes.dart';
 
-class NoteManipulation extends StatefulWidget {
-  const NoteManipulation({super.key});
+class NoteManipulationPage extends StatefulWidget {
+  const NoteManipulationPage({super.key});
 
   @override
   _NoteManipulationState createState() => _NoteManipulationState();
 }
 
-class _NoteManipulationState extends State<NoteManipulation> {
+class _NoteManipulationState extends State<NoteManipulationPage> {
   final titleController = TextEditingController();
   final contentController = TextEditingController();
 

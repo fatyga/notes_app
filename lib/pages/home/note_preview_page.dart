@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:notes_app/notes.dart';
 
-class NotePreview extends StatelessWidget {
-  const NotePreview({super.key});
+class NotePreviewPage extends StatelessWidget {
+  const NotePreviewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
