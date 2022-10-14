@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:notes_app/core/route/app_router.gr.dart';
-import 'package:notes_app/pages/home/home_page.dart';
-import 'package:notes_app/pages/home/note_manipulation_page.dart';
-import 'package:notes_app/pages/home/note_preview_page.dart';
 
 import 'package:notes_app/themes/dark_theme.dart';
 import 'package:notes_app/themes/light_theme.dart';
