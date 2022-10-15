@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:notes_app/notes.dart';
 
 class NoteManipulationPage extends StatefulWidget {
-  const NoteManipulationPage({super.key});
+  const NoteManipulationPage({super.key, this.selectedNoteIndex});
+
+  final int? selectedNoteIndex;
 
   @override
   _NoteManipulationState createState() => _NoteManipulationState();
@@ -25,12 +27,11 @@ class _NoteManipulationState extends State<NoteManipulationPage> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<Notes>(context);
-    final selectedNoteIndex =
-        ModalRoute.of(context)!.settings.arguments as int?;
 
-    if (selectedNoteIndex != null) {
-      titleController.text = provider.notes[selectedNoteIndex].title;
-      contentController.text = provider.notes[selectedNoteIndex].content;
+    if (widget.selectedNoteIndex != null) {
+      titleController.text = provider.notes[widget.selectedNoteIndex!].title;
+      contentController.text =
+          provider.notes[widget.selectedNoteIndex!].content;
     }
 
     return Scaffold(
@@ -45,8 +46,8 @@ class _NoteManipulationState extends State<NoteManipulationPage> {
                   errorContent = 'You need to fill both fields';
                 });
               } else {
-                if (selectedNoteIndex != null) {
-                  provider.edit(selectedNoteIndex, titleController.text,
+                if (widget.selectedNoteIndex != null) {
+                  provider.edit(widget.selectedNoteIndex!, titleController.text,
                       contentController.text);
                 } else {
                   provider.add(Note(

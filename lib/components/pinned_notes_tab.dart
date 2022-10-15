@@ -16,7 +16,7 @@ class PinnedNotesTab extends StatelessWidget {
         : ListView.builder(
             itemCount: pinnedNotes.length,
             itemBuilder: (context, index) {
-              return NoteWidget(noteInstance: pinnedNotes[index]);
+              return NoteWidget(noteIndex: index);
             });
   }
 }

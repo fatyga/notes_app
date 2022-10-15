@@ -15,7 +15,7 @@ class AllNotesTab extends StatelessWidget {
         : ListView.builder(
             itemCount: provider.notes.length,
             itemBuilder: (context, index) {
-              return NoteWidget(noteInstance: provider.notes[index]);
+              return NoteWidget(noteIndex: index);
             });
   }
 }

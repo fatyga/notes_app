@@ -1,14 +1,17 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_app/core/route/app_router.gr.dart';
 import 'package:provider/provider.dart';
 import 'package:notes_app/notes.dart';
 
 class NotePreviewPage extends StatelessWidget {
-  const NotePreviewPage({super.key});
+  const NotePreviewPage({super.key, required this.selectedNoteIndex});
+
+  final selectedNoteIndex;
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<Notes>(context);
-    final selectedNoteIndex = ModalRoute.of(context)!.settings.arguments as int;
 
     final selectedNote = provider.notes[selectedNoteIndex];
 
@@ -18,8 +21,8 @@ class NotePreviewPage extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/noteManipulation',
-                    arguments: selectedNoteIndex);
+                context.router.push(NoteManipulationPageRoute(
+                    selectedNoteIndex: selectedNoteIndex));
               },
               icon: const Icon(Icons.edit)),
           IconButton(

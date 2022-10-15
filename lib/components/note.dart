@@ -1,14 +1,19 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_app/core/route/app_router.gr.dart';
 import 'package:notes_app/notes.dart';
 import 'package:provider/provider.dart';
 
 class NoteWidget extends StatelessWidget {
-  const NoteWidget({super.key, required this.noteInstance});
+  const NoteWidget({super.key, required this.noteIndex});
 
-  final Note noteInstance;
+  final int noteIndex;
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<Notes>(context);
+    final selectedNote = provider.notes[noteIndex];
+
     return Card(
       elevation: 5.0,
       child: Column(
@@ -18,22 +23,22 @@ class NoteWidget extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             onTap: () {
               final provider = Provider.of<Notes>(context, listen: false);
-              Navigator.pushNamed(context, '/notePreview',
-                  arguments: provider.notes.indexOf(noteInstance));
+              context.router
+                  .push(NotePreviewPageRoute(selectedNoteIndex: noteIndex));
             },
             child: Container(
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
-                color: noteInstance.backgroundColor,
+                color: selectedNote.backgroundColor,
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
               ),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(noteInstance.title,
+                    Text(selectedNote.title,
                         style: Theme.of(context).textTheme.titleLarge),
                     const SizedBox(height: 15),
-                    Text(noteInstance.createdAt,
+                    Text(selectedNote.createdAt,
                         style: Theme.of(context).textTheme.subtitle2),
                   ]),
             ),

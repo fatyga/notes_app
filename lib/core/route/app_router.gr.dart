@@ -45,15 +45,23 @@ class AppRouter extends _i6.RootStackRouter {
       );
     },
     NoteManipulationPageRoute.name: (routeData) {
+      final args = routeData.argsAs<NoteManipulationPageRouteArgs>();
       return _i6.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i4.NoteManipulationPage(),
+        child: _i4.NoteManipulationPage(
+          key: args.key,
+          selectedNoteIndex: args.selectedNoteIndex,
+        ),
       );
     },
     NotePreviewPageRoute.name: (routeData) {
+      final args = routeData.argsAs<NotePreviewPageRouteArgs>();
       return _i6.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i5.NotePreviewPage(),
+        child: _i5.NotePreviewPage(
+          key: args.key,
+          selectedNoteIndex: args.selectedNoteIndex,
+        ),
       );
     },
   };
@@ -121,24 +129,69 @@ class HomePageRoute extends _i6.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.NoteManipulationPage]
-class NoteManipulationPageRoute extends _i6.PageRouteInfo<void> {
-  const NoteManipulationPageRoute()
-      : super(
+class NoteManipulationPageRoute
+    extends _i6.PageRouteInfo<NoteManipulationPageRouteArgs> {
+  NoteManipulationPageRoute({
+    _i7.Key? key,
+    required dynamic selectedNoteIndex,
+  }) : super(
           NoteManipulationPageRoute.name,
           path: '/note-manipulation-page',
+          args: NoteManipulationPageRouteArgs(
+            key: key,
+            selectedNoteIndex: selectedNoteIndex,
+          ),
         );
 
   static const String name = 'NoteManipulationPageRoute';
 }
 
+class NoteManipulationPageRouteArgs {
+  const NoteManipulationPageRouteArgs({
+    this.key,
+    required this.selectedNoteIndex,
+  });
+
+  final _i7.Key? key;
+
+  final dynamic selectedNoteIndex;
+
+  @override
+  String toString() {
+    return 'NoteManipulationPageRouteArgs{key: $key, selectedNoteIndex: $selectedNoteIndex}';
+  }
+}
+
 /// generated route for
 /// [_i5.NotePreviewPage]
-class NotePreviewPageRoute extends _i6.PageRouteInfo<void> {
-  const NotePreviewPageRoute()
-      : super(
+class NotePreviewPageRoute extends _i6.PageRouteInfo<NotePreviewPageRouteArgs> {
+  NotePreviewPageRoute({
+    _i7.Key? key,
+    required dynamic selectedNoteIndex,
+  }) : super(
           NotePreviewPageRoute.name,
           path: '/note-preview-page',
+          args: NotePreviewPageRouteArgs(
+            key: key,
+            selectedNoteIndex: selectedNoteIndex,
+          ),
         );
 
   static const String name = 'NotePreviewPageRoute';
+}
+
+class NotePreviewPageRouteArgs {
+  const NotePreviewPageRouteArgs({
+    this.key,
+    required this.selectedNoteIndex,
+  });
+
+  final _i7.Key? key;
+
+  final dynamic selectedNoteIndex;
+
+  @override
+  String toString() {
+    return 'NotePreviewPageRouteArgs{key: $key, selectedNoteIndex: $selectedNoteIndex}';
+  }
 }

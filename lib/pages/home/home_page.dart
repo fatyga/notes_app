@@ -1,6 +1,9 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/components/all_notes_tab.dart';
 import 'package:notes_app/components/pinned_notes_tab.dart';
+import 'package:notes_app/core/route/app_router.gr.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -10,6 +13,14 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Notes'),
+        actions: [
+          TextButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                context.router.replace(SignInPageRoute());
+              },
+              child: Text('Logout'))
+        ],
       ),
       body: DefaultTabController(
         length: 2,
@@ -31,7 +42,8 @@ class HomePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         elevation: 12,
         onPressed: () {
-          Navigator.pushNamed(context, '/noteManipulation');
+          context.router
+              .push(NoteManipulationPageRoute(selectedNoteIndex: null));
         },
         child: const Icon(Icons.add, size: 40),
       ),
