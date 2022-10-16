@@ -21,7 +21,7 @@ class NotePreviewPage extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                context.router.push(NoteManipulationPageRoute(
+                context.router.push(NoteManipulationRoute(
                     selectedNoteIndex: selectedNoteIndex));
               },
               icon: const Icon(Icons.edit)),

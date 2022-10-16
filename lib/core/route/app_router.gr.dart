@@ -11,54 +11,69 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i6;
-import 'package:flutter/material.dart' as _i7;
+import 'package:auto_route/auto_route.dart' as _i8;
+import 'package:flutter/material.dart' as _i9;
 
-import '../../pages/authenticate/register_page.dart' as _i2;
-import '../../pages/authenticate/sign_in_page.dart' as _i1;
-import '../../pages/home/home_page.dart' as _i3;
-import '../../pages/home/note_manipulation_page.dart' as _i4;
-import '../../pages/home/note_preview_page.dart' as _i5;
+import '../../pages/authenticate/authenticate_top_page.dart' as _i1;
+import '../../pages/authenticate/register_page.dart' as _i4;
+import '../../pages/authenticate/sign_in_page.dart' as _i3;
+import '../../pages/home/home_top_page.dart' as _i2;
+import '../../pages/home/note_list_page.dart' as _i5;
+import '../../pages/home/note_manipulation_page.dart' as _i7;
+import '../../pages/home/note_preview_page.dart' as _i6;
 
-class AppRouter extends _i6.RootStackRouter {
-  AppRouter([_i7.GlobalKey<_i7.NavigatorState>? navigatorKey])
+class AppRouter extends _i8.RootStackRouter {
+  AppRouter([_i9.GlobalKey<_i9.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i6.PageFactory> pagesMap = {
-    SignInPageRoute.name: (routeData) {
-      return _i6.MaterialPageX<dynamic>(
+  final Map<String, _i8.PageFactory> pagesMap = {
+    AuthenticateTopRoute.name: (routeData) {
+      return _i8.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i1.SignInPage(),
+        child: const _i1.AuthenticateTopPage(),
       );
     },
-    RegisterPageRoute.name: (routeData) {
-      return _i6.MaterialPageX<dynamic>(
+    HomeTopRoute.name: (routeData) {
+      return _i8.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i2.RegisterPage(),
+        child: const _i2.HomeTopPage(),
       );
     },
-    HomePageRoute.name: (routeData) {
-      return _i6.MaterialPageX<dynamic>(
+    SignInRoute.name: (routeData) {
+      return _i8.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i3.HomePage(),
+        child: const _i3.SignInPage(),
       );
     },
-    NoteManipulationPageRoute.name: (routeData) {
-      final args = routeData.argsAs<NoteManipulationPageRouteArgs>();
-      return _i6.MaterialPageX<dynamic>(
+    RegisterRoute.name: (routeData) {
+      return _i8.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i4.NoteManipulationPage(
+        child: const _i4.RegisterPage(),
+      );
+    },
+    NoteListRoute.name: (routeData) {
+      return _i8.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i5.NoteListPage(),
+      );
+    },
+    NotePreviewRoute.name: (routeData) {
+      final args = routeData.argsAs<NotePreviewRouteArgs>();
+      return _i8.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i6.NotePreviewPage(
           key: args.key,
           selectedNoteIndex: args.selectedNoteIndex,
         ),
       );
     },
-    NotePreviewPageRoute.name: (routeData) {
-      final args = routeData.argsAs<NotePreviewPageRouteArgs>();
-      return _i6.MaterialPageX<dynamic>(
+    NoteManipulationRoute.name: (routeData) {
+      final args = routeData.argsAs<NoteManipulationRouteArgs>(
+          orElse: () => const NoteManipulationRouteArgs());
+      return _i8.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i5.NotePreviewPage(
+        child: _i7.NoteManipulationPage(
           key: args.key,
           selectedNoteIndex: args.selectedNoteIndex,
         ),
@@ -67,131 +82,194 @@ class AppRouter extends _i6.RootStackRouter {
   };
 
   @override
-  List<_i6.RouteConfig> get routes => [
-        _i6.RouteConfig(
-          SignInPageRoute.name,
+  List<_i8.RouteConfig> get routes => [
+        _i8.RouteConfig(
+          '/#redirect',
           path: '/',
+          redirectTo: '/authentication',
+          fullMatch: true,
         ),
-        _i6.RouteConfig(
-          RegisterPageRoute.name,
-          path: '/register-page',
+        _i8.RouteConfig(
+          AuthenticateTopRoute.name,
+          path: '/authentication',
+          children: [
+            _i8.RouteConfig(
+              '#redirect',
+              path: '',
+              parent: AuthenticateTopRoute.name,
+              redirectTo: 'signIn',
+              fullMatch: true,
+            ),
+            _i8.RouteConfig(
+              SignInRoute.name,
+              path: 'signIn',
+              parent: AuthenticateTopRoute.name,
+            ),
+            _i8.RouteConfig(
+              RegisterRoute.name,
+              path: 'register',
+              parent: AuthenticateTopRoute.name,
+            ),
+          ],
         ),
-        _i6.RouteConfig(
-          HomePageRoute.name,
-          path: '/home-page',
-        ),
-        _i6.RouteConfig(
-          NoteManipulationPageRoute.name,
-          path: '/note-manipulation-page',
-        ),
-        _i6.RouteConfig(
-          NotePreviewPageRoute.name,
-          path: '/note-preview-page',
+        _i8.RouteConfig(
+          HomeTopRoute.name,
+          path: '/home',
+          children: [
+            _i8.RouteConfig(
+              '#redirect',
+              path: '',
+              parent: HomeTopRoute.name,
+              redirectTo: 'noteList',
+              fullMatch: true,
+            ),
+            _i8.RouteConfig(
+              NoteListRoute.name,
+              path: 'noteList',
+              parent: HomeTopRoute.name,
+            ),
+            _i8.RouteConfig(
+              NotePreviewRoute.name,
+              path: 'notePreview',
+              parent: HomeTopRoute.name,
+            ),
+            _i8.RouteConfig(
+              NoteManipulationRoute.name,
+              path: 'noteManipulation',
+              parent: HomeTopRoute.name,
+            ),
+          ],
         ),
       ];
 }
 
 /// generated route for
-/// [_i1.SignInPage]
-class SignInPageRoute extends _i6.PageRouteInfo<void> {
-  const SignInPageRoute()
+/// [_i1.AuthenticateTopPage]
+class AuthenticateTopRoute extends _i8.PageRouteInfo<void> {
+  const AuthenticateTopRoute({List<_i8.PageRouteInfo>? children})
       : super(
-          SignInPageRoute.name,
-          path: '/',
+          AuthenticateTopRoute.name,
+          path: '/authentication',
+          initialChildren: children,
         );
 
-  static const String name = 'SignInPageRoute';
+  static const String name = 'AuthenticateTopRoute';
 }
 
 /// generated route for
-/// [_i2.RegisterPage]
-class RegisterPageRoute extends _i6.PageRouteInfo<void> {
-  const RegisterPageRoute()
+/// [_i2.HomeTopPage]
+class HomeTopRoute extends _i8.PageRouteInfo<void> {
+  const HomeTopRoute({List<_i8.PageRouteInfo>? children})
       : super(
-          RegisterPageRoute.name,
-          path: '/register-page',
+          HomeTopRoute.name,
+          path: '/home',
+          initialChildren: children,
         );
 
-  static const String name = 'RegisterPageRoute';
+  static const String name = 'HomeTopRoute';
 }
 
 /// generated route for
-/// [_i3.HomePage]
-class HomePageRoute extends _i6.PageRouteInfo<void> {
-  const HomePageRoute()
+/// [_i3.SignInPage]
+class SignInRoute extends _i8.PageRouteInfo<void> {
+  const SignInRoute()
       : super(
-          HomePageRoute.name,
-          path: '/home-page',
+          SignInRoute.name,
+          path: 'signIn',
         );
 
-  static const String name = 'HomePageRoute';
+  static const String name = 'SignInRoute';
 }
 
 /// generated route for
-/// [_i4.NoteManipulationPage]
-class NoteManipulationPageRoute
-    extends _i6.PageRouteInfo<NoteManipulationPageRouteArgs> {
-  NoteManipulationPageRoute({
-    _i7.Key? key,
+/// [_i4.RegisterPage]
+class RegisterRoute extends _i8.PageRouteInfo<void> {
+  const RegisterRoute()
+      : super(
+          RegisterRoute.name,
+          path: 'register',
+        );
+
+  static const String name = 'RegisterRoute';
+}
+
+/// generated route for
+/// [_i5.NoteListPage]
+class NoteListRoute extends _i8.PageRouteInfo<void> {
+  const NoteListRoute()
+      : super(
+          NoteListRoute.name,
+          path: 'noteList',
+        );
+
+  static const String name = 'NoteListRoute';
+}
+
+/// generated route for
+/// [_i6.NotePreviewPage]
+class NotePreviewRoute extends _i8.PageRouteInfo<NotePreviewRouteArgs> {
+  NotePreviewRoute({
+    _i9.Key? key,
     required dynamic selectedNoteIndex,
   }) : super(
-          NoteManipulationPageRoute.name,
-          path: '/note-manipulation-page',
-          args: NoteManipulationPageRouteArgs(
+          NotePreviewRoute.name,
+          path: 'notePreview',
+          args: NotePreviewRouteArgs(
             key: key,
             selectedNoteIndex: selectedNoteIndex,
           ),
         );
 
-  static const String name = 'NoteManipulationPageRoute';
+  static const String name = 'NotePreviewRoute';
 }
 
-class NoteManipulationPageRouteArgs {
-  const NoteManipulationPageRouteArgs({
+class NotePreviewRouteArgs {
+  const NotePreviewRouteArgs({
     this.key,
     required this.selectedNoteIndex,
   });
 
-  final _i7.Key? key;
+  final _i9.Key? key;
 
   final dynamic selectedNoteIndex;
 
   @override
   String toString() {
-    return 'NoteManipulationPageRouteArgs{key: $key, selectedNoteIndex: $selectedNoteIndex}';
+    return 'NotePreviewRouteArgs{key: $key, selectedNoteIndex: $selectedNoteIndex}';
   }
 }
 
 /// generated route for
-/// [_i5.NotePreviewPage]
-class NotePreviewPageRoute extends _i6.PageRouteInfo<NotePreviewPageRouteArgs> {
-  NotePreviewPageRoute({
-    _i7.Key? key,
-    required dynamic selectedNoteIndex,
+/// [_i7.NoteManipulationPage]
+class NoteManipulationRoute
+    extends _i8.PageRouteInfo<NoteManipulationRouteArgs> {
+  NoteManipulationRoute({
+    _i9.Key? key,
+    int? selectedNoteIndex,
   }) : super(
-          NotePreviewPageRoute.name,
-          path: '/note-preview-page',
-          args: NotePreviewPageRouteArgs(
+          NoteManipulationRoute.name,
+          path: 'noteManipulation',
+          args: NoteManipulationRouteArgs(
             key: key,
             selectedNoteIndex: selectedNoteIndex,
           ),
         );
 
-  static const String name = 'NotePreviewPageRoute';
+  static const String name = 'NoteManipulationRoute';
 }
 
-class NotePreviewPageRouteArgs {
-  const NotePreviewPageRouteArgs({
+class NoteManipulationRouteArgs {
+  const NoteManipulationRouteArgs({
     this.key,
-    required this.selectedNoteIndex,
+    this.selectedNoteIndex,
   });
 
-  final _i7.Key? key;
+  final _i9.Key? key;
 
-  final dynamic selectedNoteIndex;
+  final int? selectedNoteIndex;
 
   @override
   String toString() {
-    return 'NotePreviewPageRouteArgs{key: $key, selectedNoteIndex: $selectedNoteIndex}';
+    return 'NoteManipulationRouteArgs{key: $key, selectedNoteIndex: $selectedNoteIndex}';
   }
 }

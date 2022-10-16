@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/core/route/app_router.gr.dart';
+import 'package:notes_app/pages/home/home_top_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -82,8 +83,9 @@ class _SignInPageState extends State<SignInPage> {
                                                 password:
                                                     _passwordController.text);
 
-                                        context.router
-                                            .replace(const HomePageRoute());
+                                        AutoRouter.of(context)
+                                            .root
+                                            .replace(HomeTopRoute());
                                       } on FirebaseAuthException catch (e) {
                                         setState(() {
                                           loading = false;
@@ -105,7 +107,7 @@ class _SignInPageState extends State<SignInPage> {
                                   child: const Text('Sign in')),
                               TextButton(
                                   onPressed: () {
-                                    context.router.push(RegisterPageRoute());
+                                    context.router.push(RegisterRoute());
                                   },
                                   child: const Text('Create an account'))
                             ])),

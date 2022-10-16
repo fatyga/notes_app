@@ -79,8 +79,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                           password: _passwordController.text,
                                         );
 
-                                        context.router
-                                            .replace(const HomePageRoute());
+                                        AutoRouter.of(context)
+                                            .root
+                                            .replace(HomeTopRoute());
                                       } on FirebaseAuthException catch (e) {
                                         if (e.code == 'weak-password') {
                                           setState(() {

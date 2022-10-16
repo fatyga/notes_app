@@ -5,8 +5,8 @@ import 'package:notes_app/components/all_notes_tab.dart';
 import 'package:notes_app/components/pinned_notes_tab.dart';
 import 'package:notes_app/core/route/app_router.gr.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class NoteListPage extends StatelessWidget {
+  const NoteListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
           TextButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
-                context.router.replace(SignInPageRoute());
+                AutoRouter.of(context).root.replace(AuthenticateTopRoute());
               },
               child: Text('Logout'))
         ],
@@ -42,8 +42,7 @@ class HomePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         elevation: 12,
         onPressed: () {
-          context.router
-              .push(NoteManipulationPageRoute(selectedNoteIndex: null));
+          context.router.push(NoteManipulationRoute(selectedNoteIndex: null));
         },
         child: const Icon(Icons.add, size: 40),
       ),

@@ -24,7 +24,7 @@ class NoteWidget extends StatelessWidget {
             onTap: () {
               final provider = Provider.of<Notes>(context, listen: false);
               context.router
-                  .push(NotePreviewPageRoute(selectedNoteIndex: noteIndex));
+                  .push(NotePreviewRoute(selectedNoteIndex: noteIndex));
             },
             child: Container(
               padding: const EdgeInsets.all(15),
