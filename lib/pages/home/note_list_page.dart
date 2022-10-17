@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/components/all_notes_tab.dart';
 import 'package:notes_app/components/pinned_notes_tab.dart';
+import 'package:notes_app/core/authentication/auth.dart';
 import 'package:notes_app/core/route/app_router.gr.dart';
 
 class NoteListPage extends StatelessWidget {
@@ -16,8 +17,11 @@ class NoteListPage extends StatelessWidget {
         actions: [
           TextButton(
               onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                AutoRouter.of(context).root.replace(AuthenticateTopRoute());
+                try {
+                  var result = await AuthService.signOut();
+                } catch (e) {
+                  print(e);
+                }
               },
               child: Text('Logout'))
         ],

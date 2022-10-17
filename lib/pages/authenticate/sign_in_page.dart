@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_app/core/authentication/auth.dart';
 import 'package:notes_app/core/route/app_router.gr.dart';
 import 'package:notes_app/pages/home/home_top_page.dart';
 
@@ -76,31 +77,14 @@ class _SignInPageState extends State<SignInPage> {
                                         loading = true;
                                       });
                                       try {
-                                        final credential = await FirebaseAuth
-                                            .instance
+                                        var result = await AuthService
                                             .signInWithEmailAndPassword(
-                                                email: _emailController.text,
-                                                password:
-                                                    _passwordController.text);
-
-                                        AutoRouter.of(context)
-                                            .root
-                                            .replace(HomeTopRoute());
-                                      } on FirebaseAuthException catch (e) {
+                                                _emailController.text,
+                                                _passwordController.text);
+                                      } catch (e) {
                                         setState(() {
-                                          loading = false;
+                                          error = e.toString();
                                         });
-                                        if (e.code == 'user-not-found') {
-                                          setState(() {
-                                            error =
-                                                'No user found for that email.';
-                                          });
-                                        } else if (e.code == 'wrong-password') {
-                                          setState(() {
-                                            error =
-                                                'Wrong password provided for that user.';
-                                          });
-                                        }
                                       }
                                     }
                                   },

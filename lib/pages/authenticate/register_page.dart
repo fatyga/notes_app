@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_app/core/authentication/auth.dart';
 import 'package:notes_app/core/route/app_router.gr.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -72,34 +73,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                         loading = true;
                                       });
                                       try {
-                                        final credential = await FirebaseAuth
-                                            .instance
-                                            .createUserWithEmailAndPassword(
-                                          email: _emailController.text,
-                                          password: _passwordController.text,
-                                        );
-
-                                        AutoRouter.of(context)
-                                            .root
-                                            .replace(HomeTopRoute());
-                                      } on FirebaseAuthException catch (e) {
-                                        if (e.code == 'weak-password') {
-                                          setState(() {
-                                            loading = false;
-                                          });
-                                          setState(() {
-                                            error =
-                                                'The password provided is too weak.';
-                                          });
-                                        } else if (e.code ==
-                                            'email-already-in-use') {
-                                          setState(() {
-                                            error =
-                                                'The account already exists for that email.';
-                                          });
-                                        }
+                                        var result = await AuthService
+                                            .signInWithEmailAndPassword(
+                                                _emailController.text,
+                                                _passwordController.text);
                                       } catch (e) {
-                                        print(e);
+                                        setState(() {
+                                          error = e.toString();
+                                        });
                                       }
                                     }
                                   },
