@@ -26,13 +26,13 @@ class _NoteManipulationState extends State<NoteManipulationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<Notes>(context);
+    // //final provider = Provider.of<Notes>(context);
 
-    if (widget.selectedNoteIndex != null) {
-      titleController.text = provider.notes[widget.selectedNoteIndex!].title;
-      contentController.text =
-          provider.notes[widget.selectedNoteIndex!].content;
-    }
+    // if (widget.selectedNoteIndex != null) {
+    //   titleController.text = provider.notes[widget.selectedNoteIndex!].title;
+    //   contentController.text =
+    //       provider.notes[widget.selectedNoteIndex!].content;
+    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -47,14 +47,14 @@ class _NoteManipulationState extends State<NoteManipulationPage> {
                 });
               } else {
                 if (widget.selectedNoteIndex != null) {
-                  provider.edit(widget.selectedNoteIndex!, titleController.text,
-                      contentController.text);
+                  // provider.edit(widget.selectedNoteIndex!, titleController.text,
+                  //     contentController.text);
                 } else {
-                  provider.add(Note(
-                    dateTime: DateTime.now(),
-                    title: titleController.text,
-                    content: contentController.text,
-                  ));
+                  // provider.add(Note(
+                  //   dateTime: DateTime.now(),
+                  //   title: titleController.text,
+                  //   content: contentController.text,
+                  // ));
                 }
                 Navigator.pop(context);
               }

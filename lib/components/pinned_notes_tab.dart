@@ -9,14 +9,17 @@ class PinnedNotesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<Notes>(context);
-    final pinnedNotes = provider.notes.where((note) => note.isPinned).toList();
-    return (pinnedNotes.isEmpty)
-        ? const EmptyNotesInfo()
-        : ListView.builder(
-            itemCount: pinnedNotes.length,
-            itemBuilder: (context, index) {
-              return NoteWidget(noteIndex: index);
-            });
+    // final provider = Provider.of<Notes>(context);
+    // final notes = Provider.of<List<Note>>(context);
+
+    // //   return (pinnedNotes.isEmpty)
+    // //       ? const EmptyNotesInfo()
+    // //       : ListView.builder(
+    // //           itemCount: pinnedNotes.length,
+    // //           itemBuilder: (context, index) {
+    // //             return NoteWidget(note: index);
+    // //           });
+    // //
+    return Text('Pinned notes');
   }
 }

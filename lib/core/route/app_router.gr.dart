@@ -21,6 +21,7 @@ import '../../pages/home/home_top_page.dart' as _i2;
 import '../../pages/home/note_list_page.dart' as _i5;
 import '../../pages/home/note_manipulation_page.dart' as _i7;
 import '../../pages/home/note_preview_page.dart' as _i6;
+import '../database/models.dart' as _i10;
 
 class AppRouter extends _i8.RootStackRouter {
   AppRouter([_i9.GlobalKey<_i9.NavigatorState>? navigatorKey])
@@ -53,9 +54,11 @@ class AppRouter extends _i8.RootStackRouter {
       );
     },
     NoteListRoute.name: (routeData) {
+      final args = routeData.argsAs<NoteListRouteArgs>(
+          orElse: () => const NoteListRouteArgs());
       return _i8.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i5.NoteListPage(),
+        child: _i5.NoteListPage(key: args.key),
       );
     },
     NotePreviewRoute.name: (routeData) {
@@ -64,7 +67,7 @@ class AppRouter extends _i8.RootStackRouter {
         routeData: routeData,
         child: _i6.NotePreviewPage(
           key: args.key,
-          selectedNoteIndex: args.selectedNoteIndex,
+          selectedNote: args.selectedNote,
         ),
       );
     },
@@ -195,14 +198,26 @@ class RegisterRoute extends _i8.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.NoteListPage]
-class NoteListRoute extends _i8.PageRouteInfo<void> {
-  const NoteListRoute()
+class NoteListRoute extends _i8.PageRouteInfo<NoteListRouteArgs> {
+  NoteListRoute({_i9.Key? key})
       : super(
           NoteListRoute.name,
           path: 'noteList',
+          args: NoteListRouteArgs(key: key),
         );
 
   static const String name = 'NoteListRoute';
+}
+
+class NoteListRouteArgs {
+  const NoteListRouteArgs({this.key});
+
+  final _i9.Key? key;
+
+  @override
+  String toString() {
+    return 'NoteListRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for
@@ -210,13 +225,13 @@ class NoteListRoute extends _i8.PageRouteInfo<void> {
 class NotePreviewRoute extends _i8.PageRouteInfo<NotePreviewRouteArgs> {
   NotePreviewRoute({
     _i9.Key? key,
-    required dynamic selectedNoteIndex,
+    required _i10.Note selectedNote,
   }) : super(
           NotePreviewRoute.name,
           path: 'notePreview',
           args: NotePreviewRouteArgs(
             key: key,
-            selectedNoteIndex: selectedNoteIndex,
+            selectedNote: selectedNote,
           ),
         );
 
@@ -226,16 +241,16 @@ class NotePreviewRoute extends _i8.PageRouteInfo<NotePreviewRouteArgs> {
 class NotePreviewRouteArgs {
   const NotePreviewRouteArgs({
     this.key,
-    required this.selectedNoteIndex,
+    required this.selectedNote,
   });
 
   final _i9.Key? key;
 
-  final dynamic selectedNoteIndex;
+  final _i10.Note selectedNote;
 
   @override
   String toString() {
-    return 'NotePreviewRouteArgs{key: $key, selectedNoteIndex: $selectedNoteIndex}';
+    return 'NotePreviewRouteArgs{key: $key, selectedNote: $selectedNote}';
   }
 }
 
