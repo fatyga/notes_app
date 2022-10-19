@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/screens/home.dart';
-import 'package:notes_app/screens/note_manipulation.dart';
-import 'package:notes_app/screens/note_preview.dart';
+import 'package:notes_app/core/route/app_router.gr.dart';
+
 import 'package:notes_app/themes/dark_theme.dart';
 import 'package:notes_app/themes/light_theme.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerDelegate: _appRouter.delegate(),
+      routeInformationParser: _appRouter.defaultRouteParser(),
       theme: lightTheme,
       darkTheme: darkTheme,
       debugShowCheckedModeBanner: false,
       title: 'Notes App',
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const Home(),
-        '/noteManipulation': (context) => const NoteManipulation(),
-        '/notePreview': (context) => const NotePreview()
-      },
     );
   }
 }

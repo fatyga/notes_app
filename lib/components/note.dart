@@ -1,11 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/notes.dart';
+import 'package:notes_app/core/route/app_router.gr.dart';
+import 'package:notes_app/core/database/models.dart';
 import 'package:provider/provider.dart';
 
 class NoteWidget extends StatelessWidget {
-  const NoteWidget({super.key, required this.noteInstance});
+  const NoteWidget({super.key, required this.note});
 
-  final Note noteInstance;
+  final Note note;
 
   @override
   Widget build(BuildContext context) {
@@ -17,23 +19,21 @@ class NoteWidget extends StatelessWidget {
           InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             onTap: () {
-              final provider = Provider.of<Notes>(context, listen: false);
-              Navigator.pushNamed(context, '/notePreview',
-                  arguments: provider.notes.indexOf(noteInstance));
+              context.router.push(NotePreviewRoute(selectedNote: note));
             },
             child: Container(
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
-                color: noteInstance.backgroundColor,
+                // color: note.backgroundColor,
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
               ),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(noteInstance.title,
+                    Text(note.title,
                         style: Theme.of(context).textTheme.titleLarge),
                     const SizedBox(height: 15),
-                    Text(noteInstance.createdAt,
+                    Text(note.createdAt.toString(),
                         style: Theme.of(context).textTheme.subtitle2),
                   ]),
             ),
