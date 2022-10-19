@@ -7,7 +7,6 @@ import 'package:notes_app/core/authentication/auth.dart';
 import 'package:notes_app/core/database/db.dart';
 import 'package:notes_app/core/database/models.dart';
 import 'package:notes_app/core/route/app_router.gr.dart';
-import 'package:notes_app/pages/authenticate/authenticate_top_page.dart';
 import 'package:provider/provider.dart';
 
 class NoteListPage extends StatelessWidget {
@@ -62,7 +61,7 @@ class NoteListPage extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           elevation: 12,
           onPressed: () {
-            context.router.push(NoteManipulationRoute(selectedNoteIndex: null));
+            context.router.push(NoteManipulationRoute(selectedNote: null));
           },
           child: const Icon(Icons.add, size: 40),
         ),

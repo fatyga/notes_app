@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:notes_app/core/authentication/auth.dart';
 import 'firebase_options.dart';
 
-import 'package:notes_app/notes.dart';
 import 'package:notes_app/notes_app.dart';
 import 'package:provider/provider.dart';
 

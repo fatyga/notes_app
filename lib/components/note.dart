@@ -18,7 +18,9 @@ class NoteWidget extends StatelessWidget {
         children: [
           InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
-            onTap: () {},
+            onTap: () {
+              context.router.push(NotePreviewRoute(selectedNote: note));
+            },
             child: Container(
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
@@ -31,8 +33,8 @@ class NoteWidget extends StatelessWidget {
                     Text(note.title,
                         style: Theme.of(context).textTheme.titleLarge),
                     const SizedBox(height: 15),
-                    // Text(note.createdAt,
-                    //     style: Theme.of(context).textTheme.subtitle2),
+                    Text(note.createdAt.toString(),
+                        style: Theme.of(context).textTheme.subtitle2),
                   ]),
             ),
           ),

@@ -42,7 +42,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               TextFormField(
                                   controller: _emailController,
                                   validator: (value) =>
-                                      (value != null) ? 'Enter an email' : null,
+                                      (value != null && value.isEmpty)
+                                          ? 'Enter an email'
+                                          : null,
                                   decoration: const InputDecoration(
                                     filled: true,
                                     labelText: 'Email',
@@ -50,9 +52,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               const SizedBox(height: 20),
                               TextFormField(
                                   controller: _passwordController,
-                                  validator: (value) => (value != null)
-                                      ? 'Enter at least 6 characters'
-                                      : null,
+                                  validator: (value) =>
+                                      (value != null && value.length < 6)
+                                          ? 'Enter at least 6 characters'
+                                          : null,
                                   obscureText: true,
                                   decoration: const InputDecoration(
                                     filled: true,
@@ -74,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       });
                                       try {
                                         var result = await AuthService
-                                            .signInWithEmailAndPassword(
+                                            .registerWithEmailAndPassword(
                                                 _emailController.text,
                                                 _passwordController.text);
                                       } catch (e) {

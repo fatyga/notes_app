@@ -72,13 +72,12 @@ class AppRouter extends _i8.RootStackRouter {
       );
     },
     NoteManipulationRoute.name: (routeData) {
-      final args = routeData.argsAs<NoteManipulationRouteArgs>(
-          orElse: () => const NoteManipulationRouteArgs());
+      final args = routeData.argsAs<NoteManipulationRouteArgs>();
       return _i8.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i7.NoteManipulationPage(
           key: args.key,
-          selectedNoteIndex: args.selectedNoteIndex,
+          selectedNote: args.selectedNote,
         ),
       );
     },
@@ -260,13 +259,13 @@ class NoteManipulationRoute
     extends _i8.PageRouteInfo<NoteManipulationRouteArgs> {
   NoteManipulationRoute({
     _i9.Key? key,
-    int? selectedNoteIndex,
+    required _i10.Note? selectedNote,
   }) : super(
           NoteManipulationRoute.name,
           path: 'noteManipulation',
           args: NoteManipulationRouteArgs(
             key: key,
-            selectedNoteIndex: selectedNoteIndex,
+            selectedNote: selectedNote,
           ),
         );
 
@@ -276,15 +275,15 @@ class NoteManipulationRoute
 class NoteManipulationRouteArgs {
   const NoteManipulationRouteArgs({
     this.key,
-    this.selectedNoteIndex,
+    required this.selectedNote,
   });
 
   final _i9.Key? key;
 
-  final int? selectedNoteIndex;
+  final _i10.Note? selectedNote;
 
   @override
   String toString() {
-    return 'NoteManipulationRouteArgs{key: $key, selectedNoteIndex: $selectedNoteIndex}';
+    return 'NoteManipulationRouteArgs{key: $key, selectedNote: $selectedNote}';
   }
 }

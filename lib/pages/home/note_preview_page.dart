@@ -5,7 +5,6 @@ import 'package:notes_app/core/database/db.dart';
 import 'package:notes_app/core/database/models.dart';
 import 'package:notes_app/core/route/app_router.gr.dart';
 import 'package:provider/provider.dart';
-import 'package:notes_app/notes.dart';
 
 class NotePreviewPage extends StatelessWidget {
   NotePreviewPage({super.key, required this.selectedNote});
@@ -23,15 +22,20 @@ class NotePreviewPage extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                // context.router.push(NoteManipulationRoute(
-                //     selectedNoteIndex: selectedNoteIndex));
+                context.router
+                    .push(NoteManipulationRoute(selectedNote: selectedNote));
               },
               icon: const Icon(Icons.edit)),
           IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.push_pin_outlined,
-              )),
+              onPressed: () async {
+                await db.updateNote(
+                    user!, selectedNote, {'pinned': !selectedNote.pinned});
+              },
+              icon: (selectedNote.pinned)
+                  ? Icon(Icons.push_pin_rounded)
+                  : Icon(
+                      Icons.push_pin_outlined,
+                    )),
         ],
       ),
       body: Padding(
@@ -39,10 +43,11 @@ class NotePreviewPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(selectedNote.id),
             Text(selectedNote.title,
                 style: Theme.of(context).textTheme.headline5),
             const SizedBox(height: 20),
+            Text(selectedNote.createdAt.toString(),
+                style: Theme.of(context).textTheme.subtitle2),
             const SizedBox(height: 20),
             Text(selectedNote.content,
                 style: Theme.of(context).textTheme.bodyText1)

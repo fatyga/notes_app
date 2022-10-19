@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:notes_app/core/database/db.dart';
 
 class AuthService {
   static Stream<User?> get user => FirebaseAuth.instance.authStateChanges();
