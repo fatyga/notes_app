@@ -27,7 +27,6 @@ class NoteListPage extends StatelessWidget {
                 onPressed: () async {
                   try {
                     var result = await AuthService.signOut();
-                    context.router.replace(AuthenticateTopRoute());
                   } catch (e) {
                     print(e);
                   }
