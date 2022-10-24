@@ -19,7 +19,7 @@ class NoteWidget extends StatelessWidget {
           InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             onTap: () {
-              context.router.push(NotePreviewRoute(selectedNote: note));
+              context.router.push(NotePreviewRoute(selectedNoteId: note.id));
             },
             child: Container(
               padding: const EdgeInsets.all(15),

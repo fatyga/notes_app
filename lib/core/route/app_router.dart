@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/pages/authentication/authentication_wrapper_page.dart';
 import 'package:notes_app/pages/authentication/register_page.dart';
 import 'package:notes_app/pages/authentication/sign_in_page.dart';
+import 'package:notes_app/pages/home/notes/new_note_page.dart';
 import 'package:notes_app/pages/home/notes/note_list_page.dart';
 import 'package:notes_app/pages/home/notes/notes_wrapper_page.dart';
-import 'package:notes_app/pages/home/notes/note_manipulation_page.dart';
+import 'package:notes_app/pages/home/notes/update_note_page.dart';
 import 'package:notes_app/pages/home/notes/note_preview_page.dart';
 import 'package:notes_app/pages/home/wrapper.dart';
 
@@ -22,7 +23,8 @@ import 'package:notes_app/pages/home/wrapper.dart';
     AutoRoute(path: 'notes', initial: true, page: NotesWrapperPage, children: [
       AutoRoute(path: 'noteList', initial: true, page: NoteListPage),
       AutoRoute(path: 'notePreview', page: NotePreviewPage),
-      AutoRoute(path: 'noteManipulation', page: NoteManipulationPage)
+      AutoRoute(path: 'newNote', page: NewNotePage),
+      AutoRoute(path: 'updateNote', page: UpdateNotePage)
     ]),
   ]),
 ])

@@ -3,19 +3,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/core/database/db.dart';
-import 'package:notes_app/core/database/models.dart';
 import 'package:provider/provider.dart';
 
-class NoteManipulationPage extends StatefulWidget {
-  const NoteManipulationPage({super.key, required this.selectedNote});
-
-  final Note? selectedNote;
+class NewNotePage extends StatefulWidget {
+  const NewNotePage({super.key});
 
   @override
-  _NoteManipulationState createState() => _NoteManipulationState();
+  _NewNotePageState createState() => _NewNotePageState();
 }
 
-class _NoteManipulationState extends State<NoteManipulationPage> {
+class _NewNotePageState extends State<NewNotePage> {
   final titleController = TextEditingController();
   final contentController = TextEditingController();
 
@@ -33,44 +30,39 @@ class _NoteManipulationState extends State<NoteManipulationPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.selectedNote != null) {
-      titleController.text = widget.selectedNote!.title;
-      contentController.text = widget.selectedNote!.content;
-    }
-
-    final user = Provider.of<User?>(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         actions: [
           IconButton(
-            onPressed: () async {
-              if (titleController.text.isEmpty ||
-                  contentController.text.isEmpty) {
-                setState(() {
-                  errorContent = 'You need to fill both fields';
-                });
-              } else {
-                setState(() {
-                  loading = true;
-                });
-                if (widget.selectedNote == null) {
-                  await db.addNote(user!, {
-                    'title': titleController.text,
-                    'content': contentController.text,
-                    'pinned': false,
-                    'createdAt': Timestamp.now()
-                  });
-                } else {
-                  await db.updateNote(user!, widget.selectedNote!, {
-                    'title': titleController.text,
-                    'content': contentController.text,
-                  });
-                }
-                context.router.pop();
-              }
-            },
-            icon: const Icon(Icons.save_outlined),
+            onPressed: loading
+                ? null
+                : () async {
+                    if (titleController.text.isEmpty ||
+                        contentController.text.isEmpty) {
+                      setState(() {
+                        errorContent = 'You need to fill both fields';
+                      });
+                    } else {
+                      setState(() {
+                        loading = true;
+                      });
+                      final user = Provider.of<User?>(context, listen: false);
+                      await db.addNote(user!, {
+                        'title': titleController.text,
+                        'content': contentController.text,
+                        'pinned': false,
+                        'createdAt': Timestamp.now()
+                      });
+                      context.router.pop();
+                    }
+                  },
+            icon: loading
+                ? const Icon(
+                    Icons.save_outlined,
+                    color: Colors.red,
+                  )
+                : const Icon(Icons.save_outlined),
           )
         ],
       ),
