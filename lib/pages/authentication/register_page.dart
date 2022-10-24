@@ -75,16 +75,16 @@ class _RegisterPageState extends State<RegisterPage> {
                                       setState(() {
                                         loading = true;
                                       });
-                                      try {
-                                        var result = await AuthService
-                                            .registerWithEmailAndPassword(
-                                                _emailController.text,
-                                                _passwordController.text);
-                                      } catch (e) {
+
+                                      var result = await AuthService
+                                          .registerWithEmailAndPassword(
+                                              _emailController.text,
+                                              _passwordController.text, (err) {
                                         setState(() {
-                                          error = e.toString();
+                                          loading = false;
+                                          error = err;
                                         });
-                                      }
+                                      });
                                     }
                                   },
                                   child: const Text('Register'))

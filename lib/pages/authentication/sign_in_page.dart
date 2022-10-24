@@ -75,17 +75,18 @@ class _SignInPageState extends State<SignInPage> {
                                     if (_formKey.currentState!.validate()) {
                                       setState(() {
                                         loading = true;
+                                        error = '';
                                       });
-                                      try {
-                                        var result = await AuthService
-                                            .signInWithEmailAndPassword(
-                                                _emailController.text,
-                                                _passwordController.text);
-                                      } catch (e) {
+
+                                      var result = await AuthService
+                                          .signInWithEmailAndPassword(
+                                              _emailController.text,
+                                              _passwordController.text, (err) {
                                         setState(() {
-                                          error = e.toString();
+                                          loading = false;
+                                          error = err;
                                         });
-                                      }
+                                      });
                                     }
                                   },
                                   child: const Text('Sign in')),
