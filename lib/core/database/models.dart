@@ -5,7 +5,7 @@ class Note {
   String title;
   String content;
   DateTime createdAt;
-  bool pinned = false;
+  bool pinned;
 
   factory Note.fromFirestore(DocumentSnapshot doc) {
     final data = doc;
@@ -14,11 +14,13 @@ class Note {
         id: doc.id,
         title: data.get('title'),
         content: data.get('content'),
+        pinned: data.get('pinned'),
         createdAt: data.get('createdAt').toDate());
   }
   Note(
       {required this.id,
       required this.title,
       required this.content,
+      required this.pinned,
       required this.createdAt});
 }

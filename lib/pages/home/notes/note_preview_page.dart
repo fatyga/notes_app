@@ -35,7 +35,7 @@ class NotePreviewPage extends StatelessWidget {
                 await db.updateNote(
                     user!, selectedNote, {'pinned': !selectedNote.pinned});
               },
-              icon: (Provider.of<List<Note>>(context, listen: false)
+              icon: (Provider.of<List<Note>>(context)
                       .firstWhere((element) => element.id == selectedNoteId)
                       .pinned)
                   ? Icon(Icons.push_pin_rounded)
