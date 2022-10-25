@@ -38,8 +38,8 @@ class NotePreviewPage extends StatelessWidget {
               icon: (Provider.of<List<Note>>(context)
                       .firstWhere((element) => element.id == selectedNoteId)
                       .pinned)
-                  ? Icon(Icons.push_pin_rounded)
-                  : Icon(
+                  ? const Icon(Icons.push_pin_rounded)
+                  : const Icon(
                       Icons.push_pin_outlined,
                     )),
         ],
@@ -56,7 +56,7 @@ class NotePreviewPage extends StatelessWidget {
                 Text(selectedNote.title,
                     style: Theme.of(context).textTheme.headline5),
                 const SizedBox(height: 20),
-                Text(selectedNote.createdAt.toString(),
+                Text(selectedNote.formattedTime,
                     style: Theme.of(context).textTheme.subtitle2),
                 const SizedBox(height: 20),
                 Text(selectedNote.content,

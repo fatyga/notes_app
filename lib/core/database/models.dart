@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class Note {
   String id;
   String title;
   String content;
   DateTime createdAt;
+  String formattedTime;
   bool pinned;
 
   factory Note.fromFirestore(DocumentSnapshot doc) {
@@ -22,5 +24,6 @@ class Note {
       required this.title,
       required this.content,
       required this.pinned,
-      required this.createdAt});
+      required this.createdAt})
+      : formattedTime = DateFormat.yMMMd().format(createdAt);
 }

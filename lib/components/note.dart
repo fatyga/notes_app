@@ -12,7 +12,7 @@ class NoteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 5.0,
+      elevation: 2.0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -31,9 +31,10 @@ class NoteWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(note.title,
+                        overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.titleLarge),
                     const SizedBox(height: 15),
-                    Text(note.createdAt.toString(),
+                    Text(note.formattedTime,
                         style: Theme.of(context).textTheme.subtitle2),
                   ]),
             ),

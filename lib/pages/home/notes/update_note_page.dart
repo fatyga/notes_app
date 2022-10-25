@@ -20,6 +20,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
   final contentController = TextEditingController();
 
   String errorContent = '';
+  bool filledInputs = false;
   bool loading = false;
 
   final db = DatabaseService();
@@ -37,8 +38,11 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
     final selectedNote = Provider.of<List<Note>>(context)
         .firstWhere((element) => element.id == widget.selectedNoteId);
 
-    titleController.text = selectedNote.title;
-    contentController.text = selectedNote.content;
+    if (!filledInputs) {
+      titleController.text = selectedNote.title;
+      contentController.text = selectedNote.content;
+      filledInputs = true;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -63,7 +67,12 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                 context.router.pop();
               }
             },
-            icon: const Icon(Icons.save_outlined),
+            icon: loading
+                ? const Icon(
+                    Icons.save_outlined,
+                    color: Colors.grey,
+                  )
+                : const Icon(Icons.save_outlined),
           )
         ],
       ),

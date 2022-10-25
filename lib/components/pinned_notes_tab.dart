@@ -15,7 +15,8 @@ class PinnedNotesTab extends StatelessWidget {
 
     return (notes.isEmpty)
         ? const EmptyNotesInfo()
-        : ListView.builder(
+        : ListView.separated(
+            separatorBuilder: (context, index) => const SizedBox(height: 4),
             itemCount: notes.length,
             itemBuilder: (context, index) {
               return NoteWidget(note: notes[index]);

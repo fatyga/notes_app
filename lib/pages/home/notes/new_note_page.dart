@@ -60,7 +60,7 @@ class _NewNotePageState extends State<NewNotePage> {
             icon: loading
                 ? const Icon(
                     Icons.save_outlined,
-                    color: Colors.red,
+                    color: Colors.grey,
                   )
                 : const Icon(Icons.save_outlined),
           )

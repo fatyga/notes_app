@@ -10,10 +10,10 @@ class AllNotesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notes = Provider.of<List<Note>>(context);
-
     return (notes.isEmpty)
         ? const EmptyNotesInfo()
-        : ListView.builder(
+        : ListView.separated(
+            separatorBuilder: (context, index) => const SizedBox(height: 4),
             itemCount: notes.length,
             itemBuilder: (context, index) {
               return NoteWidget(note: notes[index]);

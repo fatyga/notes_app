@@ -12,7 +12,7 @@ class NoteListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notes'),
+        title: Text('Notes', style: Theme.of(context).textTheme.headline5),
         actions: [
           TextButton(
               onPressed: () async {
@@ -34,7 +34,7 @@ class NoteListPage extends StatelessWidget {
             ),
             Expanded(
                 child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
               child: TabBarView(
                 children: [
                   PinnedNotesTab(),
