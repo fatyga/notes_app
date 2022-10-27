@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/components/all_notes_tab.dart';
+import 'package:notes_app/components/avatar.dart';
 import 'package:notes_app/components/pinned_notes_tab.dart';
-import 'package:notes_app/core/authentication/auth.dart';
+import 'package:notes_app/core/database/models.dart';
 import 'package:notes_app/core/route/app_router.gr.dart';
+import 'package:provider/provider.dart';
 
 class NoteListPage extends StatelessWidget {
   NoteListPage({super.key});
@@ -14,15 +16,20 @@ class NoteListPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Notes', style: Theme.of(context).textTheme.headline5),
         actions: [
-          TextButton(
-              onPressed: () async {
-                try {
-                  var result = await AuthService.signOut();
-                } catch (e) {
-                  print(e);
+          GestureDetector(
+            onTap: () {
+              context.router.push(UserAccountWrapperRoute());
+            },
+            child: Consumer<UserAccount?>(
+              builder: (context, value, child) {
+                if (value != null) {
+                  return UserAvatar(radius: 25, avatarUrl: value.avatarUrl);
+                } else {
+                  return UserAvatar(radius: 25);
                 }
               },
-              child: Text('Logout'))
+            ),
+          )
         ],
       ),
       body: DefaultTabController(

@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/core/database/db.dart';
+import 'package:notes_app/core/database/firestore_service.dart';
 import 'package:provider/provider.dart';
 
 class NewNotePage extends StatefulWidget {
@@ -19,7 +19,7 @@ class _NewNotePageState extends State<NewNotePage> {
   String errorContent = '';
   bool loading = false;
 
-  final db = DatabaseService();
+  final db = FirestoreService();
 
   @override
   void dispose() {

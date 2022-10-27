@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/core/database/db.dart';
+import 'package:notes_app/core/database/firestore_service.dart';
 import 'package:notes_app/core/database/models.dart';
 import 'package:notes_app/core/route/app_router.gr.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +11,7 @@ class NotePreviewPage extends StatelessWidget {
 
   final String selectedNoteId;
 
-  final db = DatabaseService();
+  final db = FirestoreService();
 
   @override
   Widget build(BuildContext context) {

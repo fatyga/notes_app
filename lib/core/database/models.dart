@@ -27,3 +27,13 @@ class Note {
       required this.createdAt})
       : formattedTime = DateFormat.yMMMd().format(createdAt);
 }
+
+class UserAccount {
+  final String? avatarUrl;
+
+  UserAccount({this.avatarUrl});
+
+  dynamic toMap() {
+    return {'avatarUrl': avatarUrl};
+  }
+}

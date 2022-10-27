@@ -9,6 +9,8 @@ import 'package:notes_app/pages/home/notes/note_list_page.dart';
 import 'package:notes_app/pages/home/notes/notes_wrapper_page.dart';
 import 'package:notes_app/pages/home/notes/update_note_page.dart';
 import 'package:notes_app/pages/home/notes/note_preview_page.dart';
+import 'package:notes_app/pages/home/userAccount/user_account_info_page.dart';
+import 'package:notes_app/pages/home/userAccount/user_account_wrapper_page.dart';
 import 'package:notes_app/pages/home/wrapper.dart';
 
 @MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: <AutoRoute>[
@@ -26,6 +28,9 @@ import 'package:notes_app/pages/home/wrapper.dart';
       AutoRoute(path: 'newNote', page: NewNotePage),
       AutoRoute(path: 'updateNote', page: UpdateNotePage)
     ]),
+    AutoRoute(path: 'userAccount', page: UserAccountWrapperPage, children: [
+      AutoRoute(path: 'info', initial: true, page: UserAccountInfoPage)
+    ])
   ]),
 ])
 class $AppRouter {}
