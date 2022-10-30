@@ -1,38 +1,22 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:notes_app/components/avatar.dart';
+import 'package:notes_app/components/edit_account.dart';
 import 'package:notes_app/core/authentication/auth.dart';
-import 'package:notes_app/core/database/firestore_service.dart';
 import 'package:notes_app/core/database/models.dart';
-import 'package:notes_app/core/database/storage_service.dart';
 import 'package:provider/provider.dart';
 
 class UserAccountInfoPage extends StatelessWidget {
   const UserAccountInfoPage({super.key});
 
-  Future<void> _chooseAvatar(BuildContext context) async {
-    final user = Provider.of<User?>(context, listen: false);
-
-    try {
-      final pickedImage =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-
-      if (pickedImage != null) {
-        final file = File(pickedImage.path);
-
-        final avatarUrl =
-            await StorageService().updateAvatar(uid: user!.uid, file: file);
-
-        final avatar = await FirestoreService()
-            .updateUserAccount(user, {'avatarUrl': avatarUrl});
-      }
-    } catch (e) {
-      print(e);
-    }
+  void _showEditBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+        isDismissible: false,
+        enableDrag: false,
+        context: context,
+        builder: (context) {
+          return EditAccount();
+        });
   }
 
   @override
@@ -49,20 +33,36 @@ class UserAccountInfoPage extends StatelessWidget {
                   builder: (context, value, child) {
                     if (value != null) {
                       return UserAvatar(
-                          radius: 60,
-                          avatarUrl: value.avatarUrl,
-                          onPressed: () {
-                            _chooseAvatar(context);
-                          });
+                        radius: 60,
+                        avatarUrl: value.avatarUrl,
+                      );
                     } else {
                       return UserAvatar(
-                          radius: 60,
-                          onPressed: () {
-                            _chooseAvatar(context);
-                          });
+                        radius: 60,
+                      );
                     }
                   },
                 ),
+                Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    const Text('First name:'),
+                    Consumer<UserAccount?>(
+                        builder: ((context, value, child) =>
+                            Text(value?.firstName ?? 'unset'))),
+                    const SizedBox(height: 10),
+                    const Text('Last name:'),
+                    Consumer<UserAccount?>(
+                        builder: ((context, value, child) =>
+                            Text(value?.lastName ?? 'unset'))),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      _showEditBottomSheet(context);
+                    },
+                    child: const Text('Edit account')),
                 ElevatedButton(
                     onPressed: () async {
                       try {

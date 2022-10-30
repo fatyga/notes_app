@@ -15,9 +15,10 @@ class UserAvatar extends StatelessWidget {
         child: CircleAvatar(
             radius: radius,
             backgroundColor: Colors.grey[100],
-            backgroundImage:
-                avatarUrl != null ? NetworkImage(avatarUrl.toString()) : null,
-            child: avatarUrl == null
+            backgroundImage: avatarUrl != null && avatarUrl != ''
+                ? NetworkImage(avatarUrl.toString())
+                : null,
+            child: avatarUrl == null && avatarUrl != ''
                 ? Icon(Icons.photo_camera_outlined, size: radius.toDouble())
                 : null));
   }

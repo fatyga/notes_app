@@ -3,19 +3,27 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class StorageService {
-  Future<String> updateAvatar({required String uid, required File file}) async {
-    return await upload(
-        file: file, path: 'avatar/$uid/avatar.png', contentType: 'image/png');
+  void updateAvatar(
+      {required String uid,
+      required File file,
+      required Function(TaskSnapshot) fn}) async {
+    upload(
+        file: file,
+        path: 'avatar/$uid/avatar.png',
+        contentType: 'image/png',
+        fn: fn);
   }
 
-  Future<String> upload(
+  void upload(
       {required String path,
       required File file,
-      required String contentType}) async {
+      required String contentType,
+      required Function(TaskSnapshot snap) fn}) async {
     final reference = FirebaseStorage.instance.ref().child(path);
-    final uploadTask = await reference.putFile(
-        file, SettableMetadata(contentType: contentType));
-    final url = await uploadTask.ref.getDownloadURL();
-    return url;
+
+    reference
+        .putFile(file, SettableMetadata(contentType: contentType))
+        .snapshotEvents
+        .listen(fn);
   }
 }

@@ -42,10 +42,10 @@ class FirestoreService {
   }
 
   Stream<UserAccount> streamUserAccount(User user) {
-    return _db
-        .collection('users')
-        .doc(user.uid)
-        .snapshots()
-        .map((snap) => UserAccount(avatarUrl: snap.get('avatarUrl')));
+    return _db.collection('users').doc(user.uid).snapshots().map((snap) =>
+        UserAccount(
+            avatarUrl: snap.get('avatarUrl'),
+            firstName: snap.get('firstName'),
+            lastName: snap.get('lastName')));
   }
 }

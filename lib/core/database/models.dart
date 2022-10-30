@@ -30,10 +30,16 @@ class Note {
 
 class UserAccount {
   final String? avatarUrl;
+  final String? firstName;
+  final String? lastName;
 
-  UserAccount({this.avatarUrl});
+  UserAccount({this.avatarUrl, this.firstName, this.lastName});
 
   dynamic toMap() {
-    return {'avatarUrl': avatarUrl};
+    return {
+      'avatarUrl': avatarUrl,
+      'firstName': firstName,
+      'lastName': lastName
+    };
   }
 }
