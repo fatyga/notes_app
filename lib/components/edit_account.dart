@@ -155,7 +155,7 @@ class _EditAccountState extends State<EditAccount> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: canClose ? () => Navigator.pop(context) : null,
                   child: const Text('cancel')),
               const SizedBox(width: 12),
               ElevatedButton(

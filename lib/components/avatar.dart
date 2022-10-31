@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class UserAvatar extends StatelessWidget {
@@ -12,14 +13,26 @@ class UserAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: onPressed,
-        child: CircleAvatar(
-            radius: radius,
-            backgroundColor: Colors.grey[100],
-            backgroundImage: avatarUrl != null && avatarUrl != ''
-                ? NetworkImage(avatarUrl.toString())
-                : null,
-            child: avatarUrl == null && avatarUrl != ''
-                ? Icon(Icons.photo_camera_outlined, size: radius.toDouble())
-                : null));
+        child: (avatarUrl == null)
+            ? CircleAvatar(
+                radius: radius,
+                backgroundColor: Colors.grey[100],
+                child: Icon(Icons.person))
+            : CachedNetworkImage(
+                imageUrl: avatarUrl.toString(),
+                imageBuilder: (context, imageProvider) => CircleAvatar(
+                  radius: radius,
+                  backgroundColor: Colors.grey[100],
+                  backgroundImage: imageProvider,
+                ),
+                placeholder: (context, url) => CircleAvatar(
+                    radius: radius,
+                    backgroundColor: Colors.grey[100],
+                    child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => CircleAvatar(
+                    radius: radius,
+                    backgroundColor: Colors.grey[100],
+                    child: Icon(Icons.error)),
+              ));
   }
 }
