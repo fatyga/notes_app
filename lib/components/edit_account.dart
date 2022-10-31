@@ -17,7 +17,7 @@ class EditAccount extends StatefulWidget {
 }
 
 class _EditAccountState extends State<EditAccount> {
-  GlobalKey _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = GlobalKey();
   String? _firstName;
   String? _lastName;
 
@@ -92,33 +92,36 @@ class _EditAccountState extends State<EditAccount> {
     final userAccount = Provider.of<UserAccount?>(context);
 
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.only(top: 32, left: 12, right: 12),
       child: Column(
         children: <Widget>[
-          Text(error),
-          Row(children: <Widget>[
-            Text('Avatar:'),
-            const SizedBox(width: 16),
-            ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    error = '';
-                    uploadAvatarStatus = '';
-                  });
-                  _uploadAvatarToStorage(context, ImageSource.camera);
-                },
-                child: const Text('Upload from camera')),
-            const SizedBox(width: 16),
-            ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    error = '';
-                    uploadAvatarStatus = '';
-                  });
-                  _uploadAvatarToStorage(context, ImageSource.gallery);
-                },
-                child: const Text('Upload from gallery')),
-          ]),
+          Text(error, style: TextStyle(color: Theme.of(context).errorColor)),
+          const SizedBox(height: 12),
+          const Text('Avatar:'),
+          const SizedBox(width: 16),
+          ElevatedButton(
+              onPressed: !canClose
+                  ? null
+                  : () {
+                      setState(() {
+                        error = '';
+                        uploadAvatarStatus = '';
+                      });
+                      _uploadAvatarToStorage(context, ImageSource.camera);
+                    },
+              child: const Text('Upload from camera')),
+          const SizedBox(width: 16),
+          ElevatedButton(
+              onPressed: !canClose
+                  ? null
+                  : () {
+                      setState(() {
+                        error = '';
+                        uploadAvatarStatus = '';
+                      });
+                      _uploadAvatarToStorage(context, ImageSource.gallery);
+                    },
+              child: const Text('Upload from gallery')),
           Text(uploadAvatarStatus),
           Form(
               key: _formKey,
@@ -127,6 +130,9 @@ class _EditAccountState extends State<EditAccount> {
                   TextFormField(
                     initialValue: _firstName ?? userAccount?.firstName,
                     decoration: const InputDecoration(labelText: 'First Name'),
+                    validator: (val) => (val != null && val.isEmpty)
+                        ? 'Field must not be empty'
+                        : null,
                     onChanged: (val) {
                       _firstName = val;
                     },
@@ -135,27 +141,43 @@ class _EditAccountState extends State<EditAccount> {
                   TextFormField(
                     initialValue: _lastName ?? userAccount?.lastName,
                     decoration: const InputDecoration(labelText: 'Last Name'),
+                    validator: (val) => (val != null && val.isEmpty)
+                        ? 'Field must not be empty'
+                        : null,
                     onChanged: (val) {
                       _lastName = val;
                     },
                   ),
                 ],
               )),
-          ElevatedButton(
-              onPressed: canClose
-                  ? () async {
-                      final user = Provider.of<User?>(context, listen: false);
-                      final account =
-                          Provider.of<UserAccount?>(context, listen: false);
-                      await FirestoreService().updateUserAccount(user!, {
-                        "firstName": _firstName ?? account!.firstName,
-                        "lastName": _lastName ?? account!.lastName
-                      });
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('cancel')),
+              const SizedBox(width: 12),
+              ElevatedButton(
+                  onPressed: canClose
+                      ? () async {
+                          if (_formKey.currentState!.validate()) {
+                            final user =
+                                Provider.of<User?>(context, listen: false);
+                            final account = Provider.of<UserAccount?>(context,
+                                listen: false);
+                            await FirestoreService().updateUserAccount(user!, {
+                              "firstName": _firstName ?? account!.firstName,
+                              "lastName": _lastName ?? account!.lastName
+                            });
 
-                      Navigator.pop(context);
-                    }
-                  : null,
-              child: const Text('done'))
+                            Navigator.pop(context);
+                          }
+                        }
+                      : null,
+                  child: const Text('update'))
+            ],
+          ),
         ],
       ),
     );

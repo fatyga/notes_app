@@ -11,6 +11,7 @@ class UserAccountInfoPage extends StatelessWidget {
 
   void _showEditBottomSheet(BuildContext context) {
     showModalBottomSheet(
+        isScrollControlled: true,
         isDismissible: false,
         enableDrag: false,
         context: context,
@@ -48,13 +49,15 @@ class UserAccountInfoPage extends StatelessWidget {
                     const SizedBox(height: 20),
                     const Text('First name:'),
                     Consumer<UserAccount?>(
-                        builder: ((context, value, child) =>
-                            Text(value?.firstName ?? 'unset'))),
-                    const SizedBox(height: 10),
+                        builder: ((context, value, child) => Text(
+                            value?.firstName ?? 'unset',
+                            style: Theme.of(context).textTheme.headlineSmall))),
+                    const SizedBox(height: 20),
                     const Text('Last name:'),
                     Consumer<UserAccount?>(
-                        builder: ((context, value, child) =>
-                            Text(value?.lastName ?? 'unset'))),
+                        builder: ((context, value, child) => Text(
+                            value?.lastName ?? 'unset',
+                            style: Theme.of(context).textTheme.headlineSmall))),
                     const SizedBox(height: 10),
                   ],
                 ),
