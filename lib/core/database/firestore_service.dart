@@ -24,6 +24,15 @@ class FirestoreService {
         .add(noteData);
   }
 
+  Future deleteNote(User user, String id) async {
+    return await _db
+        .collection('users')
+        .doc(user.uid)
+        .collection('notes')
+        .doc(id)
+        .delete();
+  }
+
   Future updateNote(User user, Note note, Map<String, dynamic> noteData) async {
     return await _db
         .collection('users')
