@@ -1,8 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/core/authentication/auth.dart';
 import 'package:notes_app/core/database/firestore_service.dart';
 import 'package:provider/provider.dart';
 
@@ -48,8 +46,7 @@ class _NewNotePageState extends State<NewNotePage> {
                       });
                       final firestore =
                           Provider.of<FirestoreService>(context, listen: false);
-                      final user =
-                          Provider.of<AppUser?>(context, listen: false);
+
                       await firestore.addNote({
                         'title': titleController.text,
                         'content': contentController.text,
@@ -69,7 +66,7 @@ class _NewNotePageState extends State<NewNotePage> {
         ],
       ),
       body: (loading)
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
               child: Column(

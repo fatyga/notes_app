@@ -17,7 +17,7 @@ class UserAvatar extends StatelessWidget {
             ? CircleAvatar(
                 radius: radius,
                 backgroundColor: Colors.grey[100],
-                child: Icon(Icons.person))
+                child: const Icon(Icons.person))
             : CachedNetworkImage(
                 imageUrl: avatarUrl.toString(),
                 imageBuilder: (context, imageProvider) => CircleAvatar(
@@ -28,11 +28,11 @@ class UserAvatar extends StatelessWidget {
                 placeholder: (context, url) => CircleAvatar(
                     radius: radius,
                     backgroundColor: Colors.grey[100],
-                    child: CircularProgressIndicator()),
+                    child: const CircularProgressIndicator()),
                 errorWidget: (context, url, error) => CircleAvatar(
                     radius: radius,
                     backgroundColor: Colors.grey[100],
-                    child: Icon(Icons.error)),
+                    child: const Icon(Icons.error)),
               ));
   }
 }

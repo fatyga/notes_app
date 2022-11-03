@@ -1,8 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/core/authentication/auth.dart';
 import 'package:notes_app/core/database/firestore_service.dart';
 import 'package:notes_app/core/database/models.dart';
 import 'package:provider/provider.dart';
@@ -77,7 +74,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
         ],
       ),
       body: (loading)
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
               child: Column(

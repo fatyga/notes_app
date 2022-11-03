@@ -16,15 +16,16 @@ class UserAccountInfoPage extends StatelessWidget {
         enableDrag: false,
         context: context,
         builder: (context) {
-          return EditAccount();
+          return const EditAccount();
         });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-            AppBar(leading: AutoLeadingButton(), title: Text('Your Account')),
+        appBar: AppBar(
+            leading: const AutoLeadingButton(),
+            title: const Text('Your Account')),
         body: ListView(
           children: [
             Column(
@@ -38,7 +39,7 @@ class UserAccountInfoPage extends StatelessWidget {
                         avatarUrl: value.avatarUrl,
                       );
                     } else {
-                      return UserAvatar(
+                      return const UserAvatar(
                         radius: 60,
                       );
                     }
@@ -69,10 +70,8 @@ class UserAccountInfoPage extends StatelessWidget {
                 ElevatedButton(
                     onPressed: () async {
                       try {
-                        var result = await AuthService().signOut();
-                      } catch (e) {
-                        print(e);
-                      }
+                        await AuthService().signOut();
+                      } catch (e) {}
                     },
                     child: const Text('Logout'))
               ],

@@ -1,8 +1,5 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/core/authentication/auth.dart';
-import 'package:notes_app/core/route/app_router.gr.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -23,7 +20,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return (loading)
-        ? Scaffold(body: Center(child: CircularProgressIndicator()))
+        ? const Scaffold(body: Center(child: CircularProgressIndicator()))
         : Scaffold(
             appBar: AppBar(),
             body: SafeArea(
@@ -76,7 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         loading = true;
                                       });
 
-                                      var result = await AuthService()
+                                      await AuthService()
                                           .registerWithEmailAndPassword(
                                               _emailController.text,
                                               _passwordController.text, (err) {

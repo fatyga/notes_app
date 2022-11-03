@@ -1,10 +1,7 @@
 import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:notes_app/core/authentication/auth.dart';
 import 'package:notes_app/core/database/firestore_service.dart';
 import 'package:notes_app/core/database/models.dart';
 import 'package:notes_app/core/database/storage_service.dart';
@@ -18,7 +15,7 @@ class EditAccount extends StatefulWidget {
 }
 
 class _EditAccountState extends State<EditAccount> {
-  GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormState> _formKey = GlobalKey();
   String? _firstName;
   String? _lastName;
 
@@ -41,7 +38,6 @@ class _EditAccountState extends State<EditAccount> {
   Future<void> _uploadAvatarToStorage(
       BuildContext context, ImageSource source) async {
     final storage = Provider.of<StorageService>(context, listen: false);
-    String avatarUrl = '';
 
     try {
       final pickedImage = await ImagePicker().pickImage(source: source);
@@ -72,13 +68,16 @@ class _EditAccountState extends State<EditAccount> {
                     uploadAvatarStatus = 'Failed to upload avatar..';
                   });
                   break;
+                case TaskState.canceled:
+                  break;
+                case TaskState.paused:
+                  break;
               }
             });
       } else {
         throw 'Failed to select an image';
       }
     } catch (e) {
-      print(e);
       setState(() {
         error = e.toString();
       });

@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:notes_app/core/database/firestore_service.dart';
 
 class AppUser {
   final String uid;
@@ -16,7 +14,7 @@ class AuthService {
   Stream<AppUser?> get user =>
       FirebaseAuth.instance.authStateChanges().map(userFromFirebase);
 
-  Future<AppUser?> signInWithEmailAndPassword(
+  Future signInWithEmailAndPassword(
       String email, String password, Function onError) async {
     try {
       final credential = await FirebaseAuth.instance
@@ -32,7 +30,7 @@ class AuthService {
     }
   }
 
-  Future<AppUser?> registerWithEmailAndPassword(
+  Future registerWithEmailAndPassword(
       String email, String password, Function onError) async {
     try {
       final credential =
@@ -54,8 +52,6 @@ class AuthService {
     try {
       final credential = await FirebaseAuth.instance.signOut();
       return credential;
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 }

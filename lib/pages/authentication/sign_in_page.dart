@@ -1,9 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/core/authentication/auth.dart';
 import 'package:notes_app/core/route/app_router.gr.dart';
-import 'package:notes_app/pages/home/notes/notes_wrapper_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -23,7 +21,7 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return (loading)
-        ? Scaffold(body: Center(child: CircularProgressIndicator()))
+        ? const Scaffold(body: Center(child: CircularProgressIndicator()))
         : Scaffold(
             appBar: AppBar(),
             body: SafeArea(
@@ -78,7 +76,7 @@ class _SignInPageState extends State<SignInPage> {
                                         error = '';
                                       });
 
-                                      var result = await AuthService()
+                                      await AuthService()
                                           .signInWithEmailAndPassword(
                                               _emailController.text,
                                               _passwordController.text, (err) {
@@ -92,7 +90,7 @@ class _SignInPageState extends State<SignInPage> {
                                   child: const Text('Sign in')),
                               TextButton(
                                   onPressed: () {
-                                    context.router.push(RegisterRoute());
+                                    context.router.push(const RegisterRoute());
                                   },
                                   child: const Text('Create an account'))
                             ])),

@@ -8,7 +8,7 @@ import 'package:notes_app/core/route/app_router.gr.dart';
 import 'package:provider/provider.dart';
 
 class NoteListPage extends StatelessWidget {
-  NoteListPage({super.key});
+  const NoteListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +18,14 @@ class NoteListPage extends StatelessWidget {
         actions: [
           GestureDetector(
             onTap: () {
-              context.router.push(UserAccountWrapperRoute());
+              context.router.push(const UserAccountWrapperRoute());
             },
             child: Consumer<UserAccount?>(
               builder: (context, value, child) {
                 if (value != null) {
                   return UserAvatar(radius: 25, avatarUrl: value.avatarUrl);
                 } else {
-                  return UserAvatar(radius: 25);
+                  return const UserAvatar(radius: 25);
                 }
               },
             ),
@@ -55,7 +55,7 @@ class NoteListPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         elevation: 12,
         onPressed: () {
-          context.router.push(NewNoteRoute());
+          context.router.push(const NewNoteRoute());
         },
         child: const Icon(Icons.add, size: 40),
       ),

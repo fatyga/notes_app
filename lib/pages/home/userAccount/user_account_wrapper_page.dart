@@ -14,6 +14,6 @@ class UserAccountWrapperPage extends StatelessWidget {
     return StreamProvider<UserAccount?>.value(
         initialData: null,
         value: firestore.streamUserAccount,
-        child: AutoRouter());
+        child: const AutoRouter());
   }
 }

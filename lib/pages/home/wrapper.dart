@@ -1,11 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/core/authentication/auth.dart';
 import 'package:notes_app/core/database/firestore_service.dart';
-import 'package:notes_app/core/database/models.dart';
 import 'package:notes_app/core/database/storage_service.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +22,6 @@ class HomePage extends StatelessWidget {
         create: ((context) => StorageService(
             storage: FirebaseStorage.instance, userUid: user!.uid)),
       )
-    ], child: AutoRouter());
+    ], child: const AutoRouter());
   }
 }

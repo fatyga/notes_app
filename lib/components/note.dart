@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/core/route/app_router.gr.dart';
 import 'package:notes_app/core/database/models.dart';
-import 'package:provider/provider.dart';
 
 class NoteWidget extends StatelessWidget {
   const NoteWidget({super.key, required this.note});
@@ -23,9 +22,8 @@ class NoteWidget extends StatelessWidget {
             },
             child: Container(
               padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                // color: note.backgroundColor,
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
