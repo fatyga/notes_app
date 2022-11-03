@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:notes_app/core/authentication/auth.dart';
 import 'package:notes_app/core/database/firestore_service.dart';
 import 'package:notes_app/core/database/models.dart';
 import 'package:notes_app/core/database/storage_service.dart';
@@ -26,11 +27,10 @@ class _EditAccountState extends State<EditAccount> {
   bool canClose = true;
 
   Future<void> _uploadAvatarToFirestore({required String avatarUrl}) async {
-    final user = Provider.of<User?>(context, listen: false);
+    final firestore = Provider.of<FirestoreService>(context, listen: false);
 
     try {
-      await FirestoreService()
-          .updateUserAccount(user!, {'avatarUrl': avatarUrl});
+      await firestore.updateUserAccount({'avatarUrl': avatarUrl});
     } catch (e) {
       setState(() {
         error = e.toString();
@@ -40,8 +40,7 @@ class _EditAccountState extends State<EditAccount> {
 
   Future<void> _uploadAvatarToStorage(
       BuildContext context, ImageSource source) async {
-    final user = Provider.of<User?>(context, listen: false);
-
+    final storage = Provider.of<StorageService>(context, listen: false);
     String avatarUrl = '';
 
     try {
@@ -50,8 +49,7 @@ class _EditAccountState extends State<EditAccount> {
       if (pickedImage != null) {
         final file = File(pickedImage.path);
 
-        StorageService().updateAvatar(
-            uid: user!.uid,
+        storage.updateAvatar(
             file: file,
             fn: (TaskSnapshot snap) async {
               switch (snap.state) {
@@ -90,7 +88,6 @@ class _EditAccountState extends State<EditAccount> {
   @override
   Widget build(BuildContext context) {
     final userAccount = Provider.of<UserAccount?>(context);
-
     return Container(
       padding: const EdgeInsets.only(top: 32, left: 12, right: 12),
       child: Column(
@@ -162,11 +159,13 @@ class _EditAccountState extends State<EditAccount> {
                   onPressed: canClose
                       ? () async {
                           if (_formKey.currentState!.validate()) {
-                            final user =
-                                Provider.of<User?>(context, listen: false);
                             final account = Provider.of<UserAccount?>(context,
                                 listen: false);
-                            await FirestoreService().updateUserAccount(user!, {
+                            final firestore = Provider.of<FirestoreService>(
+                                context,
+                                listen: false);
+
+                            await firestore.updateUserAccount({
                               "firstName": _firstName ?? account!.firstName,
                               "lastName": _lastName ?? account!.lastName
                             });

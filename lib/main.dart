@@ -12,6 +12,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(MultiProvider(providers: [
-    StreamProvider<User?>.value(value: AuthService.user, initialData: null),
+    StreamProvider<AppUser?>.value(
+        value: AuthService().user, initialData: null),
   ], child: MyApp()));
 }

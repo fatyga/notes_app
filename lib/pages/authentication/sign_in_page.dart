@@ -78,7 +78,7 @@ class _SignInPageState extends State<SignInPage> {
                                         error = '';
                                       });
 
-                                      var result = await AuthService
+                                      var result = await AuthService()
                                           .signInWithEmailAndPassword(
                                               _emailController.text,
                                               _passwordController.text, (err) {

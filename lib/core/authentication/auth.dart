@@ -2,16 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:notes_app/core/database/firestore_service.dart';
 
-class AuthService {
-  static Stream<User?> get user => FirebaseAuth.instance.authStateChanges();
+class AppUser {
+  final String uid;
 
-  static Future signInWithEmailAndPassword(
+  AppUser({required this.uid});
+}
+
+class AuthService {
+  AppUser? userFromFirebase(User? user) {
+    return user == null ? null : AppUser(uid: user.uid);
+  }
+
+  Stream<AppUser?> get user =>
+      FirebaseAuth.instance.authStateChanges().map(userFromFirebase);
+
+  Future<AppUser?> signInWithEmailAndPassword(
       String email, String password, Function onError) async {
     try {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
 
-      return credential.user;
+      return userFromFirebase(credential.user);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         onError('No user found for that email.');
@@ -21,7 +32,7 @@ class AuthService {
     }
   }
 
-  static Future registerWithEmailAndPassword(
+  Future<AppUser?> registerWithEmailAndPassword(
       String email, String password, Function onError) async {
     try {
       final credential =
@@ -29,7 +40,7 @@ class AuthService {
         email: email,
         password: password,
       );
-      return credential.user;
+      return userFromFirebase(credential.user);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         onError('The password provided is too weak.');
@@ -39,7 +50,7 @@ class AuthService {
     }
   }
 
-  static Future signOut() async {
+  Future signOut() async {
     try {
       final credential = await FirebaseAuth.instance.signOut();
       return credential;

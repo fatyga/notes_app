@@ -69,7 +69,7 @@ class UserAccountInfoPage extends StatelessWidget {
                 ElevatedButton(
                     onPressed: () async {
                       try {
-                        var result = await AuthService.signOut();
+                        var result = await AuthService().signOut();
                       } catch (e) {
                         print(e);
                       }

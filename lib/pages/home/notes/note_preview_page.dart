@@ -1,13 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_app/core/authentication/auth.dart';
 import 'package:notes_app/core/database/firestore_service.dart';
 import 'package:notes_app/core/database/models.dart';
 import 'package:notes_app/core/route/app_router.gr.dart';
 import 'package:provider/provider.dart';
 
 class NotePreviewPage extends StatefulWidget {
-  NotePreviewPage({super.key, required this.selectedNoteId});
+  const NotePreviewPage({super.key, required this.selectedNoteId});
 
   final String selectedNoteId;
 
@@ -16,14 +17,10 @@ class NotePreviewPage extends StatefulWidget {
 }
 
 class _NotePreviewPageState extends State<NotePreviewPage> {
-  final db = FirestoreService();
-
   bool onDeleting = false;
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User?>(context);
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -33,10 +30,12 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
             : [
                 IconButton(
                     onPressed: () async {
+                      final firestore =
+                          Provider.of<FirestoreService>(context, listen: false);
                       setState(() {
                         onDeleting = true;
                       });
-                      await db.deleteNote(user!, widget.selectedNoteId);
+                      await firestore.deleteNote(widget.selectedNoteId);
                       context.router.pop();
                     },
                     icon: const Icon(Icons.delete)),
@@ -48,15 +47,17 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                     icon: const Icon(Icons.edit)),
                 IconButton(
                     onPressed: () async {
+                      final firestore =
+                          Provider.of<FirestoreService>(context, listen: false);
                       final selectedNote = Provider.of<List<Note>>(context,
                               listen: false)
                           .firstWhere(
                               (element) => element.id == widget.selectedNoteId);
 
-                      await db.updateNote(user!, selectedNote,
-                          {'pinned': !selectedNote.pinned});
+                      await firestore.updateNote(
+                          selectedNote, {'pinned': !selectedNote.pinned});
                     },
-                    icon: (Provider.of<List<Note>>(context, listen: false)
+                    icon: (Provider.of<List<Note>>(context)
                             .firstWhere((element) =>
                                 element.id == widget.selectedNoteId)
                             .pinned)

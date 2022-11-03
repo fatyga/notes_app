@@ -76,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         loading = true;
                                       });
 
-                                      var result = await AuthService
+                                      var result = await AuthService()
                                           .registerWithEmailAndPassword(
                                               _emailController.text,
                                               _passwordController.text, (err) {

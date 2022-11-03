@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_app/core/authentication/auth.dart';
 import 'package:notes_app/core/database/firestore_service.dart';
 import 'package:provider/provider.dart';
 
@@ -18,8 +19,6 @@ class _NewNotePageState extends State<NewNotePage> {
 
   String errorContent = '';
   bool loading = false;
-
-  final db = FirestoreService();
 
   @override
   void dispose() {
@@ -47,8 +46,11 @@ class _NewNotePageState extends State<NewNotePage> {
                       setState(() {
                         loading = true;
                       });
-                      final user = Provider.of<User?>(context, listen: false);
-                      await db.addNote(user!, {
+                      final firestore =
+                          Provider.of<FirestoreService>(context, listen: false);
+                      final user =
+                          Provider.of<AppUser?>(context, listen: false);
+                      await firestore.addNote({
                         'title': titleController.text,
                         'content': contentController.text,
                         'pinned': false,
