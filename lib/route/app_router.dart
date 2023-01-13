@@ -1,0 +1,35 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:notes_app/authentication/screens/wrapper_page.dart';
+import 'package:notes_app/authentication/screens/register_screen.dart';
+import 'package:notes_app/authentication/screens/sign_in_screen.dart';
+import 'package:notes_app/notes/screens/new_note_page.dart';
+import 'package:notes_app/notes/screens/note_list_page.dart';
+import 'package:notes_app/notes/screens/notes_wrapper_page.dart';
+import 'package:notes_app/notes/screens/update_note_page.dart';
+import 'package:notes_app/notes/screens/note_preview_page.dart';
+import 'package:notes_app/account/screens/user_account_info_page.dart';
+import 'package:notes_app/account/screens/user_account_wrapper_page.dart';
+import 'package:notes_app/account/screens/wrapper.dart';
+
+@MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: <AutoRoute>[
+  AutoRoute(
+      path: '/authentication',
+      page: AuthenticationWrapperPage,
+      children: [
+        AutoRoute(path: 'signIn', initial: true, page: SignInPage),
+        AutoRoute(path: 'register', page: RegisterPage)
+      ]),
+  AutoRoute(path: '/', page: HomePage, children: [
+    AutoRoute(path: 'notes', initial: true, page: NotesWrapperPage, children: [
+      AutoRoute(path: 'noteList', initial: true, page: NoteListPage),
+      AutoRoute(path: 'notePreview', page: NotePreviewPage),
+      AutoRoute(path: 'newNote', page: NewNotePage),
+      AutoRoute(path: 'updateNote', page: UpdateNotePage)
+    ]),
+    AutoRoute(path: 'userAccount', page: UserAccountWrapperPage, children: [
+      AutoRoute(path: 'info', initial: true, page: UserAccountInfoPage)
+    ])
+  ]),
+])
+class $AppRouter {}
