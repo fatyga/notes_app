@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/authentication/domain/services/auth.dart';
+import 'package:notes_app/authentication/services/authentication_service.dart';
 import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/themes/dark_theme.dart';
 import 'package:notes_app/themes/light_theme.dart';
@@ -13,21 +14,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AppUser?>(context);
+    final user = Provider.of<User?>(context);
 
-    return MaterialApp.router(
-      routerDelegate: AutoRouterDelegate.declarative(_appRouter,
-          routes: (_) => [
-                if (user != null)
-                  const HomeRoute()
-                else
-                  const AuthenticationWrapperRoute()
-              ]),
-      routeInformationParser: _appRouter.defaultRouteParser(),
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      debugShowCheckedModeBanner: false,
-      title: 'Notes App',
+    return StreamBuilder(
+      stream: AuthService.user,
+      builder: (context, snapshot) => MaterialApp.router(
+        routerDelegate: AutoRouterDelegate.declarative(_appRouter,
+            routes: (_) => [
+                  if (user != null)
+                    const HomeRoute()
+                  else
+                    const AuthenticationWrapperRoute()
+                ]),
+        routeInformationParser: _appRouter.defaultRouteParser(),
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        debugShowCheckedModeBanner: false,
+        title: 'Notes App',
+      ),
     );
   }
 }

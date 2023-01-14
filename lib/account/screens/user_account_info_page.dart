@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/shared/avatar.dart';
-import 'package:notes_app/authentication/screens/edit_account.dart';
-import 'package:notes_app/authentication/domain/services/auth.dart';
+import 'package:notes_app/account/screens/edit_account.dart';
+import 'package:notes_app/authentication/services/authentication_service.dart';
 import 'package:notes_app/notes/domain/models/models.dart';
 import 'package:provider/provider.dart';
 

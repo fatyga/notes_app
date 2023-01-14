@@ -1,7 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/authentication/domain/services/auth.dart';
+import 'package:notes_app/authentication/business_logic/authentication_view_model.dart';
 import 'package:notes_app/route/app_router.gr.dart';
+import 'package:notes_app/service_locator.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -11,21 +12,19 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  AuthenticationViewModel model = serviceLocator<AuthenticationViewModel>();
   final _formKey = GlobalKey<FormState>();
-  String error = '';
 
-  bool loading = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return (loading)
-        ? const Scaffold(body: Center(child: CircularProgressIndicator()))
-        : Scaffold(
-            appBar: AppBar(),
-            body: SafeArea(
-              child: ListView(
+    return Scaffold(
+        body: AnimatedBuilder(
+            animation: model,
+            builder: (context, _) {
+              return ListView(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   children: <Widget>[
                     const SizedBox(height: 120.0),
@@ -39,6 +38,7 @@ class _SignInPageState extends State<SignInPage> {
                             children: [
                               TextFormField(
                                 controller: _emailController,
+                                enabled: model.status == ModelStatus.idle,
                                 validator: (value) =>
                                     (value != null && value.isEmpty)
                                         ? 'Enter an email'
@@ -51,6 +51,7 @@ class _SignInPageState extends State<SignInPage> {
                               const SizedBox(height: 20),
                               TextFormField(
                                   controller: _passwordController,
+                                  enabled: model.status == ModelStatus.idle,
                                   validator: (value) =>
                                       (value != null && value.length < 6)
                                           ? 'Enter at least 6 characters'
@@ -61,40 +62,32 @@ class _SignInPageState extends State<SignInPage> {
                                     labelText: 'Password',
                                   )),
                               const SizedBox(height: 20),
-                              Text(error,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle2!
-                                      .copyWith(
-                                          color: Theme.of(context).errorColor)),
-                              const SizedBox(height: 20),
                               ElevatedButton(
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
-                                      setState(() {
-                                        loading = true;
-                                        error = '';
-                                      });
-
-                                      await AuthService()
-                                          .signInWithEmailAndPassword(
-                                              _emailController.text,
-                                              _passwordController.text, (err) {
-                                        setState(() {
-                                          loading = false;
-                                          error = err;
-                                        });
-                                      });
+                                      await model.signInUser(
+                                          _emailController.text,
+                                          _passwordController.text);
+                                      if (model.error != null) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text(model.error!),
+                                          duration: const Duration(
+                                              milliseconds: 2000),
+                                        ));
+                                      }
                                     }
                                   },
-                                  child: const Text('Sign in')),
+                                  child: model.status == ModelStatus.busy
+                                      ? const CircularProgressIndicator()
+                                      : const Text('Sign in')),
                               TextButton(
                                   onPressed: () {
                                     context.router.push(const RegisterRoute());
                                   },
                                   child: const Text('Create an account'))
                             ])),
-                  ]),
-            ));
+                  ]);
+            }));
   }
 }

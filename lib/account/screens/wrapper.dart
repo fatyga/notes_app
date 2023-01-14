@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/authentication/domain/services/auth.dart';
 import 'package:notes_app/notes/domain/services/firestore_service.dart';
 import 'package:notes_app/notes/domain/services/storage_service.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AppUser?>(context);
+    final user = Provider.of<User?>(context);
 
     return MultiProvider(providers: [
       Provider<FirestoreService>(
