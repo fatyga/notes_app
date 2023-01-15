@@ -13,7 +13,9 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   setupServiceLocator();
 
-  runApp(MultiProvider(providers: [
-    StreamProvider<User?>.value(value: AuthService.user, initialData: null),
-  ], child: MyApp()));
+  runApp(MyApp());
+  // runApp(MultiProvider(providers: [
+  //   StreamProvider<User?>.value(
+  //       value: AuthenticationService.user, initialData: null),
+  // ], child: MyApp()));
 }

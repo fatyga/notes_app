@@ -14,17 +14,17 @@
 import 'package:auto_route/auto_route.dart' as _i12;
 import 'package:flutter/material.dart' as _i13;
 
-import '../../authentication/screens/wrapper_page.dart' as _i1;
-import '../../authentication/screens/register_screen.dart' as _i4;
-import '../../authentication/screens/sign_in_screen.dart' as _i3;
-import '../../notes/screens/new_note_page.dart' as _i9;
-import '../../notes/screens/note_list_page.dart' as _i7;
-import '../../notes/screens/note_preview_page.dart' as _i8;
-import '../../notes/screens/notes_wrapper_page.dart' as _i5;
-import '../../notes/screens/update_note_page.dart' as _i10;
 import '../account/screens/user_account_info_page.dart' as _i11;
 import '../account/screens/user_account_wrapper_page.dart' as _i6;
 import '../account/screens/wrapper.dart' as _i2;
+import '../authentication/screens/register_screen.dart' as _i4;
+import '../authentication/screens/sign_in_screen.dart' as _i3;
+import '../authentication/screens/wrapper_page.dart' as _i1;
+import '../notes/screens/new_note_page.dart' as _i9;
+import '../notes/screens/note_list_page.dart' as _i7;
+import '../notes/screens/note_preview_page.dart' as _i8;
+import '../notes/screens/notes_wrapper_page.dart' as _i5;
+import '../notes/screens/update_note_page.dart' as _i10;
 
 class AppRouter extends _i12.RootStackRouter {
   AppRouter([_i13.GlobalKey<_i13.NavigatorState>? navigatorKey])
@@ -69,21 +69,15 @@ class AppRouter extends _i12.RootStackRouter {
       );
     },
     NoteListRoute.name: (routeData) {
-      final args = routeData.argsAs<NoteListRouteArgs>(
-          orElse: () => const NoteListRouteArgs());
       return _i12.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i7.NoteListPage(key: args.key),
+        child: const _i7.NoteListPage(),
       );
     },
     NotePreviewRoute.name: (routeData) {
-      final args = routeData.argsAs<NotePreviewRouteArgs>();
       return _i12.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i8.NotePreviewPage(
-          key: args.key,
-          selectedNoteId: args.selectedNoteId,
-        ),
+        child: const _i8.NotePreviewPage(),
       );
     },
     NewNoteRoute.name: (routeData) {
@@ -93,13 +87,9 @@ class AppRouter extends _i12.RootStackRouter {
       );
     },
     UpdateNoteRoute.name: (routeData) {
-      final args = routeData.argsAs<UpdateNoteRouteArgs>();
       return _i12.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i10.UpdateNotePage(
-          key: args.key,
-          selectedNoteId: args.selectedNoteId,
-        ),
+        child: const _i10.UpdateNotePage(),
       );
     },
     UserAccountInfoRoute.name: (routeData) {
@@ -282,60 +272,26 @@ class UserAccountWrapperRoute extends _i12.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i7.NoteListPage]
-class NoteListRoute extends _i12.PageRouteInfo<NoteListRouteArgs> {
-  NoteListRoute({_i13.Key? key})
+class NoteListRoute extends _i12.PageRouteInfo<void> {
+  const NoteListRoute()
       : super(
           NoteListRoute.name,
           path: 'noteList',
-          args: NoteListRouteArgs(key: key),
         );
 
   static const String name = 'NoteListRoute';
 }
 
-class NoteListRouteArgs {
-  const NoteListRouteArgs({this.key});
-
-  final _i13.Key? key;
-
-  @override
-  String toString() {
-    return 'NoteListRouteArgs{key: $key}';
-  }
-}
-
 /// generated route for
 /// [_i8.NotePreviewPage]
-class NotePreviewRoute extends _i12.PageRouteInfo<NotePreviewRouteArgs> {
-  NotePreviewRoute({
-    _i13.Key? key,
-    required String selectedNoteId,
-  }) : super(
+class NotePreviewRoute extends _i12.PageRouteInfo<void> {
+  const NotePreviewRoute()
+      : super(
           NotePreviewRoute.name,
           path: 'notePreview',
-          args: NotePreviewRouteArgs(
-            key: key,
-            selectedNoteId: selectedNoteId,
-          ),
         );
 
   static const String name = 'NotePreviewRoute';
-}
-
-class NotePreviewRouteArgs {
-  const NotePreviewRouteArgs({
-    this.key,
-    required this.selectedNoteId,
-  });
-
-  final _i13.Key? key;
-
-  final String selectedNoteId;
-
-  @override
-  String toString() {
-    return 'NotePreviewRouteArgs{key: $key, selectedNoteId: $selectedNoteId}';
-  }
 }
 
 /// generated route for
@@ -352,36 +308,14 @@ class NewNoteRoute extends _i12.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i10.UpdateNotePage]
-class UpdateNoteRoute extends _i12.PageRouteInfo<UpdateNoteRouteArgs> {
-  UpdateNoteRoute({
-    _i13.Key? key,
-    required String selectedNoteId,
-  }) : super(
+class UpdateNoteRoute extends _i12.PageRouteInfo<void> {
+  const UpdateNoteRoute()
+      : super(
           UpdateNoteRoute.name,
           path: 'updateNote',
-          args: UpdateNoteRouteArgs(
-            key: key,
-            selectedNoteId: selectedNoteId,
-          ),
         );
 
   static const String name = 'UpdateNoteRoute';
-}
-
-class UpdateNoteRouteArgs {
-  const UpdateNoteRouteArgs({
-    this.key,
-    required this.selectedNoteId,
-  });
-
-  final _i13.Key? key;
-
-  final String selectedNoteId;
-
-  @override
-  String toString() {
-    return 'UpdateNoteRouteArgs{key: $key, selectedNoteId: $selectedNoteId}';
-  }
 }
 
 /// generated route for

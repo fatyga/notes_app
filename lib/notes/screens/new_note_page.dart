@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/notes/domain/services/firestore_service.dart';
+import 'package:notes_app/notes/domain/notes_view_model.dart';
+import 'package:notes_app/notes/services/notes_service.dart';
+import 'package:notes_app/service_locator.dart';
 import 'package:provider/provider.dart';
 
 class NewNotePage extends StatefulWidget {
@@ -12,11 +14,12 @@ class NewNotePage extends StatefulWidget {
 }
 
 class _NewNotePageState extends State<NewNotePage> {
+  final model = serviceLocator<NotesViewModel>();
+
   final titleController = TextEditingController();
   final contentController = TextEditingController();
 
   String errorContent = '';
-  bool loading = false;
 
   @override
   void dispose() {
@@ -32,7 +35,7 @@ class _NewNotePageState extends State<NewNotePage> {
         elevation: 0,
         actions: [
           IconButton(
-            onPressed: loading
+            onPressed: (model.status == ModelStatus.busy)
                 ? null
                 : () async {
                     if (titleController.text.isEmpty ||
@@ -41,22 +44,13 @@ class _NewNotePageState extends State<NewNotePage> {
                         errorContent = 'You need to fill both fields';
                       });
                     } else {
-                      setState(() {
-                        loading = true;
-                      });
-                      final firestore =
-                          Provider.of<FirestoreService>(context, listen: false);
+                      model.addNote(
+                          titleController.text, contentController.text);
 
-                      await firestore.addNote({
-                        'title': titleController.text,
-                        'content': contentController.text,
-                        'pinned': false,
-                        'createdAt': Timestamp.now()
-                      });
                       context.router.pop();
                     }
                   },
-            icon: loading
+            icon: (model.status == ModelStatus.busy)
                 ? const Icon(
                     Icons.save_outlined,
                     color: Colors.grey,
@@ -65,7 +59,7 @@ class _NewNotePageState extends State<NewNotePage> {
           )
         ],
       ),
-      body: (loading)
+      body: (model.status == ModelStatus.busy)
           ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),

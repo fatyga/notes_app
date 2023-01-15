@@ -2,9 +2,9 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:notes_app/notes/domain/services/firestore_service.dart';
-import 'package:notes_app/notes/domain/models/models.dart';
-import 'package:notes_app/notes/domain/services/storage_service.dart';
+import 'package:notes_app/notes/services/notes_service.dart';
+import 'package:notes_app/account/domain/models/user_account.dart';
+import 'package:notes_app/account/services/storage_service.dart';
 import 'package:provider/provider.dart';
 
 class EditAccount extends StatefulWidget {
@@ -24,15 +24,15 @@ class _EditAccountState extends State<EditAccount> {
   bool canClose = true;
 
   Future<void> _uploadAvatarToFirestore({required String avatarUrl}) async {
-    final firestore = Provider.of<FirestoreService>(context, listen: false);
+    // final firestore = Provider.of<FirestoreService>(context, listen: false);
 
-    try {
-      await firestore.updateUserAccount({'avatarUrl': avatarUrl});
-    } catch (e) {
-      setState(() {
-        error = e.toString();
-      });
-    }
+    // try {
+    //   await firestore.updateUserAccount({'avatarUrl': avatarUrl});
+    // } catch (e) {
+    //   setState(() {
+    //     error = e.toString();
+    //   });
+    // }
   }
 
   Future<void> _uploadAvatarToStorage(
@@ -154,26 +154,26 @@ class _EditAccountState extends State<EditAccount> {
                   onPressed: canClose ? () => Navigator.pop(context) : null,
                   child: const Text('cancel')),
               const SizedBox(width: 12),
-              ElevatedButton(
-                  onPressed: canClose
-                      ? () async {
-                          if (_formKey.currentState!.validate()) {
-                            final account = Provider.of<UserAccount?>(context,
-                                listen: false);
-                            final firestore = Provider.of<FirestoreService>(
-                                context,
-                                listen: false);
+              // ElevatedButton(
+              //     onPressed: canClose
+              //         ? () async {
+              //             if (_formKey.currentState!.validate()) {
+              //               final account = Provider.of<UserAccount?>(context,
+              //                   listen: false);
+              //               final firestore = Provider.of<FirestoreService>(
+              //                   context,
+              //                   listen: false);
 
-                            await firestore.updateUserAccount({
-                              "firstName": _firstName ?? account!.firstName,
-                              "lastName": _lastName ?? account!.lastName
-                            });
+              //               await firestore.updateUserAccount({
+              //                 "firstName": _firstName ?? account!.firstName,
+              //                 "lastName": _lastName ?? account!.lastName
+              //               });
 
-                            Navigator.pop(context);
-                          }
-                        }
-                      : null,
-                  child: const Text('update'))
+              //               Navigator.pop(context);
+              //             }
+              //           }
+              //         : null,
+              //     child: const Text('update'))
             ],
           ),
         ],

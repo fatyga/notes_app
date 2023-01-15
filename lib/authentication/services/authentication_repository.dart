@@ -4,7 +4,7 @@ import 'package:notes_app/authentication/services/authentication_service.dart';
 import 'package:notes_app/service_locator.dart';
 
 class AuthenticationRepository {
-  final AuthService _auth = serviceLocator<AuthService>();
+  final AuthenticationService _auth = serviceLocator<AuthenticationService>();
 
   Future<AppUser?> signIn(
       String email, String password, Function(String message) onError) async {

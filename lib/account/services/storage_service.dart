@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:notes_app/account/domain/models/user_account.dart';
 
 class StorageService {
   final FirebaseStorage storage;
@@ -29,4 +30,12 @@ class StorageService {
         .snapshotEvents
         .listen(fn);
   }
+
+  // Stream<UserAccount> get streamUserAccount {
+  //   return firestore.collection('users').doc(userUid).snapshots().map((snap) =>
+  //       UserAccount(
+  //           avatarUrl: snap.get('avatarUrl'),
+  //           firstName: snap.get('firstName'),
+  //           lastName: snap.get('lastName')));
+  // }
 }

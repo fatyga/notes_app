@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/authentication/services/authentication_service.dart';
 import 'package:notes_app/route/app_router.gr.dart';
+import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/themes/dark_theme.dart';
 import 'package:notes_app/themes/light_theme.dart';
 import 'package:provider/provider.dart';
@@ -14,14 +15,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User?>(context);
+    final AuthenticationService _authentication =
+        serviceLocator<AuthenticationService>();
 
     return StreamBuilder(
-      stream: AuthService.user,
+      stream: _authentication.userNotification,
       builder: (context, snapshot) => MaterialApp.router(
         routerDelegate: AutoRouterDelegate.declarative(_appRouter,
             routes: (_) => [
-                  if (user != null)
+                  if (snapshot.data != null)
                     const HomeRoute()
                   else
                     const AuthenticationWrapperRoute()

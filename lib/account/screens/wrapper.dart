@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/notes/domain/services/firestore_service.dart';
-import 'package:notes_app/notes/domain/services/storage_service.dart';
+import 'package:notes_app/notes/services/notes_service.dart';
+import 'package:notes_app/account/services/storage_service.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -15,9 +15,6 @@ class HomePage extends StatelessWidget {
     final user = Provider.of<User?>(context);
 
     return MultiProvider(providers: [
-      Provider<FirestoreService>(
-          create: (context) => FirestoreService(
-              firestore: FirebaseFirestore.instance, userUid: user!.uid)),
       Provider<StorageService>(
         create: ((context) => StorageService(
             storage: FirebaseStorage.instance, userUid: user!.uid)),

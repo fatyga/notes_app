@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AuthService {
-  static Stream<User?> get user => FirebaseAuth.instance.authStateChanges();
+class AuthenticationService {
+  Stream<User?> get userNotification =>
+      FirebaseAuth.instance.authStateChanges();
 
   Future<User?> signInWithEmailAndPassword(
       String email, String password, Function(String message) onError) async {

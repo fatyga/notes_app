@@ -1,25 +1,25 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/notes/domain/services/firestore_service.dart';
-import 'package:notes_app/notes/domain/models/models.dart';
+import 'package:notes_app/notes/domain/notes_view_model.dart';
+import 'package:notes_app/notes/services/notes_service.dart';
+import 'package:notes_app/notes/domain/models/note.dart';
+import 'package:notes_app/service_locator.dart';
 import 'package:provider/provider.dart';
 
 class UpdateNotePage extends StatefulWidget {
-  const UpdateNotePage({super.key, required this.selectedNoteId});
-
-  final String selectedNoteId;
+  const UpdateNotePage({super.key});
 
   @override
   _UpdateNotePageState createState() => _UpdateNotePageState();
 }
 
 class _UpdateNotePageState extends State<UpdateNotePage> {
+  final model = serviceLocator<NotesViewModel>();
   final titleController = TextEditingController();
   final contentController = TextEditingController();
 
   String errorContent = '';
   bool filledInputs = false;
-  bool loading = false;
 
   @override
   void dispose() {
@@ -30,18 +30,15 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedNote = Provider.of<List<Note>>(context)
-        .firstWhere((element) => element.id == widget.selectedNoteId);
-
     if (!filledInputs) {
-      titleController.text = selectedNote.title;
-      contentController.text = selectedNote.content;
+      titleController.text = model.selectedNote!.title;
+      contentController.text = model.selectedNote!.content;
       filledInputs = true;
     }
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: !loading,
+        automaticallyImplyLeading: model.status == ModelStatus.busy,
         elevation: 0,
         actions: [
           IconButton(
@@ -52,19 +49,15 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                   errorContent = 'You need to fill both fields';
                 });
               } else {
-                setState(() {
-                  loading = true;
-                });
-                final firestore =
-                    Provider.of<FirestoreService>(context, listen: false);
-                await firestore.updateNote(selectedNote, {
-                  'title': titleController.text,
-                  'content': contentController.text,
-                });
+                await model.updateNote(
+                    title: titleController.text,
+                    content: contentController.text,
+                    changePinned: false);
+
                 context.router.pop();
               }
             },
-            icon: loading
+            icon: model.status == ModelStatus.busy
                 ? const Icon(
                     Icons.save_outlined,
                     color: Colors.grey,
@@ -73,7 +66,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
           )
         ],
       ),
-      body: (loading)
+      body: model.status == ModelStatus.busy
           ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),

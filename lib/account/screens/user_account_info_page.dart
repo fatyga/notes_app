@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/shared/avatar.dart';
 import 'package:notes_app/account/screens/edit_account.dart';
 import 'package:notes_app/authentication/services/authentication_service.dart';
-import 'package:notes_app/notes/domain/models/models.dart';
+import 'package:notes_app/account/domain/models/user_account.dart';
 import 'package:provider/provider.dart';
 
 class UserAccountInfoPage extends StatelessWidget {
@@ -70,7 +70,7 @@ class UserAccountInfoPage extends StatelessWidget {
                 ElevatedButton(
                     onPressed: () async {
                       try {
-                        await AuthService().signOut();
+                        await AuthenticationService().signOut();
                       } catch (e) {}
                     },
                     child: const Text('Logout'))

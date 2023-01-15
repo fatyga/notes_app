@@ -9,7 +9,7 @@ class Note {
   String formattedTime;
   bool pinned;
 
-  factory Note.fromFirestore(DocumentSnapshot doc) {
+  factory Note.fromFirestore(QueryDocumentSnapshot doc) {
     final data = doc;
 
     return Note(
@@ -26,20 +26,23 @@ class Note {
       required this.pinned,
       required this.createdAt})
       : formattedTime = DateFormat.yMMMd().format(createdAt);
-}
 
-class UserAccount {
-  final String? avatarUrl;
-  final String? firstName;
-  final String? lastName;
+  Note copyWith(
+      {String? title, String? content, DateTime? createdAt, bool? pinned}) {
+    return Note(
+        id: id,
+        title: title ?? this.title,
+        content: content ?? this.content,
+        pinned: pinned ?? this.pinned,
+        createdAt: createdAt ?? this.createdAt);
+  }
 
-  UserAccount({this.avatarUrl, this.firstName, this.lastName});
-
-  dynamic toMap() {
+  Map<String, dynamic> toMap() {
     return {
-      'avatarUrl': avatarUrl,
-      'firstName': firstName,
-      'lastName': lastName
+      'title': title,
+      'content': content,
+      'pinned': pinned,
+      'createdAt': createdAt
     };
   }
 }
