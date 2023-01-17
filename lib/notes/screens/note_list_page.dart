@@ -5,9 +5,10 @@ import 'package:notes_app/notes/widgets/all_notes_tab.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/avatar.dart';
 import 'package:notes_app/notes/widgets/pinned_notes_tab.dart';
-import 'package:notes_app/account/domain/models/user_account.dart';
 import 'package:notes_app/route/app_router.gr.dart';
 import 'package:provider/provider.dart';
+
+import '../../authentication/services/authentication_service.dart';
 
 class NoteListPage extends StatefulWidget {
   const NoteListPage({super.key});
@@ -18,6 +19,8 @@ class NoteListPage extends StatefulWidget {
 
 class _NoteListPageState extends State<NoteListPage> {
   final model = serviceLocator<NotesViewModel>();
+  final AuthenticationService authenticationModel =
+      serviceLocator<AuthenticationService>();
 
   @override
   void initState() {
@@ -37,20 +40,12 @@ class _NoteListPageState extends State<NoteListPage> {
       appBar: AppBar(
         title: Text('Notes', style: Theme.of(context).textTheme.headline5),
         actions: [
-          // GestureDetector(
-          //   onTap: () {
-          //     context.router.push(const UserAccountWrapperRoute());
-          //   },
-          //   child: Consumer<UserAccount?>(
-          //     builder: (context, value, child) {
-          //       if (value != null) {
-          //         return UserAvatar(radius: 25, avatarUrl: value.avatarUrl);
-          //       } else {
-          //         return const UserAvatar(radius: 25);
-          //       }
-          //     },
-          //   ),
-          // )
+          TextButton(
+              onPressed: () async {
+                await authenticationModel.signOut();
+                context.router.pop();
+              },
+              child: const Text('Logout'))
         ],
       ),
       body: DefaultTabController(

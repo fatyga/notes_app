@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'package:notes_app/notes/services/notes_service.dart';
 import 'package:notes_app/notes/domain/models/note.dart';
-import 'package:notes_app/account/domain/models/user_account.dart';
 import 'package:provider/provider.dart';
 
 class NotesWrapperPage extends StatelessWidget {

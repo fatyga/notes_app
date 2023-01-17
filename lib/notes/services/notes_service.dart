@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:notes_app/authentication/services/authentication_service.dart';
 import 'package:notes_app/notes/domain/models/note.dart';
-import 'package:notes_app/account/domain/models/user_account.dart';
+
 import 'package:notes_app/service_locator.dart';
 
 class NotesService {
