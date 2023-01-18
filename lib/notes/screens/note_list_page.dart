@@ -9,6 +9,7 @@ import 'package:notes_app/route/app_router.gr.dart';
 import 'package:provider/provider.dart';
 
 import '../../authentication/services/authentication_service.dart';
+import '../../authentication/services/firebase_auth_service.dart';
 
 class NoteListPage extends StatefulWidget {
   const NoteListPage({super.key});
@@ -42,7 +43,7 @@ class _NoteListPageState extends State<NoteListPage> {
         actions: [
           TextButton(
               onPressed: () async {
-                await authenticationModel.signOut();
+                await authenticationModel.signOutUser();
                 context.router.pop();
               },
               child: const Text('Logout'))

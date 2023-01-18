@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:notes_app/authentication/services/authentication_service.dart';
+import 'package:notes_app/authentication/services/firebase_auth_service.dart';
 import 'package:notes_app/notes/domain/models/note.dart';
 
 import 'package:notes_app/service_locator.dart';
+
+import '../../authentication/services/authentication_service.dart';
 
 class NotesService {
   final FirebaseFirestore _firestore = serviceLocator<FirebaseFirestore>();
@@ -13,7 +15,7 @@ class NotesService {
   late String userUid;
 
   void startUserSubscription() {
-    _authenticationService.userNotification.listen((user) {
+    _authenticationService.authenticationChanges.listen((user) {
       if (user != null) {
         userUid = user.uid;
       }
