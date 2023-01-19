@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/notes/domain/notes_view_model.dart';
-import 'package:notes_app/notes/services/notes_service.dart';
+import 'package:notes_app/notes/services/firestore_notes_service.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:provider/provider.dart';
 

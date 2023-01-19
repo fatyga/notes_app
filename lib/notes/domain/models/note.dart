@@ -19,6 +19,15 @@ class Note {
         pinned: data.get('pinned'),
         createdAt: data.get('createdAt').toDate());
   }
+
+  factory Note.fromMap(Map<String, dynamic> map) {
+    return Note(
+        id: map['id'],
+        title: map['title'],
+        content: map['content'],
+        pinned: map['pinned'],
+        createdAt: map['createdAt'].toDate());
+  }
   Note(
       {required this.id,
       required this.title,

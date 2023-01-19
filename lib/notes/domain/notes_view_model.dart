@@ -26,7 +26,7 @@ class NotesViewModel extends ChangeNotifier {
   }
 
   void startNotesSubscription() {
-    notesSubscription = _notesRepo.existingNotes.listen((notes) {
+    notesSubscription = _notesRepo.notesChanges.listen((notes) {
       _notes = notes;
       notifyListeners();
     });
@@ -34,6 +34,14 @@ class NotesViewModel extends ChangeNotifier {
 
   void stopNotesSubscription() {
     notesSubscription.cancel();
+  }
+
+  void loadSavedNotes() {
+    setModelStatus(ModelStatus.busy);
+    _notesRepo.savedNotes().then((savedNotes) {
+      _notes = savedNotes;
+      setModelStatus(ModelStatus.idle);
+    });
   }
 
   void selectNote(Note note) {

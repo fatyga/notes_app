@@ -67,9 +67,13 @@ class AppRouter extends _i10.RootStackRouter {
       );
     },
     NotePreviewRoute.name: (routeData) {
+      final args = routeData.argsAs<NotePreviewRouteArgs>();
       return _i10.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i7.NotePreviewPage(),
+        child: _i7.NotePreviewPage(
+          key: args.key,
+          noteId: args.noteId,
+        ),
       );
     },
     NewNoteRoute.name: (routeData) {
@@ -238,14 +242,36 @@ class NoteListRoute extends _i10.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i7.NotePreviewPage]
-class NotePreviewRoute extends _i10.PageRouteInfo<void> {
-  const NotePreviewRoute()
-      : super(
+class NotePreviewRoute extends _i10.PageRouteInfo<NotePreviewRouteArgs> {
+  NotePreviewRoute({
+    _i11.Key? key,
+    required String noteId,
+  }) : super(
           NotePreviewRoute.name,
           path: 'notePreview',
+          args: NotePreviewRouteArgs(
+            key: key,
+            noteId: noteId,
+          ),
         );
 
   static const String name = 'NotePreviewRoute';
+}
+
+class NotePreviewRouteArgs {
+  const NotePreviewRouteArgs({
+    this.key,
+    required this.noteId,
+  });
+
+  final _i11.Key? key;
+
+  final String noteId;
+
+  @override
+  String toString() {
+    return 'NotePreviewRouteArgs{key: $key, noteId: $noteId}';
+  }
 }
 
 /// generated route for

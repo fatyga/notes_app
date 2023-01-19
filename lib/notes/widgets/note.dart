@@ -21,8 +21,8 @@ class NoteWidget extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             onTap: () {
               serviceLocator<NotesViewModel>().selectNote(note);
-              print(serviceLocator<NotesViewModel>().selectedNote!.title);
-              context.router.push(NotePreviewRoute());
+
+              context.router.push(NotePreviewRoute(noteId: note.id));
             },
             child: Container(
               padding: const EdgeInsets.all(15),

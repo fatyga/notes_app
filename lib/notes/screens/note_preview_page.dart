@@ -1,23 +1,27 @@
 import 'package:auto_route/auto_route.dart';
 
 import 'package:flutter/material.dart';
-import 'package:notes_app/notes/domain/notes_view_model.dart';
-
-import 'package:notes_app/notes/services/notes_service.dart';
-import 'package:notes_app/notes/domain/models/note.dart';
 import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/service_locator.dart';
-import 'package:provider/provider.dart';
+
+import '../domain/notes_preview_view_model.dart';
 
 class NotePreviewPage extends StatefulWidget {
-  const NotePreviewPage({super.key});
+  const NotePreviewPage({super.key, required this.noteId});
+  final String noteId;
 
   @override
   State<NotePreviewPage> createState() => _NotePreviewPageState();
 }
 
 class _NotePreviewPageState extends State<NotePreviewPage> {
-  final model = serviceLocator<NotesViewModel>();
+  final model = serviceLocator<NotesPreviewViewModel>();
+
+  @override
+  void initState() {
+    model.startNoteChangeSubscription(widget.noteId);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,7 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
             : [
                 IconButton(
                     onPressed: () async {
-                      await model.deleteNote();
+                      //await model.deleteNote();
                       context.router.pop();
                     },
                     icon: const Icon(Icons.delete)),
@@ -41,11 +45,14 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                 AnimatedBuilder(
                   animation: model,
                   builder: (context, _) {
+                    if (model.status == ModelStatus.busy) {
+                      return CircularProgressIndicator();
+                    }
                     return IconButton(
                         onPressed: () async {
-                          await model.updateNote(changePinned: true);
+                          //await model.updateNote(changePinned: true);
                         },
-                        icon: model.selectedNote!.pinned
+                        icon: model.note!.pinned
                             ? const Icon(Icons.push_pin_rounded)
                             : const Icon(
                                 Icons.push_pin_outlined,
@@ -54,32 +61,34 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                 ),
               ],
       ),
-      body: model.status == ModelStatus.busy
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-              child: AnimatedBuilder(
-                animation: model,
-                builder: (context, child) {
-                  if (model.selectedNote == null) {
-                    return Container();
-                  }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(model.selectedNote!.title,
-                          style: Theme.of(context).textTheme.headline5),
-                      const SizedBox(height: 20),
-                      Text(model.selectedNote!.formattedTime,
-                          style: Theme.of(context).textTheme.subtitle2),
-                      const SizedBox(height: 20),
-                      Text(model.selectedNote!.content,
-                          style: Theme.of(context).textTheme.bodyText1)
-                    ],
-                  );
-                },
-              ),
-            ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        child: AnimatedBuilder(
+          animation: model,
+          builder: (context, child) {
+            if (model.status == ModelStatus.busy) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (model.note == null) {
+              return Container();
+            }
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(model.note!.title,
+                    style: Theme.of(context).textTheme.headline5),
+                const SizedBox(height: 20),
+                Text(model.note!.formattedTime,
+                    style: Theme.of(context).textTheme.subtitle2),
+                const SizedBox(height: 20),
+                Text(model.note!.content,
+                    style: Theme.of(context).textTheme.bodyText1)
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 }

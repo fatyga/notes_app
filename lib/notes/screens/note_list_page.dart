@@ -25,6 +25,7 @@ class _NoteListPageState extends State<NoteListPage> {
 
   @override
   void initState() {
+    model.loadSavedNotes();
     model.startNotesSubscription();
     super.initState();
   }
@@ -52,17 +53,34 @@ class _NoteListPageState extends State<NoteListPage> {
       body: DefaultTabController(
         length: 2,
         child: Column(
-          children: const [
-            TabBar(
+          children: [
+            const TabBar(
               tabs: [Tab(child: Text('Pinned')), Tab(child: Text('All'))],
             ),
             Expanded(
                 child: Padding(
-              padding: EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+              padding:
+                  const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
               child: TabBarView(
                 children: [
-                  PinnedNotesTab(),
-                  AllNotesTab(),
+                  AnimatedBuilder(
+                      animation: model,
+                      builder: (context, _) {
+                        if (model.status == ModelStatus.busy) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        return PinnedNotesTab(notes: model.filterPinnedNotes());
+                      }),
+                  AnimatedBuilder(
+                      animation: model,
+                      builder: (context, _) {
+                        if (model.status == ModelStatus.busy) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        return AllNotesTab(notes: model.notes);
+                      }),
                 ],
               ),
             )),
