@@ -8,15 +8,13 @@ import 'package:notes_app/service_locator.dart';
 
 enum ModelStatus { idle, busy }
 
-class NotesViewModel extends ChangeNotifier {
+class NotesListViewModel extends ChangeNotifier {
   final NotesRepository _notesRepo = serviceLocator<NotesRepository>();
 
   late StreamSubscription notesSubscription;
 
   List<Note> _notes = [];
   List<Note> get notes => _notes;
-
-  Note? selectedNote;
 
   ModelStatus _status = ModelStatus.idle;
   ModelStatus get status => _status;
@@ -44,11 +42,6 @@ class NotesViewModel extends ChangeNotifier {
     });
   }
 
-  void selectNote(Note note) {
-    selectedNote = note;
-    notifyListeners();
-  }
-
   // notes manipulation
   Future<void> addNote(String title, String content) async {
     setModelStatus(ModelStatus.busy);
@@ -58,34 +51,6 @@ class NotesViewModel extends ChangeNotifier {
       'pinned': false,
       'createdAt': Timestamp.now()
     });
-    setModelStatus(ModelStatus.idle);
-  }
-
-  Future<void> deleteNote() async {
-    setModelStatus(ModelStatus.busy);
-    if (selectedNote != null) {
-      await _notesRepo.deleteNote(selectedNote!);
-    }
-    selectedNote = null;
-    setModelStatus(ModelStatus.idle);
-  }
-
-  Future<void> updateNote(
-      {String? title, String? content, required bool changePinned}) async {
-    setModelStatus(ModelStatus.busy);
-
-    if (selectedNote != null) {
-      Note updatedNote = selectedNote!.copyWith(
-          title: title,
-          content: content,
-          pinned:
-              (changePinned) ? !selectedNote!.pinned : !selectedNote!.pinned);
-      await _notesRepo.updateNote(
-        updatedNote,
-      );
-    }
-    selectedNote =
-        _notes.firstWhere((element) => element.id == selectedNote!.id);
     setModelStatus(ModelStatus.idle);
   }
 

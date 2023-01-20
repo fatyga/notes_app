@@ -1,25 +1,32 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/notes/domain/notes_view_model.dart';
-import 'package:notes_app/notes/services/firestore_notes_service.dart';
-import 'package:notes_app/notes/domain/models/note.dart';
 import 'package:notes_app/service_locator.dart';
-import 'package:provider/provider.dart';
+
+import '../domain/note_update_view_model.dart';
 
 class UpdateNotePage extends StatefulWidget {
-  const UpdateNotePage({super.key});
+  const UpdateNotePage({super.key, required this.noteId});
+  final String noteId;
 
   @override
   _UpdateNotePageState createState() => _UpdateNotePageState();
 }
 
 class _UpdateNotePageState extends State<UpdateNotePage> {
-  final model = serviceLocator<NotesViewModel>();
+  final model = serviceLocator<NoteUpdateViewModel>();
   final titleController = TextEditingController();
   final contentController = TextEditingController();
 
   String errorContent = '';
-  bool filledInputs = false;
+
+  @override
+  void initState() {
+    model.loadSavedNote(widget.noteId).then((_) {
+      titleController.text = model.note.title;
+      contentController.text = model.note.content;
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -30,70 +37,73 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (!filledInputs) {
-      titleController.text = model.selectedNote!.title;
-      contentController.text = model.selectedNote!.content;
-      filledInputs = true;
-    }
-
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: model.status == ModelStatus.busy,
         elevation: 0,
         actions: [
-          IconButton(
-            onPressed: () async {
-              if (titleController.text.isEmpty ||
-                  contentController.text.isEmpty) {
-                setState(() {
-                  errorContent = 'You need to fill both fields';
-                });
-              } else {
-                await model.updateNote(
-                    title: titleController.text,
-                    content: contentController.text,
-                    changePinned: false);
+          AnimatedBuilder(
+              animation: model,
+              builder: (context, _) {
+                if (model.status == ModelStatus.busy) {
+                  return Row();
+                }
 
-                context.router.pop();
-              }
-            },
-            icon: model.status == ModelStatus.busy
-                ? const Icon(
-                    Icons.save_outlined,
-                    color: Colors.grey,
+                return Row(children: [
+                  IconButton(
+                    onPressed: () async {
+                      if (titleController.text.isEmpty ||
+                          contentController.text.isEmpty) {
+                        setState(() {
+                          errorContent = 'You need to fill both fields';
+                        });
+                      } else {
+                        await model.updateNote(
+                          title: titleController.text,
+                          content: contentController.text,
+                        );
+                        context.router.pop();
+                      }
+                    },
+                    icon: const Icon(Icons.save_outlined),
                   )
-                : const Icon(Icons.save_outlined),
-          )
+                ]);
+              })
         ],
       ),
-      body: model.status == ModelStatus.busy
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-              child: Column(
-                children: <Widget>[
-                  Text(errorContent,
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle2!
-                          .copyWith(color: Theme.of(context).errorColor)),
-                  TextField(
-                    controller: titleController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    autofocus: true,
-                    decoration: const InputDecoration(hintText: ("Title")),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: contentController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    decoration:
-                        const InputDecoration(hintText: ("Type here..")),
-                  ),
-                ],
-              )),
+      body: AnimatedBuilder(
+          animation: model,
+          builder: (context, _) {
+            if (model.status == ModelStatus.busy) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                child: Column(
+                  children: <Widget>[
+                    Text(errorContent,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle2!
+                            .copyWith(color: Theme.of(context).errorColor)),
+                    TextField(
+                      controller: titleController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      autofocus: true,
+                      decoration: const InputDecoration(hintText: ("Title")),
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: contentController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration:
+                          const InputDecoration(hintText: ("Type here..")),
+                    ),
+                  ],
+                ));
+          }),
     );
   }
 }

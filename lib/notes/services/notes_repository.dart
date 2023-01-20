@@ -9,8 +9,10 @@ class NotesRepository {
   final NotesService _notesService = serviceLocator<NotesService>();
 
   Stream<List<Note>> get notesChanges => _notesService.notesChanges;
-  Stream<Note> noteChanges(String noteId) => _notesService.noteChanges(noteId);
   Future<List<Note>> savedNotes() => _notesService.savedNotes();
+
+  Stream<Note> noteChanges(String noteId) => _notesService.noteChanges(noteId);
+  Future<Note> savedNote(String noteId) => _notesService.savedNote(noteId);
 
   Future<void> addNote(Map<String, dynamic> newNote) async {
     await _notesService.addNote(newNote);
@@ -20,7 +22,7 @@ class NotesRepository {
     await _notesService.updateNote(note.id, note.toMap());
   }
 
-  Future<void> deleteNote(Note note) async {
-    await _notesService.deleteNote(note.id);
+  Future<void> deleteNote(String noteId) async {
+    await _notesService.deleteNote(noteId);
   }
 }

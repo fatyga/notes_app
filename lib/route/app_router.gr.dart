@@ -19,8 +19,8 @@ import '../authentication/screens/register_screen.dart' as _i4;
 import '../authentication/screens/sign_in_screen.dart' as _i3;
 import '../authentication/screens/wrapper_page.dart' as _i1;
 import '../notes/screens/new_note_page.dart' as _i8;
-import '../notes/screens/note_list_page.dart' as _i6;
 import '../notes/screens/note_preview_page.dart' as _i7;
+import '../notes/screens/notes_list_page.dart' as _i6;
 import '../notes/screens/notes_wrapper_page.dart' as _i5;
 import '../notes/screens/update_note_page.dart' as _i9;
 
@@ -83,9 +83,13 @@ class AppRouter extends _i10.RootStackRouter {
       );
     },
     UpdateNoteRoute.name: (routeData) {
+      final args = routeData.argsAs<UpdateNoteRouteArgs>();
       return _i10.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i9.UpdateNotePage(),
+        child: _i9.UpdateNotePage(
+          key: args.key,
+          noteId: args.noteId,
+        ),
       );
     },
   };
@@ -288,12 +292,34 @@ class NewNoteRoute extends _i10.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i9.UpdateNotePage]
-class UpdateNoteRoute extends _i10.PageRouteInfo<void> {
-  const UpdateNoteRoute()
-      : super(
+class UpdateNoteRoute extends _i10.PageRouteInfo<UpdateNoteRouteArgs> {
+  UpdateNoteRoute({
+    _i11.Key? key,
+    required String noteId,
+  }) : super(
           UpdateNoteRoute.name,
           path: 'updateNote',
+          args: UpdateNoteRouteArgs(
+            key: key,
+            noteId: noteId,
+          ),
         );
 
   static const String name = 'UpdateNoteRoute';
+}
+
+class UpdateNoteRouteArgs {
+  const UpdateNoteRouteArgs({
+    this.key,
+    required this.noteId,
+  });
+
+  final _i11.Key? key;
+
+  final String noteId;
+
+  @override
+  String toString() {
+    return 'UpdateNoteRouteArgs{key: $key, noteId: $noteId}';
+  }
 }

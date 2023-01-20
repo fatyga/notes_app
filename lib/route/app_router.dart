@@ -4,7 +4,7 @@ import 'package:notes_app/authentication/screens/wrapper_page.dart';
 import 'package:notes_app/authentication/screens/register_screen.dart';
 import 'package:notes_app/authentication/screens/sign_in_screen.dart';
 import 'package:notes_app/notes/screens/new_note_page.dart';
-import 'package:notes_app/notes/screens/note_list_page.dart';
+import 'package:notes_app/notes/screens/notes_list_page.dart';
 import 'package:notes_app/notes/screens/notes_wrapper_page.dart';
 import 'package:notes_app/notes/screens/update_note_page.dart';
 import 'package:notes_app/notes/screens/note_preview_page.dart';

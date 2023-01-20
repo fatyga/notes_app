@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/notes/domain/notes_view_model.dart';
+import 'package:notes_app/notes/domain/notes_list_view_model.dart';
 import 'package:notes_app/notes/widgets/all_notes_tab.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/avatar.dart';
@@ -19,7 +19,7 @@ class NoteListPage extends StatefulWidget {
 }
 
 class _NoteListPageState extends State<NoteListPage> {
-  final model = serviceLocator<NotesViewModel>();
+  final model = serviceLocator<NotesListViewModel>();
   final AuthenticationService authenticationModel =
       serviceLocator<AuthenticationService>();
 

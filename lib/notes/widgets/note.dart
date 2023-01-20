@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/notes/domain/notes_view_model.dart';
+import 'package:notes_app/notes/domain/notes_list_view_model.dart';
 import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/notes/domain/models/note.dart';
 import 'package:notes_app/service_locator.dart';
@@ -20,8 +20,6 @@ class NoteWidget extends StatelessWidget {
           InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             onTap: () {
-              serviceLocator<NotesViewModel>().selectNote(note);
-
               context.router.push(NotePreviewRoute(noteId: note.id));
             },
             child: Container(

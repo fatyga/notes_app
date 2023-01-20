@@ -73,6 +73,24 @@ class FirestoreNotesService implements NotesService {
   }
 
   @override
+  Future<Note> savedNote(String noteId) async {
+    final savedNote = await _firestore
+        .collection('users')
+        .doc(userUid)
+        .collection('notes')
+        .doc(noteId)
+        .get();
+    final noteMap = {
+      'id': savedNote.id,
+      'title': savedNote.get('title'),
+      'pinned': savedNote.get('pinned'),
+      'content': savedNote.get('content'),
+      'createdAt': savedNote.get('createdAt')
+    };
+    return Note.fromMap(noteMap);
+  }
+
+  @override
   Future addNote(Map<String, dynamic> noteData) async {
     return await _firestore
         .collection('users')
