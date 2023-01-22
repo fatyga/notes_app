@@ -5,35 +5,21 @@ import 'package:notes_app/notes/domain/models/note.dart';
 
 import 'package:notes_app/service_locator.dart';
 
+import '../../authentication/business_logic/models/app_user.dart';
 import '../../authentication/services/authentication_service.dart';
 import 'notes_service.dart';
 
 class FirestoreNotesService implements NotesService {
-  final FirebaseFirestore _firestore = serviceLocator<FirebaseFirestore>();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final AuthenticationService _authenticationService =
       serviceLocator<AuthenticationService>();
-
-  late String userUid;
-
-  void startUserSubscription() {
-    _authenticationService.authenticationChanges.listen((user) {
-      if (user != null) {
-        userUid = user.uid;
-      }
-    });
-  }
-
-  //TODO: Fix obtaining current userUid
-  FirestoreNotesService() {
-    userUid = FirebaseAuth.instance.currentUser!.uid;
-  }
 
   //Notes
   @override
   Stream<List<Note>> get notesChanges {
     return _firestore
         .collection('users')
-        .doc(userUid)
+        .doc(_authenticationService.getCurrentUser()!.uid)
         .collection('notes')
         .snapshots()
         .map((queryDocumentSnapshots) => queryDocumentSnapshots.docs
@@ -46,10 +32,11 @@ class FirestoreNotesService implements NotesService {
   Stream<Note> noteChanges(String noteId) {
     return _firestore
         .collection('users')
-        .doc(userUid)
+        .doc(_authenticationService.getCurrentUser()!.uid)
         .collection('notes')
         .doc(noteId)
         .snapshots()
+        .where((note) => note.exists)
         .map((note) {
       final noteMap = {
         'id': note.id,
@@ -58,6 +45,7 @@ class FirestoreNotesService implements NotesService {
         'content': note.get('content'),
         'createdAt': note.get('createdAt')
       };
+      print(noteMap);
       return Note.fromMap(noteMap);
     });
   }
@@ -66,7 +54,7 @@ class FirestoreNotesService implements NotesService {
   Future<List<Note>> savedNotes() async {
     final savedNotes = await _firestore
         .collection('users')
-        .doc(userUid)
+        .doc(_authenticationService.getCurrentUser()!.uid)
         .collection('notes')
         .get();
     return savedNotes.docs.map((e) => Note.fromFirestore(e)).toList();
@@ -76,7 +64,7 @@ class FirestoreNotesService implements NotesService {
   Future<Note> savedNote(String noteId) async {
     final savedNote = await _firestore
         .collection('users')
-        .doc(userUid)
+        .doc(_authenticationService.getCurrentUser()!.uid)
         .collection('notes')
         .doc(noteId)
         .get();
@@ -94,7 +82,7 @@ class FirestoreNotesService implements NotesService {
   Future addNote(Map<String, dynamic> noteData) async {
     return await _firestore
         .collection('users')
-        .doc(userUid)
+        .doc(_authenticationService.getCurrentUser()!.uid)
         .collection('notes')
         .add(noteData);
   }
@@ -103,7 +91,7 @@ class FirestoreNotesService implements NotesService {
   Future deleteNote(String id) async {
     return await _firestore
         .collection('users')
-        .doc(userUid)
+        .doc(_authenticationService.getCurrentUser()!.uid)
         .collection('notes')
         .doc(id)
         .delete();
@@ -113,7 +101,7 @@ class FirestoreNotesService implements NotesService {
   Future updateNote(String noteId, Map<String, dynamic> noteData) async {
     return await _firestore
         .collection('users')
-        .doc(userUid)
+        .doc(_authenticationService.getCurrentUser()!.uid)
         .collection('notes')
         .doc(noteId)
         .update(noteData);

@@ -34,14 +34,6 @@ class NotesListViewModel extends ChangeNotifier {
     notesSubscription.cancel();
   }
 
-  void loadSavedNotes() {
-    setModelStatus(ModelStatus.busy);
-    _notesRepo.savedNotes().then((savedNotes) {
-      _notes = savedNotes;
-      setModelStatus(ModelStatus.idle);
-    });
-  }
-
   // notes manipulation
   Future<void> addNote(String title, String content) async {
     setModelStatus(ModelStatus.busy);

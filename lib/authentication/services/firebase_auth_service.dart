@@ -7,6 +7,15 @@ class FirebaseAuthenticationService implements AuthenticationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
+  AppUser? getCurrentUser() {
+    final currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      return AppUser(uid: currentUser.uid);
+    }
+    return null;
+  }
+
+  @override
   Stream<AppUser?> get authenticationChanges =>
       _auth.authStateChanges().map((user) {
         if (user != null) {

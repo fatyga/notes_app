@@ -25,7 +25,6 @@ class _NoteListPageState extends State<NoteListPage> {
 
   @override
   void initState() {
-    model.loadSavedNotes();
     model.startNotesSubscription();
     super.initState();
   }

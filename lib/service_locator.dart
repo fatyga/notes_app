@@ -24,10 +24,6 @@ void setupServiceLocator() {
   serviceLocator.registerFactory<AuthenticationViewModel>(
       () => AuthenticationViewModel());
 
-  //firestore
-  serviceLocator.registerLazySingleton<FirebaseFirestore>(
-      () => FirebaseFirestore.instance);
-
   // notes
   serviceLocator
       .registerLazySingleton<NotesService>(() => FirestoreNotesService());
