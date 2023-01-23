@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:notes_app/authentication/business_logic/authentication_view_model.dart';
 import 'package:notes_app/authentication/services/firebase_auth_service.dart';
 import 'package:notes_app/authentication/services/authentication_repository.dart';
+import 'package:notes_app/notes/domain/new_note_view_model.dart';
 import 'package:notes_app/notes/domain/note_update_view_model.dart';
 import 'package:notes_app/notes/domain/notes_list_view_model.dart';
 import 'package:notes_app/notes/services/notes_repository.dart';
@@ -37,4 +38,5 @@ void setupServiceLocator() {
       .registerFactory<NotesPreviewViewModel>(() => NotesPreviewViewModel());
   serviceLocator
       .registerFactory<NoteUpdateViewModel>(() => NoteUpdateViewModel());
+  serviceLocator.registerFactory<NewNoteViewModel>(() => NewNoteViewModel());
 }

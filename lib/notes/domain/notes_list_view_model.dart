@@ -34,18 +34,6 @@ class NotesListViewModel extends ChangeNotifier {
     notesSubscription.cancel();
   }
 
-  // notes manipulation
-  Future<void> addNote(String title, String content) async {
-    setModelStatus(ModelStatus.busy);
-    await _notesRepo.addNote({
-      'title': title,
-      'content': content,
-      'pinned': false,
-      'createdAt': Timestamp.now()
-    });
-    setModelStatus(ModelStatus.idle);
-  }
-
   List<Note> filterPinnedNotes() {
     return _notes.where(((note) => note.pinned)).toList();
   }

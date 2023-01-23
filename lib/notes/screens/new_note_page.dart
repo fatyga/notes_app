@@ -1,10 +1,8 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/notes/domain/notes_list_view_model.dart';
-import 'package:notes_app/notes/services/firestore_notes_service.dart';
 import 'package:notes_app/service_locator.dart';
-import 'package:provider/provider.dart';
+
+import '../domain/new_note_view_model.dart';
 
 class NewNotePage extends StatefulWidget {
   const NewNotePage({super.key});
@@ -14,7 +12,7 @@ class NewNotePage extends StatefulWidget {
 }
 
 class _NewNotePageState extends State<NewNotePage> {
-  final model = serviceLocator<NotesListViewModel>();
+  final model = serviceLocator<NewNoteViewModel>();
 
   final titleController = TextEditingController();
   final contentController = TextEditingController();
@@ -59,34 +57,39 @@ class _NewNotePageState extends State<NewNotePage> {
           )
         ],
       ),
-      body: (model.status == ModelStatus.busy)
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-              child: Column(
-                children: <Widget>[
-                  Text(errorContent,
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle2!
-                          .copyWith(color: Theme.of(context).errorColor)),
-                  TextField(
-                    controller: titleController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    autofocus: true,
-                    decoration: const InputDecoration(hintText: ("Title")),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: contentController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    decoration:
-                        const InputDecoration(hintText: ("Type here..")),
-                  ),
-                ],
-              )),
+      body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+          child: AnimatedBuilder(
+              animation: model,
+              builder: (context, _) {
+                if (model.status == ModelStatus.busy) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return Column(
+                  children: <Widget>[
+                    Text(errorContent,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle2!
+                            .copyWith(color: Theme.of(context).errorColor)),
+                    TextField(
+                      controller: titleController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      autofocus: true,
+                      decoration: const InputDecoration(hintText: ("Title")),
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: contentController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration:
+                          const InputDecoration(hintText: ("Type here..")),
+                    ),
+                  ],
+                );
+              })),
     );
   }
 }
