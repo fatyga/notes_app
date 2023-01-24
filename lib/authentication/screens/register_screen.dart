@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notes_app/authentication/business_logic/authentication_view_model.dart';
 import 'package:notes_app/service_locator.dart';
+import 'package:notes_app/shared/enums/view_state.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -36,7 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             children: [
                               TextFormField(
                                   controller: _emailController,
-                                  enabled: model.status == ModelStatus.idle,
+                                  enabled: model.status == ViewState.idle,
                                   validator: (value) =>
                                       (value != null && value.isEmpty)
                                           ? 'Enter an email'
@@ -48,7 +49,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               const SizedBox(height: 20),
                               TextFormField(
                                   controller: _passwordController,
-                                  enabled: model.status == ModelStatus.idle,
+                                  enabled: model.status == ViewState.idle,
                                   validator: (value) =>
                                       (value != null && value.length < 6)
                                           ? 'Enter at least 6 characters'
@@ -77,7 +78,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       }
                                     }
                                   },
-                                  child: model.status == ModelStatus.busy
+                                  child: model.status == ViewState.busy
                                       ? const CircularProgressIndicator()
                                       : const Text('Register'))
                             ])),

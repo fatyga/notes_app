@@ -1,31 +1,24 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:notes_app/shared/enums/view_state.dart';
+import 'package:notes_app/shared/view_model.dart';
 
 import '../../service_locator.dart';
 import '../services/notes_repository.dart';
 import 'models/note.dart';
 
-enum ModelStatus { idle, busy }
-
-class NoteUpdateViewModel extends ChangeNotifier {
+class NoteUpdateViewModel extends ViewModel {
   final NotesRepository _notesRepo = serviceLocator<NotesRepository>();
 
   late Note _note;
   Note get note => _note;
 
-  ModelStatus _status = ModelStatus.busy;
-  ModelStatus get status => _status;
-  void setModelStatus(ModelStatus status) {
-    _status = status;
-    notifyListeners();
-  }
-
   Future<void> loadSavedNote(String noteId) {
     return _notesRepo.savedNote(noteId).then((savedNote) {
       _note = savedNote;
-      if (_status == ModelStatus.busy) {
-        setModelStatus(ModelStatus.idle);
+      if (status == ViewState.busy) {
+        setViewState(ViewState.idle);
       }
     });
   }

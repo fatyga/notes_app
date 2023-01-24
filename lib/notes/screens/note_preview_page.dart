@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/service_locator.dart';
+import 'package:notes_app/shared/enums/view_state.dart';
 
 import '../domain/note_preview_view_model.dart';
 
@@ -38,7 +39,7 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
           AnimatedBuilder(
               animation: model,
               builder: (context, child) {
-                if (model.status == ModelStatus.busy) {
+                if (model.status == ViewState.busy) {
                   return Row();
                 }
 
@@ -73,7 +74,7 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
         child: AnimatedBuilder(
           animation: model,
           builder: (context, child) {
-            if (model.status == ModelStatus.busy) {
+            if (model.status == ViewState.busy) {
               return const Center(child: CircularProgressIndicator());
             }
 

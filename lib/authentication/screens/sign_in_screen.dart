@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/authentication/business_logic/authentication_view_model.dart';
 import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/service_locator.dart';
+import 'package:notes_app/shared/enums/view_state.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -38,7 +39,7 @@ class _SignInPageState extends State<SignInPage> {
                             children: [
                               TextFormField(
                                 controller: _emailController,
-                                enabled: model.status == ModelStatus.idle,
+                                enabled: model.status == ViewState.idle,
                                 validator: (value) =>
                                     (value != null && value.isEmpty)
                                         ? 'Enter an email'
@@ -51,7 +52,7 @@ class _SignInPageState extends State<SignInPage> {
                               const SizedBox(height: 20),
                               TextFormField(
                                   controller: _passwordController,
-                                  enabled: model.status == ModelStatus.idle,
+                                  enabled: model.status == ViewState.idle,
                                   validator: (value) =>
                                       (value != null && value.length < 6)
                                           ? 'Enter at least 6 characters'
@@ -78,7 +79,7 @@ class _SignInPageState extends State<SignInPage> {
                                       }
                                     }
                                   },
-                                  child: model.status == ModelStatus.busy
+                                  child: model.status == ViewState.busy
                                       ? const CircularProgressIndicator()
                                       : const Text('Sign in')),
                               TextButton(

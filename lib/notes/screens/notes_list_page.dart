@@ -6,6 +6,7 @@ import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/avatar.dart';
 import 'package:notes_app/notes/widgets/pinned_notes_tab.dart';
 import 'package:notes_app/route/app_router.gr.dart';
+import 'package:notes_app/shared/enums/view_state.dart';
 import 'package:provider/provider.dart';
 
 import '../../authentication/services/authentication_service.dart';
@@ -65,7 +66,7 @@ class _NoteListPageState extends State<NoteListPage> {
                   AnimatedBuilder(
                       animation: model,
                       builder: (context, _) {
-                        if (model.status == ModelStatus.busy) {
+                        if (model.status == ViewState.busy) {
                           return const Center(
                               child: CircularProgressIndicator());
                         }
@@ -74,7 +75,7 @@ class _NoteListPageState extends State<NoteListPage> {
                   AnimatedBuilder(
                       animation: model,
                       builder: (context, _) {
-                        if (model.status == ModelStatus.busy) {
+                        if (model.status == ViewState.busy) {
                           return const Center(
                               child: CircularProgressIndicator());
                         }

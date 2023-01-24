@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/service_locator.dart';
+import 'package:notes_app/shared/enums/view_state.dart';
 
 import '../domain/new_note_view_model.dart';
 
@@ -33,7 +34,7 @@ class _NewNotePageState extends State<NewNotePage> {
         elevation: 0,
         actions: [
           IconButton(
-            onPressed: (model.status == ModelStatus.busy)
+            onPressed: (model.status == ViewState.busy)
                 ? null
                 : () async {
                     if (titleController.text.isEmpty ||
@@ -48,7 +49,7 @@ class _NewNotePageState extends State<NewNotePage> {
                       context.router.pop();
                     }
                   },
-            icon: (model.status == ModelStatus.busy)
+            icon: (model.status == ViewState.busy)
                 ? const Icon(
                     Icons.save_outlined,
                     color: Colors.grey,
@@ -62,7 +63,7 @@ class _NewNotePageState extends State<NewNotePage> {
           child: AnimatedBuilder(
               animation: model,
               builder: (context, _) {
-                if (model.status == ModelStatus.busy) {
+                if (model.status == ViewState.busy) {
                   return const Center(child: CircularProgressIndicator());
                 }
                 return Column(

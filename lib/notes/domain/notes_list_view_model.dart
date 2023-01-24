@@ -5,23 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/notes/domain/models/note.dart';
 import 'package:notes_app/notes/services/notes_repository.dart';
 import 'package:notes_app/service_locator.dart';
+import 'package:notes_app/shared/enums/view_state.dart';
+import 'package:notes_app/shared/view_model.dart';
 
-enum ModelStatus { idle, busy }
-
-class NotesListViewModel extends ChangeNotifier {
+class NotesListViewModel extends ViewModel {
   final NotesRepository _notesRepo = serviceLocator<NotesRepository>();
 
   late StreamSubscription notesSubscription;
 
   List<Note> _notes = [];
   List<Note> get notes => _notes;
-
-  ModelStatus _status = ModelStatus.idle;
-  ModelStatus get status => _status;
-  void setModelStatus(ModelStatus status) {
-    _status = status;
-    notifyListeners();
-  }
 
   void startNotesSubscription() {
     notesSubscription = _notesRepo.notesChanges.listen((notes) {

@@ -2,24 +2,17 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_app/shared/enums/view_state.dart';
+import 'package:notes_app/shared/view_model.dart';
 
 import '../../service_locator.dart';
 import '../services/notes_repository.dart';
 
-enum ModelStatus { idle, busy }
-
-class NewNoteViewModel extends ChangeNotifier {
+class NewNoteViewModel extends ViewModel {
   final NotesRepository _notesRepo = serviceLocator<NotesRepository>();
 
-  ModelStatus _status = ModelStatus.idle;
-  ModelStatus get status => _status;
-  void setModelStatus(ModelStatus status) {
-    _status = status;
-    notifyListeners();
-  }
-
   Future<void> addNote(String title, String content) async {
-    setModelStatus(ModelStatus.busy);
+    setViewState(ViewState.busy);
     final noteAsMap = {
       'title': title,
       'content': content,
@@ -27,6 +20,6 @@ class NewNoteViewModel extends ChangeNotifier {
       'createdAt': Timestamp.now()
     };
     await _notesRepo.addNote(noteAsMap);
-    setModelStatus(ModelStatus.idle);
+    setViewState(ViewState.idle);
   }
 }

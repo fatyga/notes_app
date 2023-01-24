@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/service_locator.dart';
+import 'package:notes_app/shared/enums/view_state.dart';
 
 import '../domain/note_update_view_model.dart';
 
@@ -44,7 +45,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
           AnimatedBuilder(
               animation: model,
               builder: (context, _) {
-                if (model.status == ModelStatus.busy) {
+                if (model.status == ViewState.busy) {
                   return Row();
                 }
 
@@ -73,7 +74,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
       body: AnimatedBuilder(
           animation: model,
           builder: (context, _) {
-            if (model.status == ModelStatus.busy) {
+            if (model.status == ViewState.busy) {
               return const Center(child: CircularProgressIndicator());
             }
             return Padding(
