@@ -6,7 +6,7 @@ import 'package:notes_app/shared/view_model.dart';
 
 import 'models/app_user.dart';
 
-class AuthenticationViewModel extends ViewModel {
+class RegisterViewModel extends ViewModel {
   final AuthenticationRepository _authRepo =
       serviceLocator<AuthenticationRepository>();
 
@@ -20,12 +20,12 @@ class AuthenticationViewModel extends ViewModel {
     _error = message;
   }
 
-  Future<void> signInUser(String email, String password) async {
-    setError(null);
-    setViewState(ViewState.busy);
-    _user = await _authRepo.signIn(email, password, setError);
-    setViewState(ViewState.idle);
-  }
+  // Future<void> signInUser(String email, String password) async {
+  //   setError(null);
+  //   setViewState(ViewState.busy);
+  //   _user = await _authRepo.signIn(email, password, setError);
+  //   setViewState(ViewState.idle);
+  // }
 
   Future<void> registerUser(String email, String password) async {
     setError(null);
@@ -34,10 +34,10 @@ class AuthenticationViewModel extends ViewModel {
     setViewState(ViewState.idle);
   }
 
-  Future<void> logOutUser() async {
-    setError(null);
-    setViewState(ViewState.busy);
-    await _authRepo.logOut();
-    setViewState(ViewState.idle);
-  }
+  // Future<void> logOutUser() async {
+  //   setError(null);
+  //   setViewState(ViewState.busy);
+  //   await _authRepo.logOut();
+  //   setViewState(ViewState.idle);
+  // }
 }

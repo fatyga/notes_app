@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/authentication/business_logic/authentication_view_model.dart';
+import 'package:notes_app/authentication/business_logic/sign_in_view_model.dart';
+import 'package:notes_app/authentication/business_logic/register_view_model.dart';
 import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
@@ -13,7 +14,7 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  AuthenticationViewModel model = serviceLocator<AuthenticationViewModel>();
+  SignInViewModel model = serviceLocator<SignInViewModel>();
   final _formKey = GlobalKey<FormState>();
 
   final _emailController = TextEditingController();

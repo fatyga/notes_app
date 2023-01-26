@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/authentication/business_logic/authentication_view_model.dart';
+import 'package:notes_app/authentication/business_logic/register_view_model.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 
@@ -11,7 +11,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  AuthenticationViewModel model = serviceLocator<AuthenticationViewModel>();
+  RegisterViewModel model = serviceLocator<RegisterViewModel>();
   final _formKey = GlobalKey<FormState>();
 
   final _emailController = TextEditingController();
