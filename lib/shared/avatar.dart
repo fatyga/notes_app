@@ -17,22 +17,22 @@ class UserAvatar extends StatelessWidget {
             ? CircleAvatar(
                 radius: radius,
                 backgroundColor: Colors.grey[100],
-                child: const Icon(Icons.person))
+                child: Icon(Icons.person, size: radius))
             : CachedNetworkImage(
                 imageUrl: avatarUrl.toString(),
                 imageBuilder: (context, imageProvider) => CircleAvatar(
-                  radius: radius,
-                  backgroundColor: Colors.grey[100],
-                  backgroundImage: imageProvider,
-                ),
+                      radius: radius,
+                      backgroundColor: Colors.grey[100],
+                      backgroundImage: imageProvider,
+                    ),
                 placeholder: (context, url) => CircleAvatar(
                     radius: radius,
                     backgroundColor: Colors.grey[100],
                     child: const CircularProgressIndicator()),
                 errorWidget: (context, url, error) => CircleAvatar(
-                    radius: radius,
-                    backgroundColor: Colors.grey[100],
-                    child: const Icon(Icons.error)),
-              ));
+                      radius: radius,
+                      backgroundColor: Colors.grey[100],
+                      child: Icon(Icons.error, size: (radius / 2)),
+                    )));
   }
 }

@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:notes_app/authentication/business_logic/register_view_model.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:notes_app/account/domain/new_account_view_model.dart';
 import 'package:notes_app/service_locator.dart';
+import 'package:notes_app/shared/avatar.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -11,11 +15,25 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  RegisterViewModel model = serviceLocator<RegisterViewModel>();
+  NewAccountViewModel model = serviceLocator<NewAccountViewModel>();
   final _formKey = GlobalKey<FormState>();
+
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  File? pickedAvatar;
+
+  Future<void> pickImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedImage != null) {
+      final file = File(pickedImage.path);
+      pickedAvatar = file;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +47,38 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(height: 120.0),
                     Text('Register',
                         style: Theme.of(context).textTheme.headline4),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 28),
+                    UserAvatar(radius: 72, onPressed: pickImage),
+                    const SizedBox(height: 28),
                     Form(
                         key: _formKey,
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              TextFormField(
+                                  controller: _firstNameController,
+                                  enabled: model.status == ViewState.idle,
+                                  validator: (value) =>
+                                      (value != null && value.isEmpty)
+                                          ? 'Enter a first name'
+                                          : null,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    labelText: 'First Name',
+                                  )),
+                              const SizedBox(height: 20),
+                              TextFormField(
+                                  controller: _lastNameController,
+                                  enabled: model.status == ViewState.idle,
+                                  validator: (value) =>
+                                      (value != null && value.isEmpty)
+                                          ? 'Enter a last name'
+                                          : null,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    labelText: 'Last Name',
+                                  )),
+                              const SizedBox(height: 20),
                               TextFormField(
                                   controller: _emailController,
                                   enabled: model.status == ViewState.idle,
@@ -64,18 +108,24 @@ class _RegisterPageState extends State<RegisterPage> {
                               ElevatedButton(
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
-                                      await model.registerUser(
-                                        _emailController.text,
-                                        _passwordController.text,
-                                      );
-                                      if (model.error != null) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text(model.error!),
-                                          duration: const Duration(
-                                              milliseconds: 2000),
-                                        ));
-                                      }
+                                      await model.createAccount(
+                                          _emailController.text,
+                                          _passwordController.text,
+                                          _firstNameController.text,
+                                          _lastNameController.text,
+                                          pickedAvatar);
+                                      // await model.registerUser(
+                                      //   _emailController.text,
+                                      //   _passwordController.text,
+                                      // );
+                                      // if (model.error != null) {
+                                      //   ScaffoldMessenger.of(context)
+                                      //       .showSnackBar(SnackBar(
+                                      //     content: Text(model.error!),
+                                      //     duration: const Duration(
+                                      //         milliseconds: 2000),
+                                      //   ));
+                                      // }
                                     }
                                   },
                                   child: model.status == ViewState.busy
