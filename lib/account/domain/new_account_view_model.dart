@@ -14,6 +14,13 @@ class NewAccountViewModel extends ViewModel {
   final UserAccountViewModel _userAccountViewModel =
       serviceLocator<UserAccountViewModel>();
 
+  File? _selectedAvatar;
+  File? get selectedAvatar => _selectedAvatar;
+  set selectedAvatar(File? avatar) {
+    _selectedAvatar = avatar;
+    notifyListeners();
+  }
+
   String? _error;
 
   String? get error => _error;
@@ -22,8 +29,8 @@ class NewAccountViewModel extends ViewModel {
     _error = message;
   }
 
-  Future<void> createAccount(String email, String password, String firstName,
-      String lastName, File? avatar) async {
+  Future<void> createAccount(
+      String email, String password, String firstName, String lastName) async {
     setViewState(ViewState.busy);
     setError(null);
     await _registerViewModel.registerUser(email, password, setError);
@@ -33,7 +40,7 @@ class NewAccountViewModel extends ViewModel {
     }
     await _userAccountViewModel.addUserAccount(
         UserAccount(firstName: firstName, lastName: lastName),
-        avatar,
+        _selectedAvatar,
         setError);
     if (error != null) {
       setViewState(ViewState.idle);

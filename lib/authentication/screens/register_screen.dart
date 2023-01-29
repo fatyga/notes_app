@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,14 +25,12 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  File? pickedAvatar;
-
   Future<void> pickImage() async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
       final file = File(pickedImage.path);
-      pickedAvatar = file;
+      model.selectedAvatar = file;
     }
   }
 
@@ -49,6 +48,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: Theme.of(context).textTheme.headline4),
                     const SizedBox(height: 28),
                     UserAvatar(
+                        selectedAvatar: model.selectedAvatar,
                         radius: 72,
                         onPressed: (model.status == ViewState.busy)
                             ? null
@@ -113,15 +113,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
                                       await model.createAccount(
-                                          _emailController.text,
-                                          _passwordController.text,
-                                          _firstNameController.text,
-                                          _lastNameController.text,
-                                          pickedAvatar);
-                                      // await model.registerUser(
-                                      //   _emailController.text,
-                                      //   _passwordController.text,
-                                      // );
+                                        _emailController.text,
+                                        _passwordController.text,
+                                        _firstNameController.text,
+                                        _lastNameController.text,
+                                      );
+
                                       if (model.error != null) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(SnackBar(
