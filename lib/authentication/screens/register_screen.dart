@@ -48,7 +48,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     Text('Register',
                         style: Theme.of(context).textTheme.headline4),
                     const SizedBox(height: 28),
-                    UserAvatar(radius: 72, onPressed: pickImage),
+                    UserAvatar(
+                        radius: 72,
+                        onPressed: (model.status == ViewState.busy)
+                            ? null
+                            : pickImage),
                     const SizedBox(height: 28),
                     Form(
                         key: _formKey,
@@ -118,14 +122,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                       //   _emailController.text,
                                       //   _passwordController.text,
                                       // );
-                                      // if (model.error != null) {
-                                      //   ScaffoldMessenger.of(context)
-                                      //       .showSnackBar(SnackBar(
-                                      //     content: Text(model.error!),
-                                      //     duration: const Duration(
-                                      //         milliseconds: 2000),
-                                      //   ));
-                                      // }
+                                      if (model.error != null) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text(model.error!),
+                                          duration: const Duration(
+                                              milliseconds: 2000),
+                                        ));
+                                      }
                                     }
                                   },
                                   child: model.status == ViewState.busy

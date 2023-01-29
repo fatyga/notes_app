@@ -12,19 +12,21 @@ class AccountRepository {
   Stream<UserAccount> get userAccountChanges =>
       _accountService.userAccountChanges;
 
-  Future<void> addUserAccount(UserAccount newAccount, File? avatar) async {
+  Future<void> addUserAccount(
+      UserAccount newAccount, File? avatar, Function(String) onError) async {
     if (avatar != null) {
-      String newAvatarUrl = await _avatarService.uploadAvatar(avatar);
-      newAccount.copyWith(avatarUrl: newAvatarUrl);
+      String newAvatarUrl = await _avatarService.uploadAvatar(avatar, onError);
+      newAccount = newAccount.copyWith(avatarUrl: newAvatarUrl);
     }
     await _accountService.addUserAccount(newAccount.toMap());
   }
 
-  Future<void> updateUserAccount(UserAccount newAccount, File? avatar) async {
+  Future<void> updateUserAccount(UserAccount updatedAccount, File? avatar,
+      Function(String) onError) async {
     if (avatar != null) {
-      String newAvatarUrl = await _avatarService.uploadAvatar(avatar);
-      newAccount.copyWith(avatarUrl: newAvatarUrl);
+      String newAvatarUrl = await _avatarService.uploadAvatar(avatar, onError);
+      updatedAccount = updatedAccount.copyWith(avatarUrl: newAvatarUrl);
     }
-    await _accountService.updateUserAccount(newAccount.toMap());
+    await _accountService.updateUserAccount(updatedAccount.toMap());
   }
 }

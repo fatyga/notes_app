@@ -10,15 +10,8 @@ class RegisterViewModel extends ViewModel {
   final AuthenticationRepository _authRepo =
       serviceLocator<AuthenticationRepository>();
 
-  String? _error;
-
-  String? get error => _error;
-
-  void setError(String? message) {
-    _error = message;
-  }
-
-  Future<void> registerUser(String email, String password) async {
+  Future<void> registerUser(
+      String email, String password, Function(String?) setError) async {
     setError(null);
     setViewState(ViewState.busy);
     await _authRepo.register(email, password, setError);

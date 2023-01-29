@@ -11,12 +11,17 @@ class FirebaseAvatarService implements AvatarService {
       serviceLocator<AuthenticationService>();
 
   @override
-  Future<String> uploadAvatar(File file) async {
-    final reference = _storage.ref().child(
-        'avatar/${_authenticationService.getCurrentUser()!.uid}/avatar.png');
-    final uploadTask = await reference.putFile(
-        file, SettableMetadata(contentType: 'image/png'));
-    final url = await uploadTask.ref.getDownloadURL();
-    return url;
+  Future<String> uploadAvatar(File file, Function(String) onError) async {
+    try {
+      final reference = _storage.ref().child(
+          'avatar/${_authenticationService.getCurrentUser()!.uid}/avatar.png');
+      final uploadTask = await reference.putFile(
+          file, SettableMetadata(contentType: 'image/png'));
+      final url = await uploadTask.ref.getDownloadURL();
+      return url;
+    } on FirebaseException catch (e) {
+      onError(e.message!);
+    }
+    throw 'Error';
   }
 }
