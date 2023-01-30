@@ -14,19 +14,21 @@ class AccountRepository {
 
   Future<void> addUserAccount(
       UserAccount newAccount, File? avatar, Function(String) onError) async {
+    await _accountService.addUserAccount(newAccount.toMap());
     if (avatar != null) {
       String newAvatarUrl = await _avatarService.uploadAvatar(avatar, onError);
       newAccount = newAccount.copyWith(avatarUrl: newAvatarUrl);
+      await _accountService.addUserAccount(newAccount.toMap());
     }
-    await _accountService.addUserAccount(newAccount.toMap());
   }
 
   Future<void> updateUserAccount(UserAccount updatedAccount, File? avatar,
       Function(String) onError) async {
+    await _accountService.updateUserAccount(updatedAccount.toMap());
     if (avatar != null) {
       String newAvatarUrl = await _avatarService.uploadAvatar(avatar, onError);
       updatedAccount = updatedAccount.copyWith(avatarUrl: newAvatarUrl);
+      await _accountService.updateUserAccount(updatedAccount.toMap());
     }
-    await _accountService.updateUserAccount(updatedAccount.toMap());
   }
 }

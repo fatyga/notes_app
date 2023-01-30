@@ -42,6 +42,14 @@ class _NoteListPageState extends State<NoteListPage> {
       appBar: AppBar(
         title: Text('Notes', style: Theme.of(context).textTheme.headline5),
         actions: [
+          AnimatedBuilder(
+              animation: model.avatarViewModel,
+              builder: (context, _) => UserAvatar(
+                    radius: 24,
+                    avatarUrl: model.avatarViewModel.avatarUrl.isEmpty
+                        ? null
+                        : model.avatarViewModel.avatarUrl,
+                  )),
           TextButton(
               onPressed: () async {
                 await authenticationModel.signOutUser();
