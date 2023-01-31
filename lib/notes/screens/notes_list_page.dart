@@ -9,9 +9,6 @@ import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 import 'package:provider/provider.dart';
 
-import '../../authentication/services/authentication_service.dart';
-import '../../authentication/services/firebase_auth_service.dart';
-
 class NoteListPage extends StatefulWidget {
   const NoteListPage({super.key});
 
@@ -21,8 +18,6 @@ class NoteListPage extends StatefulWidget {
 
 class _NoteListPageState extends State<NoteListPage> {
   final model = serviceLocator<NotesListViewModel>();
-  final AuthenticationService authenticationModel =
-      serviceLocator<AuthenticationService>();
 
   @override
   void initState() {
@@ -44,18 +39,17 @@ class _NoteListPageState extends State<NoteListPage> {
         actions: [
           AnimatedBuilder(
               animation: model.avatarViewModel,
-              builder: (context, _) => UserAvatar(
-                    radius: 24,
-                    avatarUrl: model.avatarViewModel.avatarUrl.isEmpty
-                        ? null
-                        : model.avatarViewModel.avatarUrl,
+              builder: (context, _) => GestureDetector(
+                    onTap: () {
+                      context.router.push(const UserAccountWrapperRoute());
+                    },
+                    child: UserAvatar(
+                      radius: 24,
+                      avatarUrl: model.avatarViewModel.avatarUrl.isEmpty
+                          ? null
+                          : model.avatarViewModel.avatarUrl,
+                    ),
                   )),
-          TextButton(
-              onPressed: () async {
-                await authenticationModel.signOutUser();
-                context.router.pop();
-              },
-              child: const Text('Logout'))
         ],
       ),
       body: DefaultTabController(

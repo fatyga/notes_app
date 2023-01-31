@@ -18,7 +18,7 @@ class AccountRepository {
     if (avatar != null) {
       String newAvatarUrl = await _avatarService.uploadAvatar(avatar, onError);
       newAccount = newAccount.copyWith(avatarUrl: newAvatarUrl);
-      await _accountService.addUserAccount(newAccount.toMap());
+      await _accountService.updateUserAccount(newAccount.toMap());
     }
   }
 
