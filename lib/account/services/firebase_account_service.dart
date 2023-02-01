@@ -20,6 +20,17 @@ class FirebaseAccountService implements AccountService {
           avatarUrl: firestoreAccount.get('avatarUrl')));
 
   @override
+  Future<UserAccount> loadUserAccount() async {
+    final userAccount = await _firestore
+        .collection('accounts')
+        .doc(_authenticationService.getCurrentUser()!.uid)
+        .get();
+    return UserAccount(
+        firstName: userAccount.get('firstName'),
+        lastName: userAccount.get('lastName'));
+  }
+
+  @override
   Future<void> addUserAccount(Map<String, dynamic> accountDetails) async {
     await _firestore
         .collection('accounts')

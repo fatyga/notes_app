@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/account/screens/account_preview_screen.dart';
+import 'package:notes_app/account/screens/account_update_screen.dart';
 import 'package:notes_app/account/screens/account_wrapper.dart';
 import 'package:notes_app/authentication/screens/wrapper_page.dart';
 import 'package:notes_app/authentication/screens/register_screen.dart';
@@ -29,7 +30,8 @@ import '../account/screens/wrapper.dart';
       AutoRoute(path: 'updateNote', page: UpdateNotePage)
     ]),
     AutoRoute(path: 'userAccount', page: UserAccountWrapperPage, children: [
-      AutoRoute(path: 'preview', initial: true, page: UserAccountPreviewPage)
+      AutoRoute(path: 'preview', initial: true, page: UserAccountPreviewPage),
+      AutoRoute(path: 'update', page: UserAccountUpdatePage)
     ])
   ]),
 ])

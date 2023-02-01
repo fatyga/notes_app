@@ -12,6 +12,8 @@ class AccountRepository {
   Stream<UserAccount> get userAccountChanges =>
       _accountService.userAccountChanges;
 
+  Future<UserAccount> loadUserAccount() => _accountService.loadUserAccount();
+
   Future<void> addUserAccount(
       UserAccount newAccount, File? avatar, Function(String) onError) async {
     await _accountService.addUserAccount(newAccount.toMap());

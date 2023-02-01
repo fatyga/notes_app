@@ -20,7 +20,7 @@ class UserAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: onPressed,
-        child: (avatarUrl == null)
+        child: (avatarUrl == null || selectedAvatar != null)
             ? CircleAvatar(
                 radius: radius,
                 backgroundColor: Colors.grey[100],
