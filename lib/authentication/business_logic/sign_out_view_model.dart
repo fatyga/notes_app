@@ -6,22 +6,13 @@ import 'package:notes_app/shared/view_model.dart';
 
 import 'models/app_user.dart';
 
-class SignInViewModel extends ViewModel {
+class SignOutViewModel extends ViewModel {
   final AuthenticationRepository _authRepo =
       serviceLocator<AuthenticationRepository>();
 
-  String? _error;
-
-  String? get error => _error;
-
-  void setError(String? message) {
-    _error = message;
-  }
-
-  Future<void> signInUser(String email, String password) async {
-    setError(null);
+  Future<void> signOutUser() async {
     setViewState(ViewState.busy);
-    await _authRepo.signIn(email, password, setError);
+    await _authRepo.logOut();
     setViewState(ViewState.idle);
   }
 }

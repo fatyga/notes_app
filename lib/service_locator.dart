@@ -20,6 +20,7 @@ import 'package:notes_app/notes/services/firestore_notes_service.dart';
 
 import 'account/services/account_service.dart';
 import 'account/services/avatar_service.dart';
+import 'authentication/business_logic/sign_out_view_model.dart';
 import 'authentication/services/authentication_service.dart';
 import 'notes/domain/note_preview_view_model.dart';
 import 'notes/services/notes_service.dart';
@@ -35,7 +36,7 @@ void setupServiceLocator() {
 
   serviceLocator.registerFactory<SignInViewModel>(() => SignInViewModel());
   serviceLocator.registerFactory<RegisterViewModel>(() => RegisterViewModel());
-
+  serviceLocator.registerFactory<SignOutViewModel>(() => SignOutViewModel());
   // notes
   serviceLocator
       .registerLazySingleton<NotesService>(() => FirestoreNotesService());

@@ -18,8 +18,6 @@ class UserAccountPreviewPage extends StatefulWidget {
 
 class _UserAccountPreviewPageState extends State<UserAccountPreviewPage> {
   final model = serviceLocator<UserAccountPreviewViewModel>();
-  final AuthenticationService authenticationService =
-      serviceLocator<AuthenticationService>();
 
   @override
   void initState() {
@@ -75,7 +73,7 @@ class _UserAccountPreviewPageState extends State<UserAccountPreviewPage> {
                         const SizedBox(height: 36),
                         ElevatedButton(
                             onPressed: () async {
-                              await authenticationService.signOutUser();
+                              await model.signOutUser();
                             },
                             child: const Text('Logout'))
                       ],
