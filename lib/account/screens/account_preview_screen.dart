@@ -53,9 +53,11 @@ class _UserAccountPreviewPageState extends State<UserAccountPreviewPage> {
                   ? const Center(child: CircularProgressIndicator())
                   : ListView(
                       children: [
-                        UserAvatar(
-                          radius: 72,
-                          avatarUrl: model.account.avatarUrl,
+                        Center(
+                          child: UserAvatar(
+                            radius: 72,
+                            avatarUrl: model.account.avatarUrl,
+                          ),
                         ),
                         const SizedBox(height: 36),
                         Column(

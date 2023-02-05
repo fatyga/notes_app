@@ -25,13 +25,50 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  Future<void> pickImage() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
+  Future<void> pickImage(ImageSource source) async {
+    final pickedImage = await ImagePicker().pickImage(source: source);
     if (pickedImage != null) {
       final file = File(pickedImage.path);
       model.selectedAvatar = file;
     }
+  }
+
+  void chooseAvatarSource() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            title: const Text('Choose avatar source'),
+            children: <Widget>[
+              SimpleDialogOption(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  await pickImage(ImageSource.gallery);
+                },
+                child: Row(
+                  children: const [
+                    Icon(Icons.image),
+                    SizedBox(width: 8),
+                    Text('gallery'),
+                  ],
+                ),
+              ),
+              SimpleDialogOption(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  await pickImage(ImageSource.camera);
+                },
+                child: Row(
+                  children: const [
+                    Icon(Icons.camera_alt),
+                    SizedBox(width: 8),
+                    Text('camera'),
+                  ],
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -47,12 +84,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     Text('Register',
                         style: Theme.of(context).textTheme.headline4),
                     const SizedBox(height: 28),
-                    UserAvatar(
-                        selectedAvatar: model.selectedAvatar,
-                        radius: 72,
-                        onPressed: (model.status == ViewState.busy)
-                            ? null
-                            : pickImage),
+                    Center(
+                      child: UserAvatar(
+                          selectedAvatar: model.selectedAvatar,
+                          radius: 72,
+                          onPressed: (model.status == ViewState.busy)
+                              ? null
+                              : chooseAvatarSource),
+                    ),
                     const SizedBox(height: 28),
                     Form(
                         key: _formKey,
