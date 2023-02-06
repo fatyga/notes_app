@@ -1,11 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:notes_app/authentication/services/firebase_auth_service.dart';
 import 'package:notes_app/notes/domain/models/note.dart';
-
 import 'package:notes_app/service_locator.dart';
-
-import '../../authentication/business_logic/models/app_user.dart';
 import '../../authentication/services/authentication_service.dart';
 import 'notes_service.dart';
 
@@ -14,7 +9,6 @@ class FirestoreNotesService implements NotesService {
   final AuthenticationService _authenticationService =
       serviceLocator<AuthenticationService>();
 
-  //Notes
   @override
   Stream<List<Note>> get notesChanges {
     return _firestore
@@ -37,17 +31,7 @@ class FirestoreNotesService implements NotesService {
         .doc(noteId)
         .snapshots()
         .where((note) => note.exists)
-        .map((note) {
-      final noteMap = {
-        'id': note.id,
-        'title': note.get('title'),
-        'pinned': note.get('pinned'),
-        'content': note.get('content'),
-        'createdAt': note.get('createdAt')
-      };
-      print(noteMap);
-      return Note.fromMap(noteMap);
-    });
+        .map((note) => Note.fromFirestore(note));
   }
 
   @override
@@ -57,7 +41,7 @@ class FirestoreNotesService implements NotesService {
         .doc(_authenticationService.getCurrentUser()!.uid)
         .collection('notes')
         .get();
-    return savedNotes.docs.map((e) => Note.fromFirestore(e)).toList();
+    return savedNotes.docs.map((note) => Note.fromFirestore(note)).toList();
   }
 
   @override
@@ -68,23 +52,17 @@ class FirestoreNotesService implements NotesService {
         .collection('notes')
         .doc(noteId)
         .get();
-    final noteMap = {
-      'id': savedNote.id,
-      'title': savedNote.get('title'),
-      'pinned': savedNote.get('pinned'),
-      'content': savedNote.get('content'),
-      'createdAt': savedNote.get('createdAt')
-    };
-    return Note.fromMap(noteMap);
+
+    return Note.fromFirestore(savedNote);
   }
 
   @override
-  Future addNote(Map<String, dynamic> noteData) async {
+  Future addNote(NewNoteTemplate noteTemplate) async {
     return await _firestore
         .collection('users')
         .doc(_authenticationService.getCurrentUser()!.uid)
         .collection('notes')
-        .add(noteData);
+        .add(noteTemplate.toMap());
   }
 
   @override
@@ -98,20 +76,12 @@ class FirestoreNotesService implements NotesService {
   }
 
   @override
-  Future updateNote(String noteId, Map<String, dynamic> noteData) async {
+  Future updateNote(Note note) async {
     return await _firestore
         .collection('users')
         .doc(_authenticationService.getCurrentUser()!.uid)
         .collection('notes')
-        .doc(noteId)
-        .update(noteData);
+        .doc(note.id)
+        .update(note.noteDetailsAsMap());
   }
-
-  // // UserAccount
-  // Future updateUserAccount(Map<String, dynamic> info) {
-  //   return _firestore
-  //       .collection('users')
-  //       .doc(userUid)
-  //       .set(info, SetOptions(merge: true));
-  // }
 }

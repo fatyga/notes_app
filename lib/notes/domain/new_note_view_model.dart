@@ -1,7 +1,5 @@
 import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:notes_app/notes/domain/models/note.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 import 'package:notes_app/shared/view_model.dart';
 
@@ -13,13 +11,11 @@ class NewNoteViewModel extends ViewModel {
 
   Future<void> addNote(String title, String content) async {
     setViewState(ViewState.busy);
-    final noteAsMap = {
-      'title': title,
-      'content': content,
-      'pinned': false,
-      'createdAt': Timestamp.now()
-    };
-    await _notesRepo.addNote(noteAsMap);
+
+    NewNoteTemplate noteTemplate =
+        NewNoteTemplate(title: title, content: content);
+
+    await _notesRepo.addNote(noteTemplate);
     setViewState(ViewState.idle);
   }
 }

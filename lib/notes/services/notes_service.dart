@@ -5,7 +5,7 @@ abstract class NotesService {
   Future<List<Note>> savedNotes();
   Stream<Note> noteChanges(String noteId);
   Future<Note> savedNote(String noteId);
-  Future addNote(Map<String, dynamic> note);
-  Future updateNote(String noteId, Map<String, dynamic> note);
+  Future addNote(NewNoteTemplate note);
+  Future updateNote(Note note);
   Future deleteNote(String noteId);
 }
