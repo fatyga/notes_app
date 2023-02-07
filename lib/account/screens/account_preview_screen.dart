@@ -6,7 +6,7 @@ import 'package:notes_app/account/widgets/account_detail.dart';
 import 'package:notes_app/authentication/services/authentication_service.dart';
 import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/service_locator.dart';
-import 'package:notes_app/shared/avatar.dart';
+import 'package:notes_app/shared/widgets/avatar.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 
 class UserAccountPreviewPage extends StatefulWidget {

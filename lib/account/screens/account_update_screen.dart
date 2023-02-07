@@ -9,7 +9,7 @@ import 'package:notes_app/account/domain/user_account_view_model.dart';
 import 'package:notes_app/account/widgets/account_detail.dart';
 import 'package:notes_app/authentication/services/authentication_service.dart';
 import 'package:notes_app/service_locator.dart';
-import 'package:notes_app/shared/avatar.dart';
+import 'package:notes_app/shared/widgets/avatar.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 
 class UserAccountUpdatePage extends StatefulWidget {
@@ -107,6 +107,12 @@ class _UserAccountUpdatePageState extends State<UserAccountUpdatePage> {
                         model.account.copyWith(
                             firstName: _firstNameController.text,
                             lastName: _lastNameController.text),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(model.userNotification.content),
+                          duration: const Duration(seconds: 2),
+                        ),
                       );
                       context.router.pop();
                     }

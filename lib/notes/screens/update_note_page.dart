@@ -62,6 +62,12 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                           title: titleController.text,
                           content: contentController.text,
                         );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(model.userNotification.content),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
                         context.router.pop();
                       }
                     },

@@ -47,6 +47,12 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                   IconButton(
                       onPressed: () async {
                         await model.deleteNote(widget.noteId);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(model.userNotification.content),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
                         context.router.pop();
                       },
                       icon: const Icon(Icons.delete)),
@@ -59,6 +65,12 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                   IconButton(
                       onPressed: () async {
                         await model.pinUnpinNote();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(model.userNotification.content),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
                       },
                       icon: model.note.pinned
                           ? const Icon(Icons.push_pin_rounded)

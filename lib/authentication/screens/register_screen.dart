@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:notes_app/account/domain/new_account_view_model.dart';
 import 'package:notes_app/service_locator.dart';
-import 'package:notes_app/shared/avatar.dart';
+import 'package:notes_app/shared/widgets/avatar.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -158,10 +158,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                         _lastNameController.text,
                                       );
 
-                                      if (model.error != null) {
+                                      if (model.userNotification.content
+                                          .isNotEmpty) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(SnackBar(
-                                          content: Text(model.error!),
+                                          content: Text(
+                                              model.userNotification.content),
                                           duration: const Duration(
                                               milliseconds: 2000),
                                         ));

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:notes_app/account/domain/user_account_view_model.dart';
 import 'package:notes_app/authentication/business_logic/register_view_model.dart';
 import 'package:notes_app/service_locator.dart';
@@ -21,31 +22,34 @@ class NewAccountViewModel extends ViewModel {
     notifyListeners();
   }
 
-  String? _error;
-
-  String? get error => _error;
-
-  void setError(String? message) {
-    _error = message;
+  void setError(String message) {
+    setNotification(UserNotification(content: message, isError: true));
   }
 
   Future<void> createAccount(
       String email, String password, String firstName, String lastName) async {
     setViewState(ViewState.busy);
-    setError(null);
+
     await _registerViewModel.registerUser(email, password, setError);
-    if (error != null) {
-      setViewState(ViewState.idle);
+    if (userNotification.isError != null) {
+      setViewState(
+          ViewState.idle,
+          const UserNotification(
+              content: 'Failed to register a user.', isError: true));
       return;
     }
     await _userAccountViewModel.addUserAccount(
         UserAccount(firstName: firstName, lastName: lastName),
         _selectedAvatar,
         setError);
-    if (error != null) {
-      setViewState(ViewState.idle);
+    if (userNotification.isError != null) {
+      setViewState(
+          ViewState.idle,
+          const UserNotification(
+              content: 'Failed to create account.', isError: true));
       return;
     }
-    setViewState(ViewState.idle);
+    setViewState(ViewState.idle,
+        const UserNotification(content: 'User created successfully.'));
   }
 }

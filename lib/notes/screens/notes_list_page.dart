@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/notes/domain/notes_list_view_model.dart';
 import 'package:notes_app/notes/widgets/all_notes_tab.dart';
 import 'package:notes_app/service_locator.dart';
-import 'package:notes_app/shared/avatar.dart';
+import 'package:notes_app/shared/widgets/avatar.dart';
 import 'package:notes_app/notes/widgets/pinned_notes_tab.dart';
 import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/shared/enums/view_state.dart';

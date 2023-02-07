@@ -43,8 +43,17 @@ class _NewNotePageState extends State<NewNotePage> {
                         errorContent = 'You need to fill both fields';
                       });
                     } else {
-                      model.addNote(
+                      await model.addNote(
                           titleController.text, contentController.text);
+
+                      if (model.userNotification.content.isNotEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(model.userNotification.content),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      }
 
                       context.router.pop();
                     }

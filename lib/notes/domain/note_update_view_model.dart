@@ -27,5 +27,7 @@ class NoteUpdateViewModel extends ViewModel {
       {required String title, required String content}) async {
     final updatedNote = note.copyWith(title: title, content: content);
     await _notesRepo.updateNote(updatedNote);
+    setNotification(
+        const UserNotification(content: 'Note updated successffuly'));
   }
 }

@@ -59,6 +59,7 @@ class UserAccountUpdateViewModel extends ViewModel {
     setViewState(ViewState.busy);
     await _accountRepo.updateUserAccount(
         accountDetails, _selectedAvatar, setError);
-    setViewState(ViewState.idle);
+    setViewState(ViewState.idle,
+        const UserNotification(content: 'Account updated successfully.'));
   }
 }
