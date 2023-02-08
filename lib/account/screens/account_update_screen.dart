@@ -108,12 +108,19 @@ class _UserAccountUpdatePageState extends State<UserAccountUpdatePage> {
                             firstName: _firstNameController.text,
                             lastName: _lastNameController.text),
                       );
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(model.userNotification.content),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
+                      print(model.userNotification.content);
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: model.userNotification.isError
+                                ? Theme.of(context).errorColor
+                                : null,
+                            content: Text(model.userNotification.content),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      }
+
                       context.router.pop();
                     }
                   },

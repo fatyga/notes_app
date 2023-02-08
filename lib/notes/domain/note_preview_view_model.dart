@@ -35,12 +35,12 @@ class NotesPreviewViewModel extends ViewModel {
   Future<void> pinUnpinNote() async {
     await _notesRepo.updateNote(note.copyWith(pinned: !note.pinned));
     setNotification(UserNotification(
-        content: 'Note ${note.pinned ? "pinnded" : "unpinned"} successfully.'));
+        content: 'Note ${note.pinned ? "pinned" : "unpinned"} successfully.'));
   }
 
   Future<void> deleteNote(String noteId) async {
     await _notesRepo.deleteNote(noteId);
     setNotification(
-        const UserNotification(content: 'Note deleted successffuly.'));
+        const UserNotification(content: 'Note deleted successfully.'));
   }
 }

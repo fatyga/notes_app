@@ -25,12 +25,8 @@ class UserAccountUpdateViewModel extends ViewModel {
     notifyListeners();
   }
 
-  String? _error;
-
-  String? get error => _error;
-
-  void setError(String? message) {
-    _error = message;
+  void setError(String message) {
+    setNotification(UserNotification(content: message, isError: true));
   }
 
   void startAccountChangesSubscription() {
@@ -41,9 +37,8 @@ class UserAccountUpdateViewModel extends ViewModel {
       if (status == ViewState.busy) {
         setViewState(ViewState.idle);
         return;
-      } else {
-        notifyListeners();
       }
+      notifyListeners();
     });
   }
 
@@ -59,6 +54,13 @@ class UserAccountUpdateViewModel extends ViewModel {
     setViewState(ViewState.busy);
     await _accountRepo.updateUserAccount(
         accountDetails, _selectedAvatar, setError);
+    if (userNotification.isError == true) {
+      setViewState(
+          ViewState.idle,
+          const UserNotification(
+              content: 'Failed to update account.', isError: true));
+      return;
+    }
     setViewState(ViewState.idle,
         const UserNotification(content: 'Account updated successfully.'));
   }

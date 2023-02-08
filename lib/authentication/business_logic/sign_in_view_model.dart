@@ -10,16 +10,11 @@ class SignInViewModel extends ViewModel {
   final AuthenticationRepository _authRepo =
       serviceLocator<AuthenticationRepository>();
 
-  String? _error;
-
-  String? get error => _error;
-
-  void setError(String? message) {
-    _error = message;
+  void setError(String message) {
+    setNotification(UserNotification(content: message, isError: true));
   }
 
   Future<void> signInUser(String email, String password) async {
-    setError(null);
     setViewState(ViewState.busy);
     await _authRepo.signIn(email, password, setError);
     setViewState(ViewState.idle);

@@ -159,9 +159,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                       );
 
                                       if (model.userNotification.content
-                                          .isNotEmpty) {
+                                              .isNotEmpty &&
+                                          mounted) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(SnackBar(
+                                          backgroundColor:
+                                              model.userNotification.isError
+                                                  ? Theme.of(context).errorColor
+                                                  : null,
                                           content: Text(
                                               model.userNotification.content),
                                           duration: const Duration(

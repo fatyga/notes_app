@@ -31,7 +31,7 @@ class NewAccountViewModel extends ViewModel {
     setViewState(ViewState.busy);
 
     await _registerViewModel.registerUser(email, password, setError);
-    if (userNotification.isError != null) {
+    if (userNotification.isError == true) {
       setViewState(
           ViewState.idle,
           const UserNotification(
@@ -42,7 +42,7 @@ class NewAccountViewModel extends ViewModel {
         UserAccount(firstName: firstName, lastName: lastName),
         _selectedAvatar,
         setError);
-    if (userNotification.isError != null) {
+    if (userNotification.isError == true) {
       setViewState(
           ViewState.idle,
           const UserNotification(

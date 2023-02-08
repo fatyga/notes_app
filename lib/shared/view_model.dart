@@ -5,13 +5,16 @@ class ViewModel extends ChangeNotifier {
   ViewState _status = ViewState.idle;
   ViewState get status => _status;
 
-  UserNotification _userNotification = UserNotification();
+  UserNotification _userNotification = const UserNotification();
   UserNotification get userNotification => _userNotification;
 
   void setViewState(ViewState status,
       [UserNotification notification = const UserNotification()]) {
     _status = status;
-    _userNotification = notification;
+    if (status == ViewState.busy) {
+      _userNotification = notification;
+    }
+
     notifyListeners();
   }
 

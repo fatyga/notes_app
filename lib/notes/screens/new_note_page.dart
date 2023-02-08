@@ -46,9 +46,13 @@ class _NewNotePageState extends State<NewNotePage> {
                       await model.addNote(
                           titleController.text, contentController.text);
 
-                      if (model.userNotification.content.isNotEmpty) {
+                      if (model.userNotification.content.isNotEmpty &&
+                          mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
+                            backgroundColor: model.userNotification.isError
+                                ? Theme.of(context).errorColor
+                                : null,
                             content: Text(model.userNotification.content),
                             duration: const Duration(seconds: 2),
                           ),
