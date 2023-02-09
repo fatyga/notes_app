@@ -158,9 +158,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                         _lastNameController.text,
                                       );
 
-                                      if (model.userNotification.content
-                                              .isNotEmpty &&
-                                          mounted) {
+                                      if (mounted &&
+                                          model.isNotificationShouldMeShown) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(SnackBar(
                                           backgroundColor:

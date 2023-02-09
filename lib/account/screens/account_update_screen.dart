@@ -3,10 +3,7 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:notes_app/account/domain/user_account_preview_view_model.dart';
 import 'package:notes_app/account/domain/user_account_update_view_model.dart';
-import 'package:notes_app/account/domain/user_account_view_model.dart';
-import 'package:notes_app/account/widgets/account_detail.dart';
 import 'package:notes_app/authentication/services/authentication_service.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/widgets/avatar.dart';
@@ -108,8 +105,8 @@ class _UserAccountUpdatePageState extends State<UserAccountUpdatePage> {
                             firstName: _firstNameController.text,
                             lastName: _lastNameController.text),
                       );
-                      print(model.userNotification.content);
-                      if (mounted) {
+
+                      if (mounted && model.isNotificationShouldMeShown) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             backgroundColor: model.userNotification.isError

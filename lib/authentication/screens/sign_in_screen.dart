@@ -72,7 +72,8 @@ class _SignInPageState extends State<SignInPage> {
                                           _passwordController.text);
                                       if (model.userNotification.content
                                           .isNotEmpty) {
-                                        if (mounted) {
+                                        if (mounted &&
+                                            model.isNotificationShouldMeShown) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
                                             backgroundColor: model

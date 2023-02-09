@@ -17,6 +17,6 @@ class NewNoteViewModel extends ViewModel {
 
     await _notesRepo.addNote(noteTemplate);
     setViewState(ViewState.idle,
-        const UserNotification(content: 'Note created successfully'));
+        userNotification.copyWith(content: 'Note created successfully'));
   }
 }

@@ -22,10 +22,6 @@ class NewAccountViewModel extends ViewModel {
     notifyListeners();
   }
 
-  void setError(String message) {
-    setNotification(UserNotification(content: message, isError: true));
-  }
-
   Future<void> createAccount(
       String email, String password, String firstName, String lastName) async {
     setViewState(ViewState.busy);
@@ -34,7 +30,7 @@ class NewAccountViewModel extends ViewModel {
     if (userNotification.isError == true) {
       setViewState(
           ViewState.idle,
-          const UserNotification(
+          userNotification.copyWith(
               content: 'Failed to register a user.', isError: true));
       return;
     }
@@ -50,6 +46,6 @@ class NewAccountViewModel extends ViewModel {
       return;
     }
     setViewState(ViewState.idle,
-        const UserNotification(content: 'User created successfully.'));
+        userNotification.copyWith(content: 'User created successfully.'));
   }
 }

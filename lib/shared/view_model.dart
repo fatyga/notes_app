@@ -8,12 +8,13 @@ class ViewModel extends ChangeNotifier {
   UserNotification _userNotification = const UserNotification();
   UserNotification get userNotification => _userNotification;
 
+  bool get isNotificationShouldMeShown => _userNotification.content.isNotEmpty;
+
   void setViewState(ViewState status,
       [UserNotification notification = const UserNotification()]) {
     _status = status;
-    if (status == ViewState.busy) {
-      _userNotification = notification;
-    }
+
+    _userNotification = notification;
 
     notifyListeners();
   }
@@ -22,11 +23,20 @@ class ViewModel extends ChangeNotifier {
     _userNotification = newNotification;
     notifyListeners();
   }
+
+  void setError(String message) {
+    setNotification(UserNotification(content: message, isError: true));
+  }
 }
 
 class UserNotification {
   final String content;
   final bool isError;
+
+  UserNotification copyWith({String? content, bool? isError}) {
+    return UserNotification(
+        content: content ?? this.content, isError: isError ?? this.isError);
+  }
 
   const UserNotification({this.content = '', this.isError = false});
 }

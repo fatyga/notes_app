@@ -14,6 +14,6 @@ class SignOutViewModel extends ViewModel {
     setViewState(ViewState.busy);
     await _authRepo.logOut();
     setViewState(ViewState.idle,
-        const UserNotification(content: 'User successfuly is logged out.'));
+        userNotification.copyWith(content: 'User successfuly is logged out.'));
   }
 }

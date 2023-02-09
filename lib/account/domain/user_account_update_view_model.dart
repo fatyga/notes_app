@@ -25,10 +25,6 @@ class UserAccountUpdateViewModel extends ViewModel {
     notifyListeners();
   }
 
-  void setError(String message) {
-    setNotification(UserNotification(content: message, isError: true));
-  }
-
   void startAccountChangesSubscription() {
     setViewState(ViewState.busy);
     accountChangesSubscription =
@@ -57,11 +53,11 @@ class UserAccountUpdateViewModel extends ViewModel {
     if (userNotification.isError == true) {
       setViewState(
           ViewState.idle,
-          const UserNotification(
+          userNotification.copyWith(
               content: 'Failed to update account.', isError: true));
       return;
     }
     setViewState(ViewState.idle,
-        const UserNotification(content: 'Account updated successfully.'));
+        userNotification.copyWith(content: 'Account updated successfully.'));
   }
 }

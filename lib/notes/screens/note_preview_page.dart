@@ -47,7 +47,7 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                   IconButton(
                       onPressed: () async {
                         await model.deleteNote(widget.noteId);
-                        if (mounted) {
+                        if (mounted && model.isNotificationShouldMeShown) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(model.userNotification.content),

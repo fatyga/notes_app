@@ -28,6 +28,6 @@ class NoteUpdateViewModel extends ViewModel {
     final updatedNote = note.copyWith(title: title, content: content);
     await _notesRepo.updateNote(updatedNote);
     setNotification(
-        const UserNotification(content: 'Note updated successfully'));
+        userNotification.copyWith(content: 'Note updated successfully'));
   }
 }

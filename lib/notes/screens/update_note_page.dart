@@ -62,7 +62,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                           title: titleController.text,
                           content: contentController.text,
                         );
-                        if (mounted) {
+                        if (mounted && model.isNotificationShouldMeShown) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor: model.userNotification.isError
