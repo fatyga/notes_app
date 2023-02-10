@@ -5,6 +5,7 @@ import 'notes_service.dart';
 class NotesRepository {
   final NotesService _notesService = serviceLocator<NotesService>();
 
+  //notes
   Stream<List<Note>> get notesChanges => _notesService.notesChanges;
   Future<List<Note>> savedNotes() => _notesService.savedNotes();
 
@@ -21,5 +22,11 @@ class NotesRepository {
 
   Future<void> deleteNote(String noteId) async {
     await _notesService.deleteNote(noteId);
+  }
+
+  //tags
+  Stream<List<String>> get tagsChanges => _notesService.tagsChanges;
+  Future<void> updateTags(List<String> updatedTagsList) async {
+    await _notesService.updateTags(updatedTagsList);
   }
 }

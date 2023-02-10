@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/notes/domain/notes_list_view_model.dart';
-import 'package:notes_app/notes/widgets/all_notes_tab.dart';
+import 'package:notes_app/notes/widgets/notes_list.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/widgets/avatar.dart';
-import 'package:notes_app/notes/widgets/pinned_notes_tab.dart';
+
 import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 import 'package:provider/provider.dart';
@@ -52,42 +52,40 @@ class _NoteListPageState extends State<NoteListPage> {
                   )),
         ],
       ),
-      body: DefaultTabController(
-        length: 2,
-        child: Column(
-          children: [
-            const TabBar(
-              tabs: [Tab(child: Text('Pinned')), Tab(child: Text('All'))],
-            ),
-            Expanded(
-                child: Padding(
+      body: Column(
+        children: [
+          AnimatedBuilder(
+            animation: model,
+            builder: (context, _) => SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Wrap(
+                  spacing: 4,
+                  children: model.tags
+                      .map((tagName) => FilterChip(
+                          selected: model.isTagSelected(tagName),
+                          showCheckmark: false,
+                          label: Text(tagName),
+                          onSelected: (_) {
+                            model.selectTag(tagName);
+                          }))
+                      .toList(),
+                )),
+          ),
+          Expanded(
+            child: Padding(
               padding:
                   const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
-              child: TabBarView(
-                children: [
-                  AnimatedBuilder(
-                      animation: model,
-                      builder: (context, _) {
-                        if (model.status == ViewState.busy) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                        return PinnedNotesTab(notes: model.filterPinnedNotes());
-                      }),
-                  AnimatedBuilder(
-                      animation: model,
-                      builder: (context, _) {
-                        if (model.status == ViewState.busy) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                        return AllNotesTab(notes: model.notes);
-                      }),
-                ],
-              ),
-            )),
-          ],
-        ),
+              child: AnimatedBuilder(
+                  animation: model,
+                  builder: (context, _) {
+                    if (model.status == ViewState.busy) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return NotesList(notes: model.notesToDisplay);
+                  }),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         elevation: 12,

@@ -80,7 +80,7 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                           );
                         }
                       },
-                      icon: model.note.pinned
+                      icon: model.note.tags.contains('pinned')
                           ? const Icon(Icons.push_pin_rounded)
                           : const Icon(
                               Icons.push_pin_outlined,

@@ -4,8 +4,8 @@ import 'package:notes_app/notes/widgets/empty_notes_info.dart';
 import 'package:notes_app/notes/widgets/note.dart';
 import 'package:notes_app/notes/domain/models/note.dart';
 
-class AllNotesTab extends StatelessWidget {
-  const AllNotesTab({super.key, required this.notes});
+class NotesList extends StatelessWidget {
+  const NotesList({super.key, required this.notes});
   final List<Note> notes;
 
   @override

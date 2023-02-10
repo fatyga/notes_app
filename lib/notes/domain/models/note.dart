@@ -9,7 +9,7 @@ class Note {
   String content;
   DateTime createdAt;
   String formattedTime;
-  bool pinned;
+  List<String> tags;
 
   factory Note.fromFirestore(DocumentSnapshot doc) {
     final data = doc;
@@ -18,7 +18,7 @@ class Note {
         id: doc.id,
         title: data.get('title'),
         content: data.get('content'),
-        pinned: data.get('pinned'),
+        tags: List.from(data.get('tags')),
         createdAt: data.get('createdAt').toDate());
   }
 
@@ -27,24 +27,27 @@ class Note {
         id: map['id'],
         title: map['title'],
         content: map['content'],
-        pinned: map['pinned'],
+        tags: map['tags'],
         createdAt: map['createdAt'].toDate());
   }
   Note(
       {required this.id,
       required this.title,
       required this.content,
-      required this.pinned,
+      required this.tags,
       required this.createdAt})
       : formattedTime = DateFormat.yMMMd().format(createdAt);
 
   Note copyWith(
-      {String? title, String? content, DateTime? createdAt, bool? pinned}) {
+      {String? title,
+      String? content,
+      DateTime? createdAt,
+      List<String>? tags}) {
     return Note(
         id: id,
         title: title ?? this.title,
         content: content ?? this.content,
-        pinned: pinned ?? this.pinned,
+        tags: tags ?? this.tags,
         createdAt: createdAt ?? this.createdAt);
   }
 
@@ -57,8 +60,8 @@ class Note {
     details.addAll({
       'title': title,
       'content': content,
-      'pinned': pinned,
-      'createdAt': createdAt
+      'createdAt': createdAt,
+      'tags': tags
     });
 
     return details;
@@ -69,20 +72,19 @@ class NewNoteTemplate {
   String title;
   String content;
   DateTime createdAt;
-  bool pinned;
+  List<String> tags = [];
 
   NewNoteTemplate({
     required this.title,
     required this.content,
-  })  : createdAt = DateTime.now(),
-        pinned = false;
+  }) : createdAt = DateTime.now();
 
   Map<String, dynamic> toMap() {
     return {
       'title': title,
       'content': content,
       'createdAt': createdAt,
-      'pinned': pinned
+      'tags': tags
     };
   }
 }

@@ -33,9 +33,16 @@ class NotesPreviewViewModel extends ViewModel {
   }
 
   Future<void> pinUnpinNote() async {
-    await _notesRepo.updateNote(note.copyWith(pinned: !note.pinned));
+    Note updatedNote;
+    if (_note.tags.contains('pinned')) {
+      updatedNote = note.copyWith(tags: note.tags..remove('pinned'));
+    } else {
+      updatedNote = note.copyWith(tags: note.tags..add('pinned'));
+    }
+    await _notesRepo.updateNote(updatedNote);
     setNotification(userNotification.copyWith(
-        content: 'Note ${note.pinned ? "pinned" : "unpinned"} successfully.'));
+        content:
+            'Note ${note.tags.contains('pinned') ? "pinned" : "unpinned"} successfully.'));
   }
 
   Future<void> deleteNote(String noteId) async {

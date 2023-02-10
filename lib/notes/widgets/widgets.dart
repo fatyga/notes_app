@@ -1,3 +1,2 @@
-export 'all_notes_tab.dart';
+export 'notes_list.dart';
 export 'empty_notes_info.dart';
-export 'pinned_notes_tab.dart';

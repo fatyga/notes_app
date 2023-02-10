@@ -9,6 +9,7 @@ class FirestoreNotesService implements NotesService {
   final AuthenticationService _authenticationService =
       serviceLocator<AuthenticationService>();
 
+// notes
   @override
   Stream<List<Note>> get notesChanges {
     return _firestore
@@ -83,5 +84,18 @@ class FirestoreNotesService implements NotesService {
         .collection('notes')
         .doc(note.id)
         .update(note.noteDetailsAsMap());
+  }
+
+  // tags
+  @override
+  Stream<List<String>> get tagsChanges => _firestore
+      .collection('config')
+      .doc('notes_tags')
+      .snapshots()
+      .map((event) => List.from(event.get('tags') as List));
+
+  @override
+  Future updateTags(List<String> updatedTagsList) async {
+    await _firestore.doc('config/notes_tags').update({'tags': updatedTagsList});
   }
 }
