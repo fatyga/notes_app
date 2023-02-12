@@ -3,6 +3,7 @@ import 'package:notes_app/account/domain/avatar_view_model.dart';
 import 'package:notes_app/notes/domain/models/note.dart';
 import 'package:notes_app/notes/services/notes_repository.dart';
 import 'package:notes_app/service_locator.dart';
+import 'package:notes_app/shared/enums/view_state.dart';
 import 'package:notes_app/shared/view_model.dart';
 
 class NotesListViewModel extends ViewModel {
@@ -49,6 +50,7 @@ class NotesListViewModel extends ViewModel {
 
   //tags
   List<String> _selectedTags = [];
+  List<String> get selectedTags => _selectedTags;
   List<Note> notesToDisplay = [];
 
   void selectTag(String tagName) {
@@ -61,7 +63,14 @@ class NotesListViewModel extends ViewModel {
     notifyListeners();
   }
 
-  bool isTagSelected(String tagName) {
-    return _selectedTags.contains(tagName);
+  Future<void> addTag(String tagName) async {
+    setViewState(ViewState.busy);
+    if (!tags.contains(tagName)) {
+      tags.add(tagName);
+      await _notesRepo.updateTags(tags);
+      setViewState(ViewState.idle);
+    }
+    setViewState(ViewState.idle,
+        const UserNotification(content: 'Tag added succesfully'));
   }
 }

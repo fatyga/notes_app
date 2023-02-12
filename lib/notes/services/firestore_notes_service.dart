@@ -89,13 +89,16 @@ class FirestoreNotesService implements NotesService {
   // tags
   @override
   Stream<List<String>> get tagsChanges => _firestore
-      .collection('config')
-      .doc('notes_tags')
+      .collection('users')
+      .doc(_authenticationService.getCurrentUser()!.uid)
       .snapshots()
       .map((event) => List.from(event.get('tags') as List));
 
   @override
   Future updateTags(List<String> updatedTagsList) async {
-    await _firestore.doc('config/notes_tags').update({'tags': updatedTagsList});
+    await _firestore
+        .collection('users')
+        .doc(_authenticationService.getCurrentUser()!.uid)
+        .update({'tags': updatedTagsList});
   }
 }

@@ -7,6 +7,7 @@ import 'package:notes_app/shared/widgets/avatar.dart';
 
 import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
+import 'package:notes_app/shared/widgets/tags.dart';
 import 'package:provider/provider.dart';
 
 class NoteListPage extends StatefulWidget {
@@ -56,20 +57,25 @@ class _NoteListPageState extends State<NoteListPage> {
         children: [
           AnimatedBuilder(
             animation: model,
-            builder: (context, _) => SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Wrap(
-                  spacing: 4,
-                  children: model.tags
-                      .map((tagName) => FilterChip(
-                          selected: model.isTagSelected(tagName),
-                          showCheckmark: false,
-                          label: Text(tagName),
-                          onSelected: (_) {
-                            model.selectTag(tagName);
-                          }))
-                      .toList(),
-                )),
+            builder: (context, _) {
+              return Tags(
+                availableTags: model.tags,
+                selectedTags: model.selectedTags,
+                onTagSelect: model.selectTag,
+                onTagAdd: (tagName) async {
+                  await model.addTag(tagName);
+                  if (mounted && model.isNotificationShouldMeShown) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      backgroundColor: model.userNotification.isError
+                          ? Theme.of(context).errorColor
+                          : null,
+                      content: Text(model.userNotification.content),
+                      duration: const Duration(milliseconds: 2000),
+                    ));
+                  }
+                },
+              );
+            },
           ),
           Expanded(
             child: Padding(
