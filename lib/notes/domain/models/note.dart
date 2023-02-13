@@ -77,6 +77,7 @@ class NewNoteTemplate {
   NewNoteTemplate({
     required this.title,
     required this.content,
+    required this.tags,
   }) : createdAt = DateTime.now();
 
   Map<String, dynamic> toMap() {

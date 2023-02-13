@@ -19,11 +19,12 @@ class Tags extends StatelessWidget {
       child: Row(
         children: [
           const Text('Tags: '),
+          const SizedBox(width: 12),
           Expanded(
             child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Wrap(
-                  spacing: 4,
+                  spacing: 8,
                   children: createChips(context),
                 )),
           ),

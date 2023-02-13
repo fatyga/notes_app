@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
+import 'package:notes_app/shared/widgets/tags.dart';
 
 import '../domain/new_note_view_model.dart';
 
@@ -21,7 +22,14 @@ class _NewNotePageState extends State<NewNotePage> {
   String errorContent = '';
 
   @override
+  void initState() {
+    model.startNotesSubscription();
+    super.initState();
+  }
+
+  @override
   void dispose() {
+    model.stopNotesSubscription();
     titleController.dispose();
     contentController.dispose();
     super.dispose();
@@ -31,6 +39,7 @@ class _NewNotePageState extends State<NewNotePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text('Add new note'),
         elevation: 0,
         actions: [
           IconButton(
@@ -71,38 +80,43 @@ class _NewNotePageState extends State<NewNotePage> {
         ],
       ),
       body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-          child: AnimatedBuilder(
-              animation: model,
-              builder: (context, _) {
-                if (model.status == ViewState.busy) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                return Column(
-                  children: <Widget>[
-                    Text(errorContent,
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle2!
-                            .copyWith(color: Theme.of(context).errorColor)),
-                    TextField(
-                      controller: titleController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      autofocus: true,
-                      decoration: const InputDecoration(hintText: ("Title")),
-                    ),
-                    const SizedBox(height: 20),
-                    TextField(
-                      controller: contentController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration:
-                          const InputDecoration(hintText: ("Type here..")),
-                    ),
-                  ],
-                );
-              })),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: AnimatedBuilder(
+            animation: model,
+            builder: (context, _) {
+              if (model.status == ViewState.busy) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              return Column(
+                children: <Widget>[
+                  Tags(
+                      availableTags: model.tags,
+                      selectedTags: model.selectedTags,
+                      onTagSelect: model.selectTag),
+                  Text(errorContent,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2!
+                          .copyWith(color: Theme.of(context).errorColor)),
+                  TextField(
+                    controller: titleController,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    autofocus: true,
+                    decoration: const InputDecoration(hintText: ("Title")),
+                  ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: contentController,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    decoration:
+                        const InputDecoration(hintText: ("Type here..")),
+                  ),
+                ],
+              );
+            }),
+      ),
     );
   }
 }

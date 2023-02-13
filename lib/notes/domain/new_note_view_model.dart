@@ -9,14 +9,43 @@ import '../services/notes_repository.dart';
 class NewNoteViewModel extends ViewModel {
   final NotesRepository _notesRepo = serviceLocator<NotesRepository>();
 
+  late StreamSubscription tagsSubscription;
+
+  List<String> _tags = [];
+  List<String> get tags => _tags;
+
+  List<String> _selectedTags = [];
+  List<String> get selectedTags => _selectedTags;
+
+  void startNotesSubscription() {
+    tagsSubscription = _notesRepo.tagsChanges.listen((tags) {
+      _tags = tags;
+      notifyListeners();
+    });
+  }
+
+  void stopNotesSubscription() {
+    tagsSubscription.cancel();
+  }
+
   Future<void> addNote(String title, String content) async {
     setViewState(ViewState.busy);
 
     NewNoteTemplate noteTemplate =
-        NewNoteTemplate(title: title, content: content);
+        NewNoteTemplate(title: title, content: content, tags: selectedTags);
 
     await _notesRepo.addNote(noteTemplate);
     setViewState(ViewState.idle,
         userNotification.copyWith(content: 'Note created successfully'));
+  }
+
+  //tags
+  void selectTag(String tagName) {
+    if (_selectedTags.contains(tagName)) {
+      _selectedTags.remove(tagName);
+    } else {
+      _selectedTags.add(tagName);
+    }
+    notifyListeners();
   }
 }
