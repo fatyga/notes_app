@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
+import 'package:notes_app/shared/widgets/tags.dart';
 
 import '../domain/note_update_view_model.dart';
 
@@ -22,6 +23,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
 
   @override
   void initState() {
+    model.startTagsSubscription();
     model.loadSavedNote(widget.noteId).then((_) {
       titleController.text = model.note.title;
       contentController.text = model.note.content;
@@ -31,6 +33,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
 
   @override
   void dispose() {
+    model.stopTagsSubscription();
     titleController.dispose();
     contentController.dispose();
     super.dispose();
@@ -94,6 +97,10 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                     const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                 child: Column(
                   children: <Widget>[
+                    Tags(
+                        availableTags: model.tags,
+                        selectedTags: model.selectedTags,
+                        onTagSelect: model.selectTag),
                     Text(errorContent,
                         style: Theme.of(context)
                             .textTheme

@@ -104,6 +104,10 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                 Text(model.note.title,
                     style: Theme.of(context).textTheme.headline5),
                 const SizedBox(height: 20),
+                Row(children: [
+                  const Text('Tags:'),
+                  Text(model.note.tags.join(','))
+                ]),
                 Text(model.note.formattedTime,
                     style: Theme.of(context).textTheme.subtitle2),
                 const SizedBox(height: 20),

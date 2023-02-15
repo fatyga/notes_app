@@ -23,13 +23,13 @@ class _NewNotePageState extends State<NewNotePage> {
 
   @override
   void initState() {
-    model.startNotesSubscription();
+    model.startTagsSubscription();
     super.initState();
   }
 
   @override
   void dispose() {
-    model.stopNotesSubscription();
+    model.stopTagsSubscription();
     titleController.dispose();
     contentController.dispose();
     super.dispose();

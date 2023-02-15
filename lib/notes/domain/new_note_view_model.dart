@@ -17,14 +17,14 @@ class NewNoteViewModel extends ViewModel {
   List<String> _selectedTags = [];
   List<String> get selectedTags => _selectedTags;
 
-  void startNotesSubscription() {
+  void startTagsSubscription() {
     tagsSubscription = _notesRepo.tagsChanges.listen((tags) {
       _tags = tags;
       notifyListeners();
     });
   }
 
-  void stopNotesSubscription() {
+  void stopTagsSubscription() {
     tagsSubscription.cancel();
   }
 
