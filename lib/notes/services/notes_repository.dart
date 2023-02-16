@@ -29,4 +29,8 @@ class NotesRepository {
   Future<void> updateTags(List<String> updatedTagsList) async {
     await _notesService.updateTags(updatedTagsList);
   }
+
+  Future<void> initializeTags() async {
+    await _notesService.initializeTags();
+  }
 }

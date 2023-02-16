@@ -13,4 +13,5 @@ abstract class NotesService {
   //tags
   Stream<List<String>> get tagsChanges;
   Future updateTags(List<String> updatedTagsList);
+  Future initializeTags();
 }

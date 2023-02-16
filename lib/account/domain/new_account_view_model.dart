@@ -1,8 +1,9 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
-import 'package:notes_app/account/domain/user_account_view_model.dart';
-import 'package:notes_app/authentication/business_logic/register_view_model.dart';
+import 'package:notes_app/account/services/account_repository.dart';
+
+import 'package:notes_app/authentication/services/authentication_repository.dart';
+import 'package:notes_app/notes/services/notes_repository.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 import 'package:notes_app/shared/view_model.dart';
@@ -10,10 +11,10 @@ import 'package:notes_app/shared/view_model.dart';
 import 'models/userAccount.dart';
 
 class NewAccountViewModel extends ViewModel {
-  final RegisterViewModel _registerViewModel =
-      serviceLocator<RegisterViewModel>();
-  final UserAccountViewModel _userAccountViewModel =
-      serviceLocator<UserAccountViewModel>();
+  final AuthenticationRepository _authenticationRepo =
+      serviceLocator<AuthenticationRepository>();
+  final AccountRepository _accountRepo = serviceLocator<AccountRepository>();
+  final NotesRepository _notesRepo = serviceLocator<NotesRepository>();
 
   File? _selectedAvatar;
   File? get selectedAvatar => _selectedAvatar;
@@ -26,7 +27,7 @@ class NewAccountViewModel extends ViewModel {
       String email, String password, String firstName, String lastName) async {
     setViewState(ViewState.busy);
 
-    await _registerViewModel.registerUser(email, password, setError);
+    await _authenticationRepo.register(email, password, setError);
     if (userNotification.isError == true) {
       setViewState(
           ViewState.idle,
@@ -34,7 +35,7 @@ class NewAccountViewModel extends ViewModel {
               content: 'Failed to register a user.', isError: true));
       return;
     }
-    await _userAccountViewModel.addUserAccount(
+    await _accountRepo.addUserAccount(
         UserAccount(firstName: firstName, lastName: lastName),
         _selectedAvatar,
         setError);
@@ -45,6 +46,8 @@ class NewAccountViewModel extends ViewModel {
               content: 'Failed to create account.', isError: true));
       return;
     }
+
+    await _notesRepo.initializeTags(); // create defaulult tag
     setViewState(ViewState.idle,
         userNotification.copyWith(content: 'User created successfully.'));
   }

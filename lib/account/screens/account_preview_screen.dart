@@ -56,7 +56,9 @@ class _UserAccountPreviewPageState extends State<UserAccountPreviewPage> {
                         Center(
                           child: UserAvatar(
                             radius: 72,
-                            avatarUrl: model.account.avatarUrl,
+                            avatarUrl: model.account.avatarUrl.isEmpty
+                                ? null
+                                : model.account.avatarUrl,
                           ),
                         ),
                         const SizedBox(height: 36),

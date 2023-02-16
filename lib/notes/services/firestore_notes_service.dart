@@ -91,7 +91,7 @@ class FirestoreNotesService implements NotesService {
   Stream<List<String>> get tagsChanges => _firestore
       .collection('users')
       .doc(_authenticationService.getCurrentUser()!.uid)
-      .snapshots()
+      .snapshots(includeMetadataChanges: true)
       .map((event) => List.from(event.get('tags') as List));
 
   @override
@@ -100,5 +100,15 @@ class FirestoreNotesService implements NotesService {
         .collection('users')
         .doc(_authenticationService.getCurrentUser()!.uid)
         .update({'tags': updatedTagsList});
+  }
+
+  @override
+  Future initializeTags() async {
+    await _firestore
+        .collection('users')
+        .doc(_authenticationService.getCurrentUser()!.uid)
+        .set({
+      'tags': ['pinned']
+    });
   }
 }
