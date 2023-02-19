@@ -93,14 +93,16 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
               return const Center(child: CircularProgressIndicator());
             }
             return Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: <Widget>[
                     Tags(
-                        availableTags: model.tags,
-                        selectedTags: model.selectedTags,
-                        onTagSelect: model.selectTag),
+                      availableTags: model.tags,
+                      selectedTags: model.selectedTags,
+                      onTagSelect: model.selectTag,
+                      withEditButton: false,
+                      oneline: true,
+                    ),
                     Text(errorContent,
                         style: Theme.of(context)
                             .textTheme

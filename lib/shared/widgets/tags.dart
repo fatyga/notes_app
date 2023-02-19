@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_app/route/app_router.gr.dart';
 
 class Tags extends StatelessWidget {
   const Tags(
@@ -6,53 +8,49 @@ class Tags extends StatelessWidget {
       required this.availableTags,
       required this.selectedTags,
       required this.onTagSelect,
-      this.onTagAdd});
+      required this.withEditButton,
+      required this.oneline});
   final List<String> availableTags;
   final List<String> selectedTags;
   final Function(String) onTagSelect;
-  final Function(String)? onTagAdd;
+  final bool withEditButton;
+  final bool oneline;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Row(
-        children: [
-          const Text('Tags: '),
-          const SizedBox(width: 12),
-          Expanded(
-            child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Wrap(
-                  spacing: 8,
-                  children: createChips(context),
-                )),
-          ),
-        ],
-      ),
-    );
+    if (oneline) {
+      return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Wrap(
+            spacing: 8,
+            children: createChips(context),
+          ));
+    } else {
+      return Wrap(
+        spacing: 8,
+        children: createChips(context),
+      );
+    }
   }
 
   List<Widget> createChips(BuildContext context) {
     final chips = availableTags
         .map<Widget>((tagName) => FilterChip(
+            visualDensity: const VisualDensity(horizontal: -2, vertical: -2),
             selected: selectedTags.contains(tagName),
             showCheckmark: false,
             label: Text(tagName),
             onSelected: (_) => onTagSelect(tagName)))
         .toList();
-
-    if (onTagAdd != null) {
+    if (withEditButton) {
       chips.add(ActionChip(
-          label: const Icon(Icons.add),
+          visualDensity: const VisualDensity(horizontal: -2, vertical: -2),
+          label: const Icon(Icons.edit),
           onPressed: () {
-            showDialog(
-                context: context,
-                builder: (context) => NewTagDialog(
-                      onTagAdd: onTagAdd!,
-                    ));
+            context.router.push(const TagsManageRoute());
           }));
     }
+
     return chips;
   }
 }

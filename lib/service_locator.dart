@@ -15,6 +15,7 @@ import 'package:notes_app/authentication/services/authentication_repository.dart
 import 'package:notes_app/notes/domain/new_note_view_model.dart';
 import 'package:notes_app/notes/domain/note_update_view_model.dart';
 import 'package:notes_app/notes/domain/notes_list_view_model.dart';
+import 'package:notes_app/notes/domain/tags_manage_view_model.dart';
 import 'package:notes_app/notes/services/notes_repository.dart';
 import 'package:notes_app/notes/services/firestore_notes_service.dart';
 
@@ -51,7 +52,8 @@ void setupServiceLocator() {
   serviceLocator
       .registerFactory<NoteUpdateViewModel>(() => NoteUpdateViewModel());
   serviceLocator.registerFactory<NewNoteViewModel>(() => NewNoteViewModel());
-
+  serviceLocator
+      .registerFactory<TagsManageViewModel>(() => TagsManageViewModel());
   // account
   serviceLocator
       .registerLazySingleton<AccountRepository>(() => AccountRepository());

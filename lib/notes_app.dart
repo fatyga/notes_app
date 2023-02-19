@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
         routeInformationParser: _appRouter.defaultRouteParser(),
         theme: lightTheme,
         darkTheme: darkTheme,
+        themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
         title: 'Notes App',
       ),

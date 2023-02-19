@@ -62,18 +62,8 @@ class _NoteListPageState extends State<NoteListPage> {
                 availableTags: model.tags,
                 selectedTags: model.selectedTags,
                 onTagSelect: model.selectTag,
-                onTagAdd: (tagName) async {
-                  await model.addTag(tagName);
-                  if (mounted && model.isNotificationShouldMeShown) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      backgroundColor: model.userNotification.isError
-                          ? Theme.of(context).errorColor
-                          : null,
-                      content: Text(model.userNotification.content),
-                      duration: const Duration(milliseconds: 2000),
-                    ));
-                  }
-                },
+                withEditButton: true,
+                oneline: true,
               );
             },
           ),

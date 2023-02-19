@@ -90,9 +90,12 @@ class _NewNotePageState extends State<NewNotePage> {
               return Column(
                 children: <Widget>[
                   Tags(
-                      availableTags: model.tags,
-                      selectedTags: model.selectedTags,
-                      onTagSelect: model.selectTag),
+                    availableTags: model.tags,
+                    selectedTags: model.selectedTags,
+                    onTagSelect: model.selectTag,
+                    withEditButton: false,
+                    oneline: true,
+                  ),
                   Text(errorContent,
                       style: Theme.of(context)
                           .textTheme

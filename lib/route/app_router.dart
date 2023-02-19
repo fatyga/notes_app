@@ -7,6 +7,7 @@ import 'package:notes_app/authentication/screens/wrapper_page.dart';
 import 'package:notes_app/authentication/screens/register_screen.dart';
 import 'package:notes_app/authentication/screens/sign_in_screen.dart';
 import 'package:notes_app/notes/screens/new_note_page.dart';
+import 'package:notes_app/notes/screens/note_tags_manage.dart';
 import 'package:notes_app/notes/screens/notes_list_page.dart';
 import 'package:notes_app/notes/screens/notes_wrapper_page.dart';
 import 'package:notes_app/notes/screens/update_note_page.dart';
@@ -27,7 +28,8 @@ import '../account/screens/wrapper.dart';
       AutoRoute(path: 'noteList', initial: true, page: NoteListPage),
       AutoRoute(path: 'notePreview', page: NotePreviewPage),
       AutoRoute(path: 'newNote', page: NewNotePage),
-      AutoRoute(path: 'updateNote', page: UpdateNotePage)
+      AutoRoute(path: 'updateNote', page: UpdateNotePage),
+      AutoRoute(path: 'tagsManager', page: TagsManagePage)
     ]),
     AutoRoute(path: 'userAccount', page: UserAccountWrapperPage, children: [
       AutoRoute(path: 'preview', initial: true, page: UserAccountPreviewPage),

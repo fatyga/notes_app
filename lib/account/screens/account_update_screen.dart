@@ -137,7 +137,9 @@ class _UserAccountUpdatePageState extends State<UserAccountUpdatePage> {
                             child: UserAvatar(
                                 selectedAvatar: model.selectedAvatar,
                                 radius: 72,
-                                avatarUrl: model.account.avatarUrl,
+                                avatarUrl: model.account.avatarUrl.isEmpty
+                                    ? null
+                                    : model.account.avatarUrl,
                                 onPressed: (model.status == ViewState.busy)
                                     ? null
                                     : chooseAvatarSource),
