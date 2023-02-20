@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:notes_app/notes/domain/models/note.dart';
+import 'package:notes_app/notes/domain/models/tag.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 import 'package:notes_app/shared/view_model.dart';
 
@@ -11,11 +12,11 @@ class NewNoteViewModel extends ViewModel {
 
   late StreamSubscription tagsSubscription;
 
-  List<String> _tags = [];
-  List<String> get tags => _tags;
+  List<NoteTag> _tags = [];
+  List<NoteTag> get tags => _tags;
 
-  List<String> _selectedTags = [];
-  List<String> get selectedTags => _selectedTags;
+  List<NoteTag> _selectedTags = [];
+  List<NoteTag> get selectedTags => _selectedTags;
 
   void startTagsSubscription() {
     tagsSubscription = _notesRepo.tagsChanges.listen((tags) {
@@ -40,11 +41,11 @@ class NewNoteViewModel extends ViewModel {
   }
 
   //tags
-  void selectTag(String tagName) {
-    if (_selectedTags.contains(tagName)) {
-      _selectedTags.remove(tagName);
+  void selectTag(NoteTag tag) {
+    if (_selectedTags.contains(tag)) {
+      _selectedTags.remove(tag);
     } else {
-      _selectedTags.add(tagName);
+      _selectedTags.add(tag);
     }
     notifyListeners();
   }

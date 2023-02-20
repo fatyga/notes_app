@@ -33,13 +33,18 @@ class NotesPreviewViewModel extends ViewModel {
   }
 
   Future<void> pinUnpinNote() async {
-    Note updatedNote;
-    if (_note.tags.contains('pinned')) {
-      updatedNote = note.copyWith(tags: note.tags..remove('pinned'));
+    setViewState(ViewState.busy);
+    if (_note.tags.any((tag) => tag.name == 'pinned')) {
+      final pinnedTagIndex =
+          _note.tags.indexWhere((tag) => tag.name == 'pinned');
+      _note.tags.removeAt(pinnedTagIndex);
     } else {
-      updatedNote = note.copyWith(tags: note.tags..add('pinned'));
+      final savedTags = await _notesRepo.savedTags();
+      final pinnedTagIndex =
+          savedTags.indexWhere((tag) => tag.name == 'pinned');
+      _note.tags.insert(0, savedTags.elementAt(pinnedTagIndex));
     }
-    await _notesRepo.updateNote(updatedNote);
+    await _notesRepo.updateNote(_note);
     setNotification(userNotification.copyWith(
         content:
             'Note ${note.tags.contains('pinned') ? "pinned" : "unpinned"} successfully.'));

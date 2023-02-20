@@ -1,3 +1,5 @@
+import 'package:notes_app/notes/domain/models/tag.dart';
+
 import '../domain/models/note.dart';
 
 abstract class NotesService {
@@ -11,7 +13,8 @@ abstract class NotesService {
   Future deleteNote(String noteId);
 
   //tags
-  Stream<List<String>> get tagsChanges;
-  Future updateTags(List<String> updatedTagsList);
+  Stream<List<NoteTag>> get tagsChanges;
+  Future updateTags(List<NoteTag> updatedTagsList);
+  Future<List<NoteTag>> savedTags();
   Future initializeTags();
 }

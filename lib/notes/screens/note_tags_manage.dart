@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/notes/domain/tags_manage_view_model.dart';
 import 'package:notes_app/service_locator.dart';
@@ -33,7 +34,14 @@ class _MyWidgetState extends State<TagsManagePage> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Manage your tags'),
-          actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.save))],
+          actions: [
+            IconButton(
+                onPressed: () async {
+                  await tagsViewModel.updateTags();
+                  context.router.pop();
+                },
+                icon: const Icon(Icons.save))
+          ],
         ),
         body: AnimatedBuilder(
           animation: tagsViewModel,
@@ -49,7 +57,7 @@ class _MyWidgetState extends State<TagsManagePage> {
                       TextField(
                         controller: _tagNameTextFieldController
                           ..text = tagsViewModel.selectedTag != null
-                              ? tagsViewModel.selectedTag!
+                              ? tagsViewModel.selectedTag!.name
                               : '',
                         decoration: const InputDecoration(hintText: 'Name'),
                       ),

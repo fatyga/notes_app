@@ -80,7 +80,7 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                           );
                         }
                       },
-                      icon: model.note.tags.contains('pinned')
+                      icon: model.note.tags.any((tag) => tag.name == 'pinned')
                           ? const Icon(Icons.push_pin_rounded)
                           : const Icon(
                               Icons.push_pin_outlined,
@@ -109,7 +109,9 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                         ? []
                         : [
                             const Text('Tags:'),
-                            Text(model.note.tags.join(','))
+                            Text(model.note.tags
+                                .map((tag) => tag.name)
+                                .join(','))
                           ]),
                 Text(model.note.formattedTime,
                     style: Theme.of(context).textTheme.subtitle2),

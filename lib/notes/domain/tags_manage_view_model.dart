@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:notes_app/notes/domain/models/tag.dart';
 import 'package:notes_app/notes/services/notes_repository.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
@@ -9,8 +10,8 @@ class TagsManageViewModel extends ViewModel {
 
   late StreamSubscription tagsSubscription;
 
-  List<String> _tags = [];
-  List<String> get tags => _tags;
+  List<NoteTag> _tags = [];
+  List<NoteTag> get tags => _tags;
 
   void startTagsSubscription() {
     tagsSubscription = _notesRepo.tagsChanges.listen((tagsList) {
@@ -24,33 +25,33 @@ class TagsManageViewModel extends ViewModel {
   }
 
   //tags
-  String? _selectedTag;
-  String? get selectedTag => _selectedTag;
+  NoteTag? _selectedTag;
+  NoteTag? get selectedTag => _selectedTag;
 
-  void selectTag(String tagName) {
-    if (_selectedTag == tagName) {
+  void selectTag(NoteTag tag) {
+    if (_selectedTag == tag) {
       _selectedTag = null;
     } else {
-      _selectedTag = tagName;
+      _selectedTag = tag;
     }
 
     notifyListeners();
   }
 
   void updateTag(String newTagName) {
-    if (_selectedTag! != newTagName) {
-      final tagIndex = _tags.indexOf(_selectedTag!);
-      _tags.replaceRange(tagIndex, tagIndex + 1, [newTagName]);
-      _selectedTag = null;
+    if (_selectedTag != null) {
+      if (_selectedTag!.name != newTagName) {
+        _selectedTag!.name = newTagName;
+        notifyListeners();
+      }
     }
-    notifyListeners();
   }
 
   void addTag(String newTagName) {
-    if (_tags.contains(newTagName) || newTagName.isEmpty) {
+    if (_tags.any((tag) => tag.name == newTagName) || newTagName.isEmpty) {
       return;
     }
-    _tags.add(newTagName);
+    _tags.add(NoteTag(id: _notesRepo.getRandomIdForNewTag(), name: newTagName));
     notifyListeners();
   }
 

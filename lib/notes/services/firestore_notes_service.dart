@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:notes_app/notes/domain/models/note.dart';
+import 'package:notes_app/notes/domain/models/tag.dart';
 import 'package:notes_app/service_locator.dart';
 import '../../authentication/services/authentication_service.dart';
 import 'notes_service.dart';
@@ -87,28 +88,54 @@ class FirestoreNotesService implements NotesService {
   }
 
   // tags
+
+  Map<String, dynamic> convertTagsToMap(List<NoteTag> tagsList) {
+    final Map<String, dynamic> tagsAsMap = {};
+    for (var element in tagsList) {
+      tagsAsMap[element.id] = element.name;
+    }
+    return tagsAsMap;
+  }
+
+  List<NoteTag> convertMapToTags(Map<String, dynamic> tagsMap) {
+    final List<NoteTag> tagsList = [];
+    tagsMap
+        .forEach((key, value) => tagsList.add(NoteTag(id: key, name: value)));
+    return tagsList;
+  }
+
   @override
-  Stream<List<String>> get tagsChanges => _firestore
+  Stream<List<NoteTag>> get tagsChanges => _firestore
       .collection('users')
       .doc(_authenticationService.getCurrentUser()!.uid)
       .snapshots(includeMetadataChanges: true)
-      .map((event) => List.from(event.get('tags') as List));
+      .map((event) => convertMapToTags(event.get('tags')));
 
   @override
-  Future updateTags(List<String> updatedTagsList) async {
+  Future<List<NoteTag>> savedTags() async {
+    final doc = await _firestore
+        .collection('users')
+        .doc(_authenticationService.getCurrentUser()!.uid)
+        .get();
+    return convertMapToTags(doc.get('tags'));
+  }
+
+  @override
+  Future updateTags(List<NoteTag> updatedTagsList) async {
     await _firestore
         .collection('users')
         .doc(_authenticationService.getCurrentUser()!.uid)
-        .update({'tags': updatedTagsList});
+        .update({'tags': convertTagsToMap(updatedTagsList)});
   }
 
   @override
   Future initializeTags() async {
+    final randomId = _firestore.collection('users').doc().id;
     await _firestore
         .collection('users')
         .doc(_authenticationService.getCurrentUser()!.uid)
         .set({
-      'tags': ['pinned']
+      'tags': {randomId: 'pinned'}
     });
   }
 }

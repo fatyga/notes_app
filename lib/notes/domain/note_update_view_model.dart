@@ -7,6 +7,7 @@ import 'package:notes_app/shared/view_model.dart';
 import '../../service_locator.dart';
 import '../services/notes_repository.dart';
 import 'models/note.dart';
+import 'models/tag.dart';
 
 class NoteUpdateViewModel extends ViewModel {
   final NotesRepository _notesRepo = serviceLocator<NotesRepository>();
@@ -16,11 +17,11 @@ class NoteUpdateViewModel extends ViewModel {
   late Note _note;
   Note get note => _note;
 
-  List<String> _tags = [];
-  List<String> get tags => _tags;
+  List<NoteTag> _tags = [];
+  List<NoteTag> get tags => _tags;
 
-  List<String> _selectedTags = [];
-  List<String> get selectedTags => _selectedTags;
+  List<NoteTag> _selectedTags = [];
+  List<NoteTag> get selectedTags => _selectedTags;
 
   void startTagsSubscription() {
     setViewState(ViewState.busy);
@@ -54,11 +55,11 @@ class NoteUpdateViewModel extends ViewModel {
   }
 
   //tags
-  void selectTag(String tagName) {
-    if (_selectedTags.contains(tagName)) {
-      _selectedTags.remove(tagName);
+  void selectTag(NoteTag tag) {
+    if (_selectedTags.contains(tag)) {
+      _selectedTags.remove(tag);
     } else {
-      _selectedTags.add(tagName);
+      _selectedTags.add(tag);
     }
     notifyListeners();
   }

@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:notes_app/notes/domain/models/note.dart';
 import 'package:notes_app/service_locator.dart';
+import '../domain/models/tag.dart';
 import 'notes_service.dart';
 
 class NotesRepository {
+  final FirebaseFirestore _firestoreService = FirebaseFirestore.instance;
   final NotesService _notesService = serviceLocator<NotesService>();
 
   //notes
@@ -25,12 +28,17 @@ class NotesRepository {
   }
 
   //tags
-  Stream<List<String>> get tagsChanges => _notesService.tagsChanges;
-  Future<void> updateTags(List<String> updatedTagsList) async {
+  Stream<List<NoteTag>> get tagsChanges => _notesService.tagsChanges;
+  Future<void> updateTags(List<NoteTag> updatedTagsList) async {
     await _notesService.updateTags(updatedTagsList);
   }
+
+  Future<List<NoteTag>> savedTags() => _notesService.savedTags();
 
   Future<void> initializeTags() async {
     await _notesService.initializeTags();
   }
+
+  String getRandomIdForNewTag() =>
+      _firestoreService.collection('users').doc().id;
 }

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_app/notes/domain/models/tag.dart';
 import 'package:notes_app/route/app_router.gr.dart';
 
 class Tags extends StatelessWidget {
@@ -10,9 +11,9 @@ class Tags extends StatelessWidget {
       required this.onTagSelect,
       required this.withEditButton,
       required this.oneline});
-  final List<String> availableTags;
-  final List<String> selectedTags;
-  final Function(String) onTagSelect;
+  final List<NoteTag> availableTags;
+  final List<NoteTag> selectedTags;
+  final Function(NoteTag) onTagSelect;
   final bool withEditButton;
   final bool oneline;
 
@@ -22,6 +23,7 @@ class Tags extends StatelessWidget {
       return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Wrap(
+            runAlignment: WrapAlignment.start,
             spacing: 8,
             children: createChips(context),
           ));
@@ -35,12 +37,12 @@ class Tags extends StatelessWidget {
 
   List<Widget> createChips(BuildContext context) {
     final chips = availableTags
-        .map<Widget>((tagName) => FilterChip(
+        .map<Widget>((tag) => FilterChip(
             visualDensity: const VisualDensity(horizontal: -2, vertical: -2),
-            selected: selectedTags.contains(tagName),
+            selected: selectedTags.contains(tag),
             showCheckmark: false,
-            label: Text(tagName),
-            onSelected: (_) => onTagSelect(tagName)))
+            label: Text(tag.name),
+            onSelected: (_) => onTagSelect(tag)))
         .toList();
     if (withEditButton) {
       chips.add(ActionChip(

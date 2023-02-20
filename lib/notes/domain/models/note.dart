@@ -2,6 +2,21 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:notes_app/notes/domain/models/tag.dart';
+
+Map<String, dynamic> convertTagsToMap(List<NoteTag> tagsList) {
+  final Map<String, dynamic> tagsAsMap = {};
+  for (var element in tagsList) {
+    tagsAsMap[element.id] = element.name;
+  }
+  return tagsAsMap;
+}
+
+List<NoteTag> convertMapToTags(Map<String, dynamic> tagsMap) {
+  final List<NoteTag> tagsList = [];
+  tagsMap.forEach((key, value) => tagsList.add(NoteTag(id: key, name: value)));
+  return tagsList;
+}
 
 class Note {
   String id;
@@ -9,7 +24,7 @@ class Note {
   String content;
   DateTime createdAt;
   String formattedTime;
-  List<String> tags;
+  List<NoteTag> tags;
 
   factory Note.fromFirestore(DocumentSnapshot doc) {
     final data = doc;
@@ -18,7 +33,7 @@ class Note {
         id: doc.id,
         title: data.get('title'),
         content: data.get('content'),
-        tags: List.from(data.get('tags')),
+        tags: convertMapToTags(data.get('tags')),
         createdAt: data.get('createdAt').toDate());
   }
 
@@ -42,7 +57,7 @@ class Note {
       {String? title,
       String? content,
       DateTime? createdAt,
-      List<String>? tags}) {
+      List<NoteTag>? tags}) {
     return Note(
         id: id,
         title: title ?? this.title,
@@ -61,7 +76,7 @@ class Note {
       'title': title,
       'content': content,
       'createdAt': createdAt,
-      'tags': tags
+      'tags': convertTagsToMap(tags)
     });
 
     return details;
@@ -72,7 +87,7 @@ class NewNoteTemplate {
   String title;
   String content;
   DateTime createdAt;
-  List<String> tags = [];
+  List<NoteTag> tags = [];
 
   NewNoteTemplate({
     required this.title,
@@ -85,7 +100,7 @@ class NewNoteTemplate {
       'title': title,
       'content': content,
       'createdAt': createdAt,
-      'tags': tags
+      'tags': convertTagsToMap(tags)
     };
   }
 }

@@ -6,6 +6,8 @@ import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 import 'package:notes_app/shared/view_model.dart';
 
+import 'models/tag.dart';
+
 class NotesListViewModel extends ViewModel {
   final NotesRepository _notesRepo = serviceLocator<NotesRepository>();
   final AvatarViewModel avatarViewModel = serviceLocator<AvatarViewModel>();
@@ -13,8 +15,8 @@ class NotesListViewModel extends ViewModel {
   late StreamSubscription notesSubscription;
   late StreamSubscription tagsSubscription;
 
-  List<String> _tags = [];
-  List<String> get tags => _tags;
+  List<NoteTag> _tags = [];
+  List<NoteTag> get tags => _tags;
 
   List<Note> _notes = [];
 
@@ -49,24 +51,24 @@ class NotesListViewModel extends ViewModel {
   }
 
   //tags
-  List<String> _selectedTags = [];
-  List<String> get selectedTags => _selectedTags;
+  List<NoteTag> _selectedTags = [];
+  List<NoteTag> get selectedTags => _selectedTags;
   List<Note> notesToDisplay = [];
 
-  void selectTag(String tagName) {
-    if (_selectedTags.contains(tagName)) {
-      _selectedTags.remove(tagName);
+  void selectTag(NoteTag tag) {
+    if (_selectedTags.contains(tag)) {
+      _selectedTags.remove(tag);
     } else {
-      _selectedTags.add(tagName);
+      _selectedTags.add(tag);
     }
     notesToDisplay = _filterNotesByTags();
     notifyListeners();
   }
 
-  Future<void> addTag(String tagName) async {
+  Future<void> addTag(NoteTag tag) async {
     setViewState(ViewState.busy);
-    if (!tags.contains(tagName)) {
-      tags.add(tagName);
+    if (!tags.contains(tag)) {
+      tags.add(tag);
       await _notesRepo.updateTags(tags);
       setViewState(ViewState.idle);
     }
