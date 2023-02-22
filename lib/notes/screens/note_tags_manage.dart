@@ -57,7 +57,7 @@ class _MyWidgetState extends State<TagsManagePage> {
                       TextField(
                         controller: _tagNameTextFieldController
                           ..text = tagsViewModel.selectedTag != null
-                              ? tagsViewModel.selectedTag!.name
+                              ? tagsViewModel.getSelectedTagName()
                               : '',
                         decoration: const InputDecoration(hintText: 'Name'),
                       ),

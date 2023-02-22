@@ -97,7 +97,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                 child: Column(
                   children: <Widget>[
                     Tags(
-                      availableTags: model.tags,
+                      availableTags: model.availableTags,
                       selectedTags: model.selectedTags,
                       onTagSelect: model.selectTag,
                       withEditButton: false,

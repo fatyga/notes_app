@@ -15,8 +15,8 @@ class NotesListViewModel extends ViewModel {
   late StreamSubscription notesSubscription;
   late StreamSubscription tagsSubscription;
 
-  List<NoteTag> _tags = [];
-  List<NoteTag> get tags => _tags;
+  List<NoteTag> _availableTags = [];
+  List<NoteTag> get availableTags => _availableTags;
 
   List<Note> _notes = [];
 
@@ -29,7 +29,7 @@ class NotesListViewModel extends ViewModel {
     });
 
     tagsSubscription = _notesRepo.tagsChanges.listen((tagsList) {
-      _tags = tagsList;
+      _availableTags = tagsList;
       notifyListeners();
     });
   }
@@ -45,21 +45,21 @@ class NotesListViewModel extends ViewModel {
       return _notes;
     }
     return _notes
-        .where((note) =>
-            note.tags.any((noteTag) => _selectedTags.contains(noteTag)))
+        .where(
+            (note) => note.tags.any((tagId) => _selectedTags.contains(tagId)))
         .toList();
   }
 
   //tags
-  List<NoteTag> _selectedTags = [];
-  List<NoteTag> get selectedTags => _selectedTags;
+  List<String> _selectedTags = [];
+  List<String> get selectedTags => _selectedTags;
   List<Note> notesToDisplay = [];
 
-  void selectTag(NoteTag tag) {
-    if (_selectedTags.contains(tag)) {
-      _selectedTags.remove(tag);
+  void selectTag(String tagId) {
+    if (_selectedTags.contains(tagId)) {
+      _selectedTags.remove(tagId);
     } else {
-      _selectedTags.add(tag);
+      _selectedTags.add(tagId);
     }
     notesToDisplay = _filterNotesByTags();
     notifyListeners();
@@ -67,9 +67,9 @@ class NotesListViewModel extends ViewModel {
 
   Future<void> addTag(NoteTag tag) async {
     setViewState(ViewState.busy);
-    if (!tags.contains(tag)) {
-      tags.add(tag);
-      await _notesRepo.updateTags(tags);
+    if (!availableTags.contains(tag)) {
+      availableTags.add(tag);
+      await _notesRepo.updateTags(availableTags);
       setViewState(ViewState.idle);
     }
     setViewState(ViewState.idle,

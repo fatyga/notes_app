@@ -59,7 +59,7 @@ class _NoteListPageState extends State<NoteListPage> {
             animation: model,
             builder: (context, _) {
               return Tags(
-                availableTags: model.tags,
+                availableTags: model.availableTags,
                 selectedTags: model.selectedTags,
                 onTagSelect: model.selectTag,
                 withEditButton: true,

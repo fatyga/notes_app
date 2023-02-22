@@ -10,12 +10,12 @@ class TagsManageViewModel extends ViewModel {
 
   late StreamSubscription tagsSubscription;
 
-  List<NoteTag> _tags = [];
-  List<NoteTag> get tags => _tags;
+  List<NoteTag> _availableTags = [];
+  List<NoteTag> get tags => _availableTags;
 
   void startTagsSubscription() {
     tagsSubscription = _notesRepo.tagsChanges.listen((tagsList) {
-      _tags = tagsList;
+      _availableTags = tagsList;
       notifyListeners();
     });
   }
@@ -25,33 +25,41 @@ class TagsManageViewModel extends ViewModel {
   }
 
   //tags
-  NoteTag? _selectedTag;
-  NoteTag? get selectedTag => _selectedTag;
+  String? _selectedTagId;
+  String? get selectedTag => _selectedTagId;
 
-  void selectTag(NoteTag tag) {
-    if (_selectedTag == tag) {
-      _selectedTag = null;
+  String getSelectedTagName() =>
+      _availableTags.firstWhere((tag) => tag.id == _selectedTagId).name;
+
+  void selectTag(String tagId) {
+    if (_selectedTagId == tagId) {
+      _selectedTagId = null;
     } else {
-      _selectedTag = tag;
+      _selectedTagId = tagId;
     }
 
     notifyListeners();
   }
 
   void updateTag(String newTagName) {
-    if (_selectedTag != null) {
-      if (_selectedTag!.name != newTagName) {
-        _selectedTag!.name = newTagName;
-        notifyListeners();
+    if (_selectedTagId != null) {
+      final tag =
+          _availableTags.firstWhere((element) => element.id == _selectedTagId);
+      if (tag.name != newTagName) {
+        tag.name = newTagName;
       }
+      _selectedTagId = null;
+      notifyListeners();
     }
   }
 
   void addTag(String newTagName) {
-    if (_tags.any((tag) => tag.name == newTagName) || newTagName.isEmpty) {
+    if (_availableTags.any((tag) => tag.name == newTagName) ||
+        newTagName.isEmpty) {
       return;
     }
-    _tags.add(NoteTag(id: _notesRepo.getRandomIdForNewTag(), name: newTagName));
+    _availableTags
+        .add(NoteTag(id: _notesRepo.getRandomIdForNewTag(), name: newTagName));
     notifyListeners();
   }
 

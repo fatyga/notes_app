@@ -15,8 +15,8 @@ class NewNoteViewModel extends ViewModel {
   List<NoteTag> _tags = [];
   List<NoteTag> get tags => _tags;
 
-  List<NoteTag> _selectedTags = [];
-  List<NoteTag> get selectedTags => _selectedTags;
+  List<String> _selectedTags = [];
+  List<String> get selectedTags => _selectedTags;
 
   void startTagsSubscription() {
     tagsSubscription = _notesRepo.tagsChanges.listen((tags) {
@@ -41,11 +41,11 @@ class NewNoteViewModel extends ViewModel {
   }
 
   //tags
-  void selectTag(NoteTag tag) {
-    if (_selectedTags.contains(tag)) {
-      _selectedTags.remove(tag);
+  void selectTag(String tagId) {
+    if (_selectedTags.contains(tagId)) {
+      _selectedTags.remove(tagId);
     } else {
-      _selectedTags.add(tag);
+      _selectedTags.add(tagId);
     }
     notifyListeners();
   }

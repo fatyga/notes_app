@@ -12,8 +12,8 @@ class Tags extends StatelessWidget {
       required this.withEditButton,
       required this.oneline});
   final List<NoteTag> availableTags;
-  final List<NoteTag> selectedTags;
-  final Function(NoteTag) onTagSelect;
+  final List<String> selectedTags;
+  final Function(String) onTagSelect;
   final bool withEditButton;
   final bool oneline;
 
@@ -39,10 +39,10 @@ class Tags extends StatelessWidget {
     final chips = availableTags
         .map<Widget>((tag) => FilterChip(
             visualDensity: const VisualDensity(horizontal: -2, vertical: -2),
-            selected: selectedTags.contains(tag),
+            selected: selectedTags.contains(tag.id),
             showCheckmark: false,
             label: Text(tag.name),
-            onSelected: (_) => onTagSelect(tag)))
+            onSelected: (_) => onTagSelect(tag.id)))
         .toList();
     if (withEditButton) {
       chips.add(ActionChip(
