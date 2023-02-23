@@ -39,6 +39,17 @@ class NotesRepository {
     await _notesService.initializeTags();
   }
 
+  Future<void> removeReferencesToDeletedTag(
+      List<Note> notes, List<String> tagsIds) async {
+    notes.forEach((note) async {
+      final onlyExisitingTags =
+          note.tags.where((tagId) => !tagsIds.contains(tagId)).toList();
+      if (note.tags.length != onlyExisitingTags.length) {
+        await _notesService.updateNote(note.copyWith(tags: onlyExisitingTags));
+      }
+    });
+  }
+
   String getRandomIdForNewTag() =>
       _firestoreService.collection('users').doc().id;
 }

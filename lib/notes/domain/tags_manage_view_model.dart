@@ -10,6 +10,7 @@ class TagsManageViewModel extends ViewModel {
 
   late StreamSubscription tagsSubscription;
 
+  List<String> _deletedTagsIds = [];
   List<NoteTag> _availableTags = [];
   List<NoteTag> get tags => _availableTags;
 
@@ -63,9 +64,21 @@ class TagsManageViewModel extends ViewModel {
     notifyListeners();
   }
 
+  void deleteTag() {
+    if (tags.map((tag) => tag.id).contains(_selectedTagId)) {
+      tags.removeWhere((tag) => tag.id == _selectedTagId);
+      _deletedTagsIds.add(_selectedTagId!);
+    }
+    _selectedTagId = null;
+    notifyListeners();
+  }
+
   Future<void> updateTags() async {
     setViewState(ViewState.busy);
-
+    if (_deletedTagsIds.isNotEmpty) {
+      final notes = await _notesRepo.savedNotes();
+      await _notesRepo.removeReferencesToDeletedTag(notes, _deletedTagsIds);
+    }
     await _notesRepo.updateTags(tags);
 
     setViewState(ViewState.idle,

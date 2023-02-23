@@ -62,8 +62,10 @@ class _MyWidgetState extends State<TagsManagePage> {
                         decoration: const InputDecoration(hintText: 'Name'),
                       ),
                       const SizedBox(height: 8),
-                      Center(
-                          child: ElevatedButton(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
                               onPressed: () {
                                 if (tagsViewModel.selectedTag != null) {
                                   tagsViewModel.updateTag(
@@ -76,7 +78,19 @@ class _MyWidgetState extends State<TagsManagePage> {
                               },
                               child: (tagsViewModel.selectedTag == null)
                                   ? const Text('Add')
-                                  : const Text('Update'))),
+                                  : const Text('Update')),
+                          (tagsViewModel.selectedTag == null)
+                              ? const SizedBox()
+                              : Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        tagsViewModel.deleteTag();
+                                      },
+                                      child: const Text('Delete')),
+                                )
+                        ],
+                      ),
                       const SizedBox(height: 8.0),
                       Text('All Tags',
                           style: Theme.of(context).textTheme.headlineMedium),
