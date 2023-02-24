@@ -102,9 +102,37 @@ class _MyWidgetState extends State<TagsManagePage> {
                           selectedTags: tagsViewModel.selectedTag == null
                               ? []
                               : [tagsViewModel.selectedTag!],
-                          onTagSelect: tagsViewModel.selectTag)
+                          onTagSelect: tagsViewModel.selectTag),
+                      const SizedBox(height: 16),
+                      Text('Changes',
+                          style: Theme.of(context).textTheme.headlineMedium),
+                      const SizedBox(height: 8),
+                      Expanded(
+                          child: TagChanges(changes: tagsViewModel.tagChanges))
                     ]));
           },
         ));
+  }
+}
+
+class TagChanges extends StatelessWidget {
+  const TagChanges({super.key, required this.changes});
+  final List<TagChange> changes;
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: changes.map<Widget>((change) {
+        if (change is TagCreated) {
+          return Text('New Tag: ${change.tagName}');
+        }
+        if (change is TagDeleted) {
+          return Text('Delete Tag: ${change.tagName}');
+        }
+        if (change is TagRenamed) {
+          return Text('Tag renamed: ${change.oldName} -> ${change.newName}');
+        }
+        return Container(); //TODO: fix conditions
+      }).toList(),
+    );
   }
 }

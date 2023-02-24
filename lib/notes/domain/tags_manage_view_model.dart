@@ -5,6 +5,30 @@ import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 import 'package:notes_app/shared/view_model.dart';
 
+abstract class TagChange {}
+
+class TagRenamed implements TagChange {
+  final String tagId;
+  final String oldName;
+  final String newName;
+
+  TagRenamed(
+      {required this.tagId, required this.oldName, required this.newName});
+}
+
+class TagCreated implements TagChange {
+  final String tagId;
+  final String tagName;
+  TagCreated({required this.tagName, required this.tagId});
+}
+
+class TagDeleted implements TagChange {
+  final String tagId;
+  final String tagName;
+
+  TagDeleted({required this.tagId, required this.tagName});
+}
+
 class TagsManageViewModel extends ViewModel {
   final NotesRepository _notesRepo = serviceLocator<NotesRepository>();
 
@@ -13,6 +37,8 @@ class TagsManageViewModel extends ViewModel {
   List<String> _deletedTagsIds = [];
   List<NoteTag> _availableTags = [];
   List<NoteTag> get tags => _availableTags;
+
+  List<TagChange> tagChanges = [];
 
   void startTagsSubscription() {
     tagsSubscription = _notesRepo.tagsChanges.listen((tagsList) {
@@ -47,6 +73,8 @@ class TagsManageViewModel extends ViewModel {
       final tag =
           _availableTags.firstWhere((element) => element.id == _selectedTagId);
       if (tag.name != newTagName) {
+        tagChanges.add(TagRenamed(
+            tagId: _selectedTagId!, oldName: tag.name, newName: newTagName));
         tag.name = newTagName;
       }
       _selectedTagId = null;
@@ -59,13 +87,20 @@ class TagsManageViewModel extends ViewModel {
         newTagName.isEmpty) {
       return;
     }
-    _availableTags
-        .add(NoteTag(id: _notesRepo.getRandomIdForNewTag(), name: newTagName));
+    final randomId = _notesRepo.getRandomIdForNewTag();
+    _availableTags.add(NoteTag(id: randomId, name: newTagName));
+    tagChanges.add(TagCreated(tagId: randomId, tagName: newTagName));
     notifyListeners();
   }
 
   void deleteTag() {
-    if (tags.map((tag) => tag.id).contains(_selectedTagId)) {
+    if (_selectedTagId != null &&
+        tags.map((tag) => tag.id).contains(_selectedTagId)) {
+      tagChanges.add(TagDeleted(
+          tagId: _selectedTagId!,
+          tagName: _availableTags
+              .firstWhere((tag) => tag.id == _selectedTagId!)
+              .name));
       tags.removeWhere((tag) => tag.id == _selectedTagId);
       _deletedTagsIds.add(_selectedTagId!);
     }
