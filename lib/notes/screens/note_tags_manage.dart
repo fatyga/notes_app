@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_app/notes/domain/models/tag.dart';
 import 'package:notes_app/notes/domain/tags_manage_view_model.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
@@ -106,7 +107,6 @@ class _MyWidgetState extends State<TagsManagePage> {
                       const SizedBox(height: 16),
                       Text('Changes',
                           style: Theme.of(context).textTheme.headlineMedium),
-                      const SizedBox(height: 8),
                       Expanded(
                           child: TagChanges(changes: tagsViewModel.tagChanges))
                     ]));
@@ -117,21 +117,34 @@ class _MyWidgetState extends State<TagsManagePage> {
 
 class TagChanges extends StatelessWidget {
   const TagChanges({super.key, required this.changes});
-  final List<TagChange> changes;
+  final Map<NoteTag, List<TagChange>> changes;
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: changes.map<Widget>((change) {
-        if (change is TagCreated) {
-          return Text('New Tag: ${change.tagName}');
-        }
-        if (change is TagDeleted) {
-          return Text('Delete Tag: ${change.tagName}');
-        }
-        if (change is TagRenamed) {
-          return Text('Tag renamed: ${change.oldName} -> ${change.newName}');
-        }
-        return Container(); //TODO: fix conditions
+      children: changes.entries.map<Widget>((tag) {
+        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 12.0),
+            child: Text('${tag.key.id.substring(0, 6)} - ${tag.key.name}'),
+          ),
+          Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: tag.value.map<Widget>((change) {
+                    if (change is TagCreated) {
+                      return Text('New Tag: ${change.tagName}');
+                    }
+                    if (change is TagDeleted) {
+                      return Text('Delete Tag: ${change.tagName}');
+                    }
+                    if (change is TagRenamed) {
+                      return Text(
+                          'Tag renamed: ${change.oldName} -> ${change.newName}');
+                    }
+                    return Container(); //TODO: fix conditions
+                  }).toList()))
+        ]);
       }).toList(),
     );
   }

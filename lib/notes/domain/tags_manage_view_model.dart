@@ -7,26 +7,24 @@ import 'package:notes_app/shared/view_model.dart';
 
 abstract class TagChange {}
 
-class TagRenamed implements TagChange {
-  final String tagId;
+class TagRenamed extends TagChange {
   final String oldName;
   final String newName;
 
-  TagRenamed(
-      {required this.tagId, required this.oldName, required this.newName});
+  TagRenamed({required this.oldName, required this.newName});
 }
 
-class TagCreated implements TagChange {
-  final String tagId;
+class TagCreated extends TagChange {
   final String tagName;
-  TagCreated({required this.tagName, required this.tagId});
+  TagCreated({
+    required this.tagName,
+  });
 }
 
-class TagDeleted implements TagChange {
-  final String tagId;
+class TagDeleted extends TagChange {
   final String tagName;
 
-  TagDeleted({required this.tagId, required this.tagName});
+  TagDeleted({required this.tagName});
 }
 
 class TagsManageViewModel extends ViewModel {
@@ -37,8 +35,6 @@ class TagsManageViewModel extends ViewModel {
   List<String> _deletedTagsIds = [];
   List<NoteTag> _availableTags = [];
   List<NoteTag> get tags => _availableTags;
-
-  List<TagChange> tagChanges = [];
 
   void startTagsSubscription() {
     tagsSubscription = _notesRepo.tagsChanges.listen((tagsList) {
@@ -54,6 +50,19 @@ class TagsManageViewModel extends ViewModel {
   //tags
   String? _selectedTagId;
   String? get selectedTag => _selectedTagId;
+
+  Map<NoteTag, List<TagChange>> tagChanges = {};
+
+  NoteTag getNoteTagFromId(String tagId) {
+    return _availableTags.firstWhere((tag) => tag.id == tagId);
+  }
+
+  void updateTagChanges(String tagId, TagChange change) {
+    if (!tagChanges.containsKey(getNoteTagFromId(tagId))) {
+      tagChanges[getNoteTagFromId(tagId)] = [];
+    }
+    tagChanges[getNoteTagFromId(tagId)]!.insert(0, change);
+  }
 
   String getSelectedTagName() =>
       _availableTags.firstWhere((tag) => tag.id == _selectedTagId).name;
@@ -73,8 +82,8 @@ class TagsManageViewModel extends ViewModel {
       final tag =
           _availableTags.firstWhere((element) => element.id == _selectedTagId);
       if (tag.name != newTagName) {
-        tagChanges.add(TagRenamed(
-            tagId: _selectedTagId!, oldName: tag.name, newName: newTagName));
+        updateTagChanges(_selectedTagId!,
+            TagRenamed(oldName: tag.name, newName: newTagName));
         tag.name = newTagName;
       }
       _selectedTagId = null;
@@ -89,18 +98,19 @@ class TagsManageViewModel extends ViewModel {
     }
     final randomId = _notesRepo.getRandomIdForNewTag();
     _availableTags.add(NoteTag(id: randomId, name: newTagName));
-    tagChanges.add(TagCreated(tagId: randomId, tagName: newTagName));
+    updateTagChanges(randomId, TagCreated(tagName: newTagName));
     notifyListeners();
   }
 
   void deleteTag() {
     if (_selectedTagId != null &&
         tags.map((tag) => tag.id).contains(_selectedTagId)) {
-      tagChanges.add(TagDeleted(
-          tagId: _selectedTagId!,
-          tagName: _availableTags
-              .firstWhere((tag) => tag.id == _selectedTagId!)
-              .name));
+      updateTagChanges(
+          _selectedTagId!,
+          TagDeleted(
+              tagName: _availableTags
+                  .firstWhere((tag) => tag.id == _selectedTagId!)
+                  .name));
       tags.removeWhere((tag) => tag.id == _selectedTagId);
       _deletedTagsIds.add(_selectedTagId!);
     }
