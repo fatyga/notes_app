@@ -56,37 +56,3 @@ class Tags extends StatelessWidget {
     return chips;
   }
 }
-
-class NewTagDialog extends StatefulWidget {
-  const NewTagDialog({super.key, required this.onTagAdd});
-  final Function(String) onTagAdd;
-
-  @override
-  State<NewTagDialog> createState() => _NewTagDialogState();
-}
-
-class _NewTagDialogState extends State<NewTagDialog> {
-  final _tagNameFieldController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-        title: const Text('Add new tag'),
-        content: TextField(
-          controller: _tagNameFieldController,
-        ),
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("Cancel")),
-          ElevatedButton(
-              onPressed: () {
-                widget.onTagAdd(_tagNameFieldController.text);
-                Navigator.of(context).pop();
-              },
-              child: const Text("Add"))
-        ]);
-  }
-}
