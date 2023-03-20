@@ -22,7 +22,9 @@ class MyApp extends StatelessWidget {
       builder: (context, snapshot) => MaterialApp.router(
         routerDelegate: AutoRouterDelegate.declarative(_appRouter,
             routes: (_) => [
-                  if (snapshot.data != null)
+                  if (snapshot.connectionState == ConnectionState.waiting)
+                    const SplashRoute()
+                  else if (snapshot.data != null)
                     const HomeRoute()
                   else
                     const AuthenticationWrapperRoute()

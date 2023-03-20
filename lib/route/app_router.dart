@@ -12,10 +12,12 @@ import 'package:notes_app/notes/screens/notes_list_page.dart';
 import 'package:notes_app/notes/screens/notes_wrapper_page.dart';
 import 'package:notes_app/notes/screens/update_note_page.dart';
 import 'package:notes_app/notes/screens/note_preview_page.dart';
+import 'package:notes_app/splash/splash_screen.dart';
 
 import '../account/screens/wrapper.dart';
 
 @MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: <AutoRoute>[
+  AutoRoute(path: '/splash', page: SplashPage),
   AutoRoute(
       path: '/authentication',
       page: AuthenticationWrapperPage,

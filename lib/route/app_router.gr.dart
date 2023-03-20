@@ -11,210 +11,221 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i14;
-import 'package:flutter/material.dart' as _i15;
+import 'package:auto_route/auto_route.dart' as _i15;
+import 'package:flutter/material.dart' as _i16;
 
-import '../account/screens/account_preview_screen.dart' as _i12;
-import '../account/screens/account_update_screen.dart' as _i13;
-import '../account/screens/account_wrapper.dart' as _i6;
-import '../account/screens/wrapper.dart' as _i2;
-import '../authentication/screens/register_screen.dart' as _i4;
-import '../authentication/screens/sign_in_screen.dart' as _i3;
-import '../authentication/screens/wrapper_page.dart' as _i1;
-import '../notes/screens/new_note_page.dart' as _i9;
-import '../notes/screens/note_preview_page.dart' as _i8;
-import '../notes/screens/note_tags_manage.dart' as _i11;
-import '../notes/screens/notes_list_page.dart' as _i7;
-import '../notes/screens/notes_wrapper_page.dart' as _i5;
-import '../notes/screens/update_note_page.dart' as _i10;
+import '../account/screens/account_preview_screen.dart' as _i13;
+import '../account/screens/account_update_screen.dart' as _i14;
+import '../account/screens/account_wrapper.dart' as _i7;
+import '../account/screens/wrapper.dart' as _i3;
+import '../authentication/screens/register_screen.dart' as _i5;
+import '../authentication/screens/sign_in_screen.dart' as _i4;
+import '../authentication/screens/wrapper_page.dart' as _i2;
+import '../notes/screens/new_note_page.dart' as _i10;
+import '../notes/screens/note_preview_page.dart' as _i9;
+import '../notes/screens/note_tags_manage.dart' as _i12;
+import '../notes/screens/notes_list_page.dart' as _i8;
+import '../notes/screens/notes_wrapper_page.dart' as _i6;
+import '../notes/screens/update_note_page.dart' as _i11;
+import '../splash/splash_screen.dart' as _i1;
 
-class AppRouter extends _i14.RootStackRouter {
-  AppRouter([_i15.GlobalKey<_i15.NavigatorState>? navigatorKey])
+class AppRouter extends _i15.RootStackRouter {
+  AppRouter([_i16.GlobalKey<_i16.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i14.PageFactory> pagesMap = {
-    AuthenticationWrapperRoute.name: (routeData) {
-      return _i14.MaterialPageX<dynamic>(
+  final Map<String, _i15.PageFactory> pagesMap = {
+    SplashRoute.name: (routeData) {
+      return _i15.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i1.AuthenticationWrapperPage(),
+        child: const _i1.SplashPage(),
+      );
+    },
+    AuthenticationWrapperRoute.name: (routeData) {
+      return _i15.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i2.AuthenticationWrapperPage(),
       );
     },
     HomeRoute.name: (routeData) {
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i2.HomePage(),
+        child: const _i3.HomePage(),
       );
     },
     SignInRoute.name: (routeData) {
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i3.SignInPage(),
+        child: const _i4.SignInPage(),
       );
     },
     RegisterRoute.name: (routeData) {
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i4.RegisterPage(),
+        child: const _i5.RegisterPage(),
       );
     },
     NotesWrapperRoute.name: (routeData) {
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i5.NotesWrapperPage(),
+        child: const _i6.NotesWrapperPage(),
       );
     },
     UserAccountWrapperRoute.name: (routeData) {
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i6.UserAccountWrapperPage(),
+        child: const _i7.UserAccountWrapperPage(),
       );
     },
     NoteListRoute.name: (routeData) {
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i7.NoteListPage(),
+        child: const _i8.NoteListPage(),
       );
     },
     NotePreviewRoute.name: (routeData) {
       final args = routeData.argsAs<NotePreviewRouteArgs>();
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i8.NotePreviewPage(
+        child: _i9.NotePreviewPage(
           key: args.key,
           noteId: args.noteId,
         ),
       );
     },
     NewNoteRoute.name: (routeData) {
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i9.NewNotePage(),
+        child: const _i10.NewNotePage(),
       );
     },
     UpdateNoteRoute.name: (routeData) {
       final args = routeData.argsAs<UpdateNoteRouteArgs>();
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i10.UpdateNotePage(
+        child: _i11.UpdateNotePage(
           key: args.key,
           noteId: args.noteId,
         ),
       );
     },
     TagsManageRoute.name: (routeData) {
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i11.TagsManagePage(),
+        child: const _i12.TagsManagePage(),
       );
     },
     UserAccountPreviewRoute.name: (routeData) {
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i12.UserAccountPreviewPage(),
+        child: const _i13.UserAccountPreviewPage(),
       );
     },
     UserAccountUpdateRoute.name: (routeData) {
-      return _i14.MaterialPageX<dynamic>(
+      return _i15.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i13.UserAccountUpdatePage(),
+        child: const _i14.UserAccountUpdatePage(),
       );
     },
   };
 
   @override
-  List<_i14.RouteConfig> get routes => [
-        _i14.RouteConfig(
+  List<_i15.RouteConfig> get routes => [
+        _i15.RouteConfig(
+          SplashRoute.name,
+          path: '/splash',
+        ),
+        _i15.RouteConfig(
           AuthenticationWrapperRoute.name,
           path: '/authentication',
           children: [
-            _i14.RouteConfig(
+            _i15.RouteConfig(
               '#redirect',
               path: '',
               parent: AuthenticationWrapperRoute.name,
               redirectTo: 'signIn',
               fullMatch: true,
             ),
-            _i14.RouteConfig(
+            _i15.RouteConfig(
               SignInRoute.name,
               path: 'signIn',
               parent: AuthenticationWrapperRoute.name,
             ),
-            _i14.RouteConfig(
+            _i15.RouteConfig(
               RegisterRoute.name,
               path: 'register',
               parent: AuthenticationWrapperRoute.name,
             ),
           ],
         ),
-        _i14.RouteConfig(
+        _i15.RouteConfig(
           HomeRoute.name,
           path: '/',
           children: [
-            _i14.RouteConfig(
+            _i15.RouteConfig(
               '#redirect',
               path: '',
               parent: HomeRoute.name,
               redirectTo: 'notes',
               fullMatch: true,
             ),
-            _i14.RouteConfig(
+            _i15.RouteConfig(
               NotesWrapperRoute.name,
               path: 'notes',
               parent: HomeRoute.name,
               children: [
-                _i14.RouteConfig(
+                _i15.RouteConfig(
                   '#redirect',
                   path: '',
                   parent: NotesWrapperRoute.name,
                   redirectTo: 'noteList',
                   fullMatch: true,
                 ),
-                _i14.RouteConfig(
+                _i15.RouteConfig(
                   NoteListRoute.name,
                   path: 'noteList',
                   parent: NotesWrapperRoute.name,
                 ),
-                _i14.RouteConfig(
+                _i15.RouteConfig(
                   NotePreviewRoute.name,
                   path: 'notePreview',
                   parent: NotesWrapperRoute.name,
                 ),
-                _i14.RouteConfig(
+                _i15.RouteConfig(
                   NewNoteRoute.name,
                   path: 'newNote',
                   parent: NotesWrapperRoute.name,
                 ),
-                _i14.RouteConfig(
+                _i15.RouteConfig(
                   UpdateNoteRoute.name,
                   path: 'updateNote',
                   parent: NotesWrapperRoute.name,
                 ),
-                _i14.RouteConfig(
+                _i15.RouteConfig(
                   TagsManageRoute.name,
                   path: 'tagsManager',
                   parent: NotesWrapperRoute.name,
                 ),
               ],
             ),
-            _i14.RouteConfig(
+            _i15.RouteConfig(
               UserAccountWrapperRoute.name,
               path: 'userAccount',
               parent: HomeRoute.name,
               children: [
-                _i14.RouteConfig(
+                _i15.RouteConfig(
                   '#redirect',
                   path: '',
                   parent: UserAccountWrapperRoute.name,
                   redirectTo: 'preview',
                   fullMatch: true,
                 ),
-                _i14.RouteConfig(
+                _i15.RouteConfig(
                   UserAccountPreviewRoute.name,
                   path: 'preview',
                   parent: UserAccountWrapperRoute.name,
                 ),
-                _i14.RouteConfig(
+                _i15.RouteConfig(
                   UserAccountUpdateRoute.name,
                   path: 'update',
                   parent: UserAccountWrapperRoute.name,
@@ -227,9 +238,21 @@ class AppRouter extends _i14.RootStackRouter {
 }
 
 /// generated route for
-/// [_i1.AuthenticationWrapperPage]
-class AuthenticationWrapperRoute extends _i14.PageRouteInfo<void> {
-  const AuthenticationWrapperRoute({List<_i14.PageRouteInfo>? children})
+/// [_i1.SplashPage]
+class SplashRoute extends _i15.PageRouteInfo<void> {
+  const SplashRoute()
+      : super(
+          SplashRoute.name,
+          path: '/splash',
+        );
+
+  static const String name = 'SplashRoute';
+}
+
+/// generated route for
+/// [_i2.AuthenticationWrapperPage]
+class AuthenticationWrapperRoute extends _i15.PageRouteInfo<void> {
+  const AuthenticationWrapperRoute({List<_i15.PageRouteInfo>? children})
       : super(
           AuthenticationWrapperRoute.name,
           path: '/authentication',
@@ -240,9 +263,9 @@ class AuthenticationWrapperRoute extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i2.HomePage]
-class HomeRoute extends _i14.PageRouteInfo<void> {
-  const HomeRoute({List<_i14.PageRouteInfo>? children})
+/// [_i3.HomePage]
+class HomeRoute extends _i15.PageRouteInfo<void> {
+  const HomeRoute({List<_i15.PageRouteInfo>? children})
       : super(
           HomeRoute.name,
           path: '/',
@@ -253,8 +276,8 @@ class HomeRoute extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.SignInPage]
-class SignInRoute extends _i14.PageRouteInfo<void> {
+/// [_i4.SignInPage]
+class SignInRoute extends _i15.PageRouteInfo<void> {
   const SignInRoute()
       : super(
           SignInRoute.name,
@@ -265,8 +288,8 @@ class SignInRoute extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.RegisterPage]
-class RegisterRoute extends _i14.PageRouteInfo<void> {
+/// [_i5.RegisterPage]
+class RegisterRoute extends _i15.PageRouteInfo<void> {
   const RegisterRoute()
       : super(
           RegisterRoute.name,
@@ -277,9 +300,9 @@ class RegisterRoute extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i5.NotesWrapperPage]
-class NotesWrapperRoute extends _i14.PageRouteInfo<void> {
-  const NotesWrapperRoute({List<_i14.PageRouteInfo>? children})
+/// [_i6.NotesWrapperPage]
+class NotesWrapperRoute extends _i15.PageRouteInfo<void> {
+  const NotesWrapperRoute({List<_i15.PageRouteInfo>? children})
       : super(
           NotesWrapperRoute.name,
           path: 'notes',
@@ -290,9 +313,9 @@ class NotesWrapperRoute extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i6.UserAccountWrapperPage]
-class UserAccountWrapperRoute extends _i14.PageRouteInfo<void> {
-  const UserAccountWrapperRoute({List<_i14.PageRouteInfo>? children})
+/// [_i7.UserAccountWrapperPage]
+class UserAccountWrapperRoute extends _i15.PageRouteInfo<void> {
+  const UserAccountWrapperRoute({List<_i15.PageRouteInfo>? children})
       : super(
           UserAccountWrapperRoute.name,
           path: 'userAccount',
@@ -303,8 +326,8 @@ class UserAccountWrapperRoute extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.NoteListPage]
-class NoteListRoute extends _i14.PageRouteInfo<void> {
+/// [_i8.NoteListPage]
+class NoteListRoute extends _i15.PageRouteInfo<void> {
   const NoteListRoute()
       : super(
           NoteListRoute.name,
@@ -315,10 +338,10 @@ class NoteListRoute extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i8.NotePreviewPage]
-class NotePreviewRoute extends _i14.PageRouteInfo<NotePreviewRouteArgs> {
+/// [_i9.NotePreviewPage]
+class NotePreviewRoute extends _i15.PageRouteInfo<NotePreviewRouteArgs> {
   NotePreviewRoute({
-    _i15.Key? key,
+    _i16.Key? key,
     required String noteId,
   }) : super(
           NotePreviewRoute.name,
@@ -338,7 +361,7 @@ class NotePreviewRouteArgs {
     required this.noteId,
   });
 
-  final _i15.Key? key;
+  final _i16.Key? key;
 
   final String noteId;
 
@@ -349,8 +372,8 @@ class NotePreviewRouteArgs {
 }
 
 /// generated route for
-/// [_i9.NewNotePage]
-class NewNoteRoute extends _i14.PageRouteInfo<void> {
+/// [_i10.NewNotePage]
+class NewNoteRoute extends _i15.PageRouteInfo<void> {
   const NewNoteRoute()
       : super(
           NewNoteRoute.name,
@@ -361,10 +384,10 @@ class NewNoteRoute extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i10.UpdateNotePage]
-class UpdateNoteRoute extends _i14.PageRouteInfo<UpdateNoteRouteArgs> {
+/// [_i11.UpdateNotePage]
+class UpdateNoteRoute extends _i15.PageRouteInfo<UpdateNoteRouteArgs> {
   UpdateNoteRoute({
-    _i15.Key? key,
+    _i16.Key? key,
     required String noteId,
   }) : super(
           UpdateNoteRoute.name,
@@ -384,7 +407,7 @@ class UpdateNoteRouteArgs {
     required this.noteId,
   });
 
-  final _i15.Key? key;
+  final _i16.Key? key;
 
   final String noteId;
 
@@ -395,8 +418,8 @@ class UpdateNoteRouteArgs {
 }
 
 /// generated route for
-/// [_i11.TagsManagePage]
-class TagsManageRoute extends _i14.PageRouteInfo<void> {
+/// [_i12.TagsManagePage]
+class TagsManageRoute extends _i15.PageRouteInfo<void> {
   const TagsManageRoute()
       : super(
           TagsManageRoute.name,
@@ -407,8 +430,8 @@ class TagsManageRoute extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i12.UserAccountPreviewPage]
-class UserAccountPreviewRoute extends _i14.PageRouteInfo<void> {
+/// [_i13.UserAccountPreviewPage]
+class UserAccountPreviewRoute extends _i15.PageRouteInfo<void> {
   const UserAccountPreviewRoute()
       : super(
           UserAccountPreviewRoute.name,
@@ -419,8 +442,8 @@ class UserAccountPreviewRoute extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i13.UserAccountUpdatePage]
-class UserAccountUpdateRoute extends _i14.PageRouteInfo<void> {
+/// [_i14.UserAccountUpdatePage]
+class UserAccountUpdateRoute extends _i15.PageRouteInfo<void> {
   const UserAccountUpdateRoute()
       : super(
           UserAccountUpdateRoute.name,
