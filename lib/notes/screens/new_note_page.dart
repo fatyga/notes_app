@@ -93,7 +93,6 @@ class _NewNotePageState extends State<NewNotePage> {
                     availableTags: model.tags,
                     selectedTags: model.selectedTags,
                     onTagSelect: model.selectTag,
-                    withEditButton: false,
                     oneline: true,
                   ),
                   Text(errorContent,

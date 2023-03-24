@@ -9,12 +9,11 @@ class Tags extends StatelessWidget {
       required this.availableTags,
       required this.selectedTags,
       required this.onTagSelect,
-      required this.withEditButton,
       required this.oneline});
   final List<NoteTag> availableTags;
   final List<String> selectedTags;
   final Function(String) onTagSelect;
-  final bool withEditButton;
+
   final bool oneline;
 
   @override
@@ -44,14 +43,6 @@ class Tags extends StatelessWidget {
             label: Text(tag.name),
             onSelected: (_) => onTagSelect(tag.id)))
         .toList();
-    if (withEditButton) {
-      chips.add(ActionChip(
-          visualDensity: const VisualDensity(horizontal: -2, vertical: -2),
-          label: const Icon(Icons.edit),
-          onPressed: () {
-            context.router.push(const TagsManageRoute());
-          }));
-    }
 
     return chips;
   }

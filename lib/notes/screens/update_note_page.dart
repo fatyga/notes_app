@@ -100,7 +100,6 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                       availableTags: model.availableTags,
                       selectedTags: model.selectedTags,
                       onTagSelect: model.selectTag,
-                      withEditButton: false,
                       oneline: true,
                     ),
                     Text(errorContent,

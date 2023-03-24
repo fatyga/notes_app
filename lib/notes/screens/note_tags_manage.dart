@@ -98,7 +98,6 @@ class _MyWidgetState extends State<TagsManagePage> {
                       const SizedBox(height: 8.0),
                       Tags(
                           availableTags: tagsViewModel.tags,
-                          withEditButton: false,
                           oneline: false,
                           selectedTags: tagsViewModel.selectedTag == null
                               ? []
