@@ -40,6 +40,24 @@ class NotesListViewModel extends ViewModel {
     tagsSubscription.cancel();
   }
 
+  // Filtering notes
+  bool isFiltersApplied = false;
+
+  void filterNotes() {
+    if (_selectedTags.isNotEmpty) {
+      notesToDisplay = _filterNotesByTags();
+      isFiltersApplied = true;
+      notifyListeners();
+    }
+  }
+
+  void clearFilters() {
+    _selectedTags = [];
+    notesToDisplay = _notes;
+    isFiltersApplied = false;
+    notifyListeners();
+  }
+
   List<Note> _filterNotesByTags() {
     if (_selectedTags.isEmpty) {
       return _notes;
@@ -50,7 +68,6 @@ class NotesListViewModel extends ViewModel {
         .toList();
   }
 
-  //tags
   List<String> _selectedTags = [];
   List<String> get selectedTags => _selectedTags;
   List<Note> notesToDisplay = [];
@@ -61,7 +78,6 @@ class NotesListViewModel extends ViewModel {
     } else {
       _selectedTags.add(tagId);
     }
-    notesToDisplay = _filterNotesByTags();
     notifyListeners();
   }
 

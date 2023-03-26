@@ -37,7 +37,6 @@ class Tags extends StatelessWidget {
   List<Widget> createChips(BuildContext context) {
     final chips = availableTags
         .map<Widget>((tag) => FilterChip(
-            visualDensity: const VisualDensity(horizontal: -2, vertical: -2),
             selected: selectedTags.contains(tag.id),
             showCheckmark: false,
             label: Text(tag.name),
