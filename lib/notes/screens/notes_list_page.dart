@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 
 enum NotesViewType { grid, list }
 
+@RoutePage()
 class NoteListPage extends StatefulWidget {
   const NoteListPage({super.key});
 
@@ -56,7 +57,7 @@ class _NoteListPageState extends State<NoteListPage> {
                         model.clearFilters();
                       },
                       child: const Text('CLEAR')),
-                  ElevatedButton(
+                  FilledButton(
                       onPressed: () {
                         model.filterNotes();
                         Navigator.of(context).pop();
@@ -89,7 +90,7 @@ class _NoteListPageState extends State<NoteListPage> {
               animation: model.avatarViewModel,
               builder: (context, _) => GestureDetector(
                     onTap: () {
-                      context.router.push(const UserAccountWrapperRoute());
+                      context.router.push(const AccountRouter());
                     },
                     child: Align(
                       alignment: Alignment.center,
@@ -142,10 +143,10 @@ class _NoteListPageState extends State<NoteListPage> {
                   ),
                   (model.isFiltersApplied)
                       ? Positioned.fill(
-                          bottom: 20,
+                          bottom: 16,
                           child: Align(
                             alignment: Alignment.bottomCenter,
-                            child: ElevatedButton(
+                            child: FilledButton(
                                 onPressed: () => model.clearFilters(),
                                 child: const Text('Clear filters')),
                           ),

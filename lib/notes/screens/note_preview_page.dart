@@ -7,6 +7,7 @@ import 'package:notes_app/shared/enums/view_state.dart';
 
 import '../domain/note_preview_view_model.dart';
 
+@RoutePage()
 class NotePreviewPage extends StatefulWidget {
   const NotePreviewPage({super.key, required this.noteId});
   final String noteId;

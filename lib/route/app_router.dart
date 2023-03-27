@@ -1,42 +1,33 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
-import 'package:notes_app/account/screens/account_preview_screen.dart';
-import 'package:notes_app/account/screens/account_update_screen.dart';
-import 'package:notes_app/account/screens/account_wrapper.dart';
-import 'package:notes_app/authentication/screens/wrapper_page.dart';
-import 'package:notes_app/authentication/screens/register_screen.dart';
-import 'package:notes_app/authentication/screens/sign_in_screen.dart';
-import 'package:notes_app/notes/screens/new_note_page.dart';
-import 'package:notes_app/notes/screens/note_tags_manage.dart';
-import 'package:notes_app/notes/screens/notes_list_page.dart';
-import 'package:notes_app/notes/screens/notes_wrapper_page.dart';
-import 'package:notes_app/notes/screens/update_note_page.dart';
-import 'package:notes_app/notes/screens/note_preview_page.dart';
-import 'package:notes_app/splash/splash_screen.dart';
+import 'app_router.gr.dart';
 
-import '../account/screens/wrapper.dart';
+@AutoRouterConfig(replaceInRouteName: 'Page,Route')
+class AppRouter extends $AppRouter {
+  @override
+  RouteType get defaultRouteType => RouteType.material();
 
-@MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: <AutoRoute>[
-  AutoRoute(path: '/splash', page: SplashPage),
-  AutoRoute(
-      path: '/authentication',
-      page: AuthenticationWrapperPage,
-      children: [
-        AutoRoute(path: 'signIn', initial: true, page: SignInPage),
-        AutoRoute(path: 'register', page: RegisterPage)
+  @override
+  final List<AutoRoute> routes = [
+    AutoRoute(path: '/', page: SplashRoute.page),
+    AutoRoute(
+        path: '/authentication',
+        page: AuthenticationRouter.page,
+        children: [
+          AutoRoute(path: '', page: SignInRoute.page),
+          AutoRoute(path: 'register', page: RegisterRoute.page),
+        ]),
+    AutoRoute(path: '/home', page: HomeRouter.page, children: [
+      AutoRoute(path: '', page: NotesRouter.page, children: [
+        AutoRoute(path: '', page: NoteListRoute.page),
+        AutoRoute(page: NotePreviewRoute.page),
+        AutoRoute(page: NewNoteRoute.page),
+        AutoRoute(page: UpdateNoteRoute.page),
+        AutoRoute(page: TagsManageRoute.page),
       ]),
-  AutoRoute(path: '/', page: HomePage, children: [
-    AutoRoute(path: 'notes', initial: true, page: NotesWrapperPage, children: [
-      AutoRoute(path: 'noteList', initial: true, page: NoteListPage),
-      AutoRoute(path: 'notePreview', page: NotePreviewPage),
-      AutoRoute(path: 'newNote', page: NewNotePage),
-      AutoRoute(path: 'updateNote', page: UpdateNotePage),
-      AutoRoute(path: 'tagsManager', page: TagsManagePage)
+      AutoRoute(path: 'userAccount', page: AccountRouter.page, children: [
+        AutoRoute(path: '', page: UserAccountPreviewRoute.page),
+        AutoRoute(page: UserAccountUpdateRoute.page),
+      ]),
     ]),
-    AutoRoute(path: 'userAccount', page: UserAccountWrapperPage, children: [
-      AutoRoute(path: 'preview', initial: true, page: UserAccountPreviewPage),
-      AutoRoute(path: 'update', page: UserAccountUpdatePage)
-    ])
-  ]),
-])
-class $AppRouter {}
+  ];
+}

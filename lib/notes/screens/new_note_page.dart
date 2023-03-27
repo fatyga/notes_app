@@ -6,6 +6,7 @@ import 'package:notes_app/shared/widgets/tags.dart';
 
 import '../domain/new_note_view_model.dart';
 
+@RoutePage()
 class NewNotePage extends StatefulWidget {
   const NewNotePage({super.key});
 
@@ -96,10 +97,8 @@ class _NewNotePageState extends State<NewNotePage> {
                     oneline: true,
                   ),
                   Text(errorContent,
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle2!
-                          .copyWith(color: Theme.of(context).errorColor)),
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          color: Theme.of(context).colorScheme.error)),
                   TextField(
                     controller: titleController,
                     keyboardType: TextInputType.multiline,

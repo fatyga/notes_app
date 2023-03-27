@@ -9,6 +9,7 @@ import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/widgets/avatar.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 
+@RoutePage()
 class UserAccountPreviewPage extends StatefulWidget {
   const UserAccountPreviewPage({super.key});
 

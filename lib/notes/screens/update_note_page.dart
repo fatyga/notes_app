@@ -6,6 +6,7 @@ import 'package:notes_app/shared/widgets/tags.dart';
 
 import '../domain/note_update_view_model.dart';
 
+@RoutePage()
 class UpdateNotePage extends StatefulWidget {
   const UpdateNotePage({super.key, required this.noteId});
   final String noteId;

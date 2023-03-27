@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:notes_app/account/domain/new_account_view_model.dart';
@@ -8,6 +9,7 @@ import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/widgets/avatar.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 
+@RoutePage()
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 

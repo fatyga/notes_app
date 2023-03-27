@@ -6,6 +6,7 @@ import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 import 'package:notes_app/shared/widgets/tags.dart';
 
+@RoutePage()
 class TagsManagePage extends StatefulWidget {
   const TagsManagePage({super.key});
 

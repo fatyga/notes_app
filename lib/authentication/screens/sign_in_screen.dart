@@ -6,6 +6,7 @@ import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 
+@RoutePage()
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
