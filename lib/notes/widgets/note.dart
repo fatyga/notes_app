@@ -33,6 +33,21 @@ class _NoteHeader extends StatelessWidget {
   const _NoteHeader(this.note, {super.key});
   final Note note;
 
+  Widget _showNoteContentIfPossible(BuildContext context) {
+    if (note.title.length <= 30 && note.content.isNotEmpty) {
+      return Padding(
+          padding: const EdgeInsets.only(top: 12),
+          child: Text(note.content,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall!
+                  .copyWith(color: Colors.black54)));
+    }
+    return Container();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -46,10 +61,16 @@ class _NoteHeader extends StatelessWidget {
           },
           child: Padding(
             padding: const EdgeInsets.all(12),
-            child: Text(note.title,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 3,
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(note.title,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    style: Theme.of(context).textTheme.titleLarge),
+                _showNoteContentIfPossible(context)
+              ],
+            ),
           ),
         ),
       ),
