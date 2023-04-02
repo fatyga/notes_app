@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:notes_app/account/domain/avatar_view_model.dart';
 import 'package:notes_app/notes/domain/models/note.dart';
 import 'package:notes_app/notes/services/notes_repository.dart';
+import 'package:notes_app/notes/widgets/notes_filters.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 import 'package:notes_app/shared/view_model.dart';
@@ -44,33 +45,70 @@ class NotesListViewModel extends ViewModel {
   bool isFiltersApplied = false;
 
   void filterNotes() {
-    if (_selectedTags.isNotEmpty) {
-      notesToDisplay = _filterNotesByTags();
-      isFiltersApplied = true;
-      notifyListeners();
-    }
+    List<Note> filteredNotes = _notes;
+
+    filteredNotes = _filterNotesByTags(filteredNotes);
+
+    filteredNotes = _filterNotesByTitle(filteredNotes);
+
+    notesToDisplay = filteredNotes;
+    isFiltersApplied = true;
+    notifyListeners();
   }
 
   void clearFilters() {
     _selectedTags = [];
+
+    titleFilterOrder = null;
+    contentFilterOrder = null;
+
     notesToDisplay = _notes;
     isFiltersApplied = false;
     notifyListeners();
   }
 
-  List<Note> _filterNotesByTags() {
-    if (_selectedTags.isEmpty) {
-      return _notes;
+  // title and content
+  StringFilteringOrder? titleFilterOrder;
+  StringFilteringOrder? contentFilterOrder;
+
+  void setStringFilteringOrder(String name, StringFilteringOrder? order) {
+    if (name == 'title') {
+      titleFilterOrder = order;
+    } else if (name == 'content') {
+      contentFilterOrder = order;
     }
-    return _notes
-        .where(
-            (note) => note.tags.any((tagId) => _selectedTags.contains(tagId)))
-        .toList();
+    notifyListeners();
   }
 
+  List<Note> _filterNotesByTitle(List<Note> notes) {
+    if (titleFilterOrder != null) {
+      var notesTitles = notes.map((e) => e.title).toList();
+      notesTitles.sort();
+
+      if (titleFilterOrder == StringFilteringOrder.descending) {
+        notesTitles = notesTitles.reversed.toList();
+      }
+      return notesTitles
+          .map((title) => notes.firstWhere((note) => note.title == title))
+          .toList();
+    }
+    return notes;
+  }
+
+  // tags
   List<String> _selectedTags = [];
   List<String> get selectedTags => _selectedTags;
   List<Note> notesToDisplay = [];
+
+  List<Note> _filterNotesByTags(List<Note> notes) {
+    if (_selectedTags.isNotEmpty) {
+      return _notes
+          .where(
+              (note) => note.tags.any((tagId) => _selectedTags.contains(tagId)))
+          .toList();
+    }
+    return notes;
+  }
 
   void selectTag(String tagId) {
     if (_selectedTags.contains(tagId)) {
@@ -81,14 +119,14 @@ class NotesListViewModel extends ViewModel {
     notifyListeners();
   }
 
-  Future<void> addTag(NoteTag tag) async {
-    setViewState(ViewState.busy);
-    if (!availableTags.contains(tag)) {
-      availableTags.add(tag);
-      await _notesRepo.updateTags(availableTags);
-      setViewState(ViewState.idle);
-    }
-    setViewState(ViewState.idle,
-        const UserNotification(content: 'Tag added succesfully'));
-  }
+  // Future<void> addTag(NoteTag tag) async {
+  //   setViewState(ViewState.busy);
+  //   if (!availableTags.contains(tag)) {
+  //     availableTags.add(tag);
+  //     await _notesRepo.updateTags(availableTags);
+  //     setViewState(ViewState.idle);
+  //   }
+  //   setViewState(ViewState.idle,
+  //       const UserNotification(content: 'Tag added succesfully'));
+  // }
 }

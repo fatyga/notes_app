@@ -12,6 +12,8 @@ import 'package:notes_app/shared/enums/view_state.dart';
 import 'package:notes_app/shared/widgets/tags.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/notes_filters.dart';
+
 enum NotesViewType { grid, list }
 
 @RoutePage()
@@ -30,42 +32,7 @@ class _NoteListPageState extends State<NoteListPage> {
 
   void _showFilters() {
     showDialog(
-        context: context,
-        builder: (context) {
-          return SimpleDialog(
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-              insetPadding: const EdgeInsets.all(8.0),
-              children: [
-                Center(
-                  child: Text('Filter notes',
-                      style: Theme.of(context).textTheme.titleLarge),
-                ),
-                const SizedBox(height: 16),
-                AnimatedBuilder(
-                  animation: model,
-                  builder: (context, _) => Tags(
-                      availableTags: model.availableTags,
-                      selectedTags: model.selectedTags,
-                      onTagSelect: model.selectTag,
-                      oneline: false),
-                ),
-                const SizedBox(height: 16),
-                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  TextButton(
-                      onPressed: () {
-                        model.clearFilters();
-                      },
-                      child: const Text('CLEAR')),
-                  FilledButton(
-                      onPressed: () {
-                        model.filterNotes();
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('APPLY'))
-                ])
-              ]);
-        });
+        context: context, builder: (context) => NotesFilters(model: model));
   }
 
   @override
