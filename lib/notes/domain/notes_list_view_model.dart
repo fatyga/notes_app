@@ -51,6 +51,8 @@ class NotesListViewModel extends ViewModel {
 
     filteredNotes = _filterNotesByTitle(filteredNotes);
 
+    filteredNotes = _filterNotesByDate(filteredNotes);
+
     notesToDisplay = filteredNotes;
     isFiltersApplied = true;
     notifyListeners();
@@ -61,6 +63,7 @@ class NotesListViewModel extends ViewModel {
 
     titleFilterOrder = null;
     contentFilterOrder = null;
+    dateFilterOrder = null;
 
     notesToDisplay = _notes;
     isFiltersApplied = false;
@@ -91,6 +94,23 @@ class NotesListViewModel extends ViewModel {
       return notesTitles
           .map((title) => notes.firstWhere((note) => note.title == title))
           .toList();
+    }
+    return notes;
+  }
+
+  //date
+  DateFilteringOrder? dateFilterOrder;
+  void setDateFilteringOrder(DateFilteringOrder? order) {
+    dateFilterOrder = order;
+    notifyListeners();
+  }
+
+  List<Note> _filterNotesByDate(List<Note> notes) {
+    // Firebase automaticlly sends notes form newest to oldest, so there is no need to sort when DateFilteringOrder.newest is set
+    if (dateFilterOrder != null) {
+      if (dateFilterOrder == DateFilteringOrder.oldest) {
+        return notes.reversed.toList();
+      }
     }
     return notes;
   }

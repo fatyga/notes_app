@@ -5,6 +5,8 @@ import '../domain/notes_list_view_model.dart';
 
 enum StringFilteringOrder { ascending, descending }
 
+enum DateFilteringOrder { oldest, newest }
+
 class NotesFilters extends StatelessWidget {
   const NotesFilters({
     super.key,
@@ -42,14 +44,32 @@ class NotesFilters extends StatelessWidget {
                               ))
                           .toList())
                 ]),
+                Row(children: [
+                  const Text('Date: '),
+                  Wrap(
+                    spacing: 4.0,
+                    children: DateFilteringOrder.values
+                        .map((e) => ChoiceChip(
+                            label: Text(e.name),
+                            selected: model.dateFilterOrder == e,
+                            onSelected: (value) =>
+                                model.setDateFilteringOrder(value ? e : null)))
+                        .toList(),
+                  )
+                ]),
                 const SizedBox(height: 16),
-                AnimatedBuilder(
-                  animation: model,
-                  builder: (context, _) => Tags(
-                      availableTags: model.availableTags,
-                      selectedTags: model.selectedTags,
-                      onTagSelect: model.selectTag,
-                      oneline: false),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Tags: '),
+                    Expanded(
+                      child: Tags(
+                          availableTags: model.availableTags,
+                          selectedTags: model.selectedTags,
+                          onTagSelect: model.selectTag,
+                          oneline: false),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 16),
                 Row(mainAxisAlignment: MainAxisAlignment.end, children: [
