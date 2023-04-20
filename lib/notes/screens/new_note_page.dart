@@ -20,8 +20,6 @@ class _NewNotePageState extends State<NewNotePage> {
   final titleController = TextEditingController();
   final contentController = TextEditingController();
 
-  String errorContent = '';
-
   @override
   void initState() {
     model.startTagsSubscription();
@@ -47,28 +45,22 @@ class _NewNotePageState extends State<NewNotePage> {
             onPressed: (model.status == ViewState.busy)
                 ? null
                 : () async {
-                    if (titleController.text.isEmpty ||
-                        contentController.text.isEmpty) {
-                      setState(() {
-                        errorContent = 'You need to fill both fields';
-                      });
-                    } else {
-                      await model.addNote(
-                          titleController.text, contentController.text);
+                    await model.addNote(
+                        titleController.text, contentController.text);
 
-                      if (mounted && model.isNotificationShouldMeShown) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: model.userNotification.isError
-                                ? Theme.of(context).errorColor
-                                : null,
-                            content: Text(model.userNotification.content),
-                            duration: const Duration(seconds: 2),
-                          ),
-                        );
+                    if (mounted && model.isNotificationShouldMeShown) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: model.userNotification.isError
+                              ? Theme.of(context).colorScheme.error
+                              : null,
+                          content: Text(model.userNotification.content),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                      if (model.userNotification.isError == false) {
+                        context.router.pop();
                       }
-
-                      context.router.pop();
                     }
                   },
             icon: (model.status == ViewState.busy)
@@ -96,9 +88,6 @@ class _NewNotePageState extends State<NewNotePage> {
                     onTagSelect: model.selectTag,
                     oneline: true,
                   ),
-                  Text(errorContent,
-                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                          color: Theme.of(context).colorScheme.error)),
                   TextField(
                     controller: titleController,
                     keyboardType: TextInputType.multiline,

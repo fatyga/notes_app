@@ -30,6 +30,13 @@ class NewNoteViewModel extends ViewModel {
   }
 
   Future<void> addNote(String title, String content) async {
+    if (title.isEmpty || content.isEmpty) {
+      setViewState(
+          ViewState.idle,
+          userNotification.copyWith(
+              content: 'You need to fill both fields', isError: true));
+      return;
+    }
     setViewState(ViewState.busy);
 
     NewNoteTemplate noteTemplate =
