@@ -16,7 +16,7 @@ class AccountDetail extends StatelessWidget {
                 .textTheme
                 .labelMedium!
                 .copyWith(color: Colors.grey)),
-        Text(detailValue, style: Theme.of(context).textTheme.headline6)
+        Text(detailValue, style: Theme.of(context).textTheme.titleLarge)
       ],
     );
   }

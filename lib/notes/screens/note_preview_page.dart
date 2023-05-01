@@ -55,9 +55,8 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                               duration: const Duration(seconds: 2),
                             ),
                           );
+                          context.router.pop();
                         }
-
-                        context.router.pop();
                       },
                       icon: const Icon(Icons.delete)),
                   IconButton(
@@ -73,7 +72,7 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor: model.userNotification.isError
-                                  ? Theme.of(context).errorColor
+                                  ? Theme.of(context).colorScheme.error
                                   : null,
                               content: Text(model.userNotification.content),
                               duration: const Duration(seconds: 2),
@@ -103,7 +102,7 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(model.note.title,
-                    style: Theme.of(context).textTheme.headline5),
+                    style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 20),
                 Row(
                     children: model.note.tags.isEmpty
@@ -113,10 +112,10 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                             Text(model.getTagsNames().join(','))
                           ]),
                 Text(model.note.formattedTime,
-                    style: Theme.of(context).textTheme.subtitle2),
+                    style: Theme.of(context).textTheme.titleSmall),
                 const SizedBox(height: 20),
                 Text(model.note.content,
-                    style: Theme.of(context).textTheme.bodyText1)
+                    style: Theme.of(context).textTheme.bodyLarge)
               ],
             );
           },

@@ -69,9 +69,7 @@ class FirebaseAuthenticationService implements AuthenticationService {
 
   @override
   Future<void> signOutUser() async {
-    try {
-      final credential = await FirebaseAuth.instance.signOut();
-      return credential;
-    } catch (e) {}
+    final credential = await FirebaseAuth.instance.signOut();
+    return credential;
   }
 }

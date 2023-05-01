@@ -111,15 +111,14 @@ class _UserAccountUpdatePageState extends State<UserAccountUpdatePage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             backgroundColor: model.userNotification.isError
-                                ? Theme.of(context).errorColor
+                                ? Theme.of(context).colorScheme.error
                                 : null,
                             content: Text(model.userNotification.content),
                             duration: const Duration(seconds: 2),
                           ),
                         );
+                        context.router.pop();
                       }
-
-                      context.router.pop();
                     }
                   },
                   icon: const Icon(Icons.save))

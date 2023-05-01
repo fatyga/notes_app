@@ -70,15 +70,14 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor: model.userNotification.isError
-                                  ? Theme.of(context).errorColor
+                                  ? Theme.of(context).colorScheme.error
                                   : null,
                               content: Text(model.userNotification.content),
                               duration: const Duration(seconds: 2),
                             ),
                           );
+                          context.router.pop();
                         }
-
-                        context.router.pop();
                       }
                     },
                     icon: const Icon(Icons.save_outlined),
@@ -104,10 +103,8 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                       oneline: true,
                     ),
                     Text(errorContent,
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle2!
-                            .copyWith(color: Theme.of(context).errorColor)),
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                            color: Theme.of(context).colorScheme.error)),
                     TextField(
                       controller: titleController,
                       keyboardType: TextInputType.multiline,

@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/authentication/business_logic/sign_in_view_model.dart';
-import 'package:notes_app/authentication/business_logic/register_view_model.dart';
 import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
@@ -32,7 +31,7 @@ class _SignInPageState extends State<SignInPage> {
                   children: <Widget>[
                     const SizedBox(height: 120.0),
                     Text('Sign in',
-                        style: Theme.of(context).textTheme.headline4),
+                        style: Theme.of(context).textTheme.headlineMedium),
                     const SizedBox(height: 20),
                     Form(
                         key: _formKey,
@@ -77,10 +76,12 @@ class _SignInPageState extends State<SignInPage> {
                                             model.isNotificationShouldMeShown) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
-                                            backgroundColor: model
-                                                    .userNotification.isError
-                                                ? Theme.of(context).errorColor
-                                                : null,
+                                            backgroundColor:
+                                                model.userNotification.isError
+                                                    ? Theme.of(context)
+                                                        .colorScheme
+                                                        .error
+                                                    : null,
                                             content: Text(
                                                 model.userNotification.content),
                                             duration: const Duration(

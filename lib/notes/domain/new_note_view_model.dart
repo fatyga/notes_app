@@ -15,7 +15,7 @@ class NewNoteViewModel extends ViewModel {
   List<NoteTag> _tags = [];
   List<NoteTag> get tags => _tags;
 
-  List<String> _selectedTags = [];
+  final List<String> _selectedTags = [];
   List<String> get selectedTags => _selectedTags;
 
   void startTagsSubscription() {

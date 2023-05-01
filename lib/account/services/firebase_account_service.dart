@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:notes_app/account/domain/models/userAccount.dart';
+import 'package:notes_app/account/domain/models/user_account.dart';
 import 'package:notes_app/account/services/account_service.dart';
 import 'package:notes_app/authentication/services/authentication_service.dart';
 import 'package:notes_app/service_locator.dart';

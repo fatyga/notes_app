@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 
-import 'package:flutter/material.dart';
-
 @RoutePage(name: 'NotesRouter')
-class NotesRouterPage extends AutoRouter {}
+class NotesRouterPage extends AutoRouter {
+  const NotesRouterPage({super.key});
+}

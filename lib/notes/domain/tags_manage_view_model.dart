@@ -32,7 +32,7 @@ class TagsManageViewModel extends ViewModel {
 
   late StreamSubscription tagsSubscription;
 
-  List<String> _deletedTagsIds = [];
+  final List<String> _deletedTagsIds = [];
   List<NoteTag> _availableTags = [];
   List<NoteTag> get tags => _availableTags;
 

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 import 'package:notes_app/account/domain/avatar_view_model.dart';
 import 'package:notes_app/account/domain/new_account_view_model.dart';

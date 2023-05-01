@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   children: <Widget>[
                     const SizedBox(height: 120.0),
                     Text('Register',
-                        style: Theme.of(context).textTheme.headline4),
+                        style: Theme.of(context).textTheme.headlineMedium),
                     const SizedBox(height: 28),
                     Center(
                       child: UserAvatar(
@@ -166,7 +165,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                             .showSnackBar(SnackBar(
                                           backgroundColor:
                                               model.userNotification.isError
-                                                  ? Theme.of(context).errorColor
+                                                  ? Theme.of(context)
+                                                      .colorScheme
+                                                      .error
                                                   : null,
                                           content: Text(
                                               model.userNotification.content),

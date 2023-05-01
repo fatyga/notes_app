@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:notes_app/notes/domain/notes_list_view_model.dart';
 import 'package:notes_app/notes/widgets/notes_list.dart';
 import 'package:notes_app/service_locator.dart';
@@ -9,8 +8,6 @@ import 'package:notes_app/shared/widgets/avatar.dart';
 
 import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
-import 'package:notes_app/shared/widgets/tags.dart';
-import 'package:provider/provider.dart';
 
 import '../widgets/notes_filters.dart';
 
@@ -28,7 +25,7 @@ class _NoteListPageState extends State<NoteListPage> {
   final model = serviceLocator<NotesListViewModel>();
   NotesViewType currentNotesViewType = NotesViewType.list;
 
-  final _FabKey = GlobalKey<ExpandableFabState>();
+  final _fabKey = GlobalKey<ExpandableFabState>();
 
   void _showFilters() {
     showDialog(
@@ -130,7 +127,7 @@ class _NoteListPageState extends State<NoteListPage> {
               FloatingActionButton(
                 heroTag: null,
                 onPressed: () {
-                  _FabKey.currentState?.toggle();
+                  _fabKey.currentState?.toggle();
                   context.router.push(const NewNoteRoute());
                 },
                 child: const Icon(Icons.note_add, size: 28),
@@ -138,7 +135,7 @@ class _NoteListPageState extends State<NoteListPage> {
               FloatingActionButton(
                   heroTag: null,
                   onPressed: () {
-                    _FabKey.currentState?.toggle();
+                    _fabKey.currentState?.toggle();
                     context.router.push(const TagsManageRoute());
                   },
                   child: const Icon(Icons.collections_bookmark, size: 28)),

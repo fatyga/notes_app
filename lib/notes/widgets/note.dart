@@ -30,7 +30,7 @@ class NoteWidget extends StatelessWidget {
 }
 
 class _NoteHeader extends StatelessWidget {
-  const _NoteHeader(this.note, {super.key});
+  const _NoteHeader(this.note);
   final Note note;
 
   Widget _showNoteContentIfPossible(BuildContext context) {
@@ -79,7 +79,7 @@ class _NoteHeader extends StatelessWidget {
 }
 
 class _NoteFooter extends StatelessWidget {
-  const _NoteFooter(this.note, {super.key});
+  const _NoteFooter(this.note);
   final Note note;
 
   @override
@@ -87,7 +87,7 @@ class _NoteFooter extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Text(note.formattedTime, style: Theme.of(context).textTheme.subtitle2),
+        Text(note.formattedTime, style: Theme.of(context).textTheme.titleSmall),
         InkWell(onTap: () {}, child: const Icon(Icons.more_horiz))
       ]),
     );

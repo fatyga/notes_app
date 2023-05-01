@@ -40,7 +40,18 @@ class _MyWidgetState extends State<TagsManagePage> {
             IconButton(
                 onPressed: () async {
                   await tagsViewModel.updateTags();
-                  context.router.pop();
+                  if (mounted) {
+                    context.router.pop();
+                  }
+                  if (mounted && tagsViewModel.isNotificationShouldMeShown) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(tagsViewModel.userNotification.content),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                    context.router.pop();
+                  }
                 },
                 icon: const Icon(Icons.save))
           ],

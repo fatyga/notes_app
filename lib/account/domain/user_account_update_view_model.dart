@@ -6,7 +6,7 @@ import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
 import 'package:notes_app/shared/view_model.dart';
 
-import 'models/userAccount.dart';
+import 'models/user_account.dart';
 
 class UserAccountUpdateViewModel extends ViewModel {
   final AccountRepository _accountRepo = serviceLocator<AccountRepository>();

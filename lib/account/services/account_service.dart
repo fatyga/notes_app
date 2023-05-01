@@ -1,4 +1,4 @@
-import 'package:notes_app/account/domain/models/userAccount.dart';
+import '../domain/models/user_account.dart';
 
 abstract class AccountService {
   Stream<UserAccount> get userAccountChanges;

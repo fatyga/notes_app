@@ -41,13 +41,13 @@ class NotesRepository {
 
   Future<void> removeReferencesToDeletedTag(
       List<Note> notes, List<String> tagsIds) async {
-    notes.forEach((note) async {
+    for (var note in notes) {
       final onlyExisitingTags =
           note.tags.where((tagId) => !tagsIds.contains(tagId)).toList();
       if (note.tags.length != onlyExisitingTags.length) {
         await _notesService.updateNote(note.copyWith(tags: onlyExisitingTags));
       }
-    });
+    }
   }
 
   String getRandomIdForNewTag() =>
