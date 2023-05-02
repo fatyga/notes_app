@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
+import 'package:notes_app/shared/notification.dart';
 
 import '../domain/note_preview_view_model.dart';
 
@@ -48,14 +49,8 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                   IconButton(
                       onPressed: () async {
                         await model.deleteNote(widget.noteId);
-                        if (mounted && model.isNotificationShouldMeShown) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(model.userNotification.content),
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
-                          context.router.pop();
+                        if (mounted) {
+                          showNotificationToUser(context, model, true);
                         }
                       },
                       icon: const Icon(Icons.delete)),
@@ -69,15 +64,7 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                       onPressed: () async {
                         await model.pinUnpinNote();
                         if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: model.userNotification.isError
-                                  ? Theme.of(context).colorScheme.error
-                                  : null,
-                              content: Text(model.userNotification.content),
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
+                          showNotificationToUser(context, model, false);
                         }
                       },
                       icon: model.isNoteContainTag('pinned')

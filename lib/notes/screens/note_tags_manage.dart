@@ -4,6 +4,7 @@ import 'package:notes_app/notes/domain/models/tag.dart';
 import 'package:notes_app/notes/domain/tags_manage_view_model.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
+import 'package:notes_app/shared/notification.dart';
 import 'package:notes_app/shared/widgets/tags.dart';
 
 @RoutePage()
@@ -41,16 +42,7 @@ class _MyWidgetState extends State<TagsManagePage> {
                 onPressed: () async {
                   await tagsViewModel.updateTags();
                   if (mounted) {
-                    context.router.pop();
-                  }
-                  if (mounted && tagsViewModel.isNotificationShouldMeShown) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(tagsViewModel.userNotification.content),
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
-                    context.router.pop();
+                    showNotificationToUser(context, tagsViewModel, true);
                   }
                 },
                 icon: const Icon(Icons.save))

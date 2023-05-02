@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
+import 'package:notes_app/shared/notification.dart';
 import 'package:notes_app/shared/widgets/tags.dart';
 
 import '../domain/new_note_view_model.dart';
@@ -47,20 +48,8 @@ class _NewNotePageState extends State<NewNotePage> {
                 : () async {
                     await model.addNote(
                         titleController.text, contentController.text);
-
-                    if (mounted && model.isNotificationShouldMeShown) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: model.userNotification.isError
-                              ? Theme.of(context).colorScheme.error
-                              : null,
-                          content: Text(model.userNotification.content),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
-                      if (model.userNotification.isError == false) {
-                        context.router.pop();
-                      }
+                    if (mounted) {
+                      showNotificationToUser(context, model, true);
                     }
                   },
             icon: (model.status == ViewState.busy)

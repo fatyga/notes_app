@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
+import 'package:notes_app/shared/notification.dart';
 import 'package:notes_app/shared/widgets/tags.dart';
 
 import '../domain/note_update_view_model.dart';
@@ -66,17 +67,8 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                           title: titleController.text,
                           content: contentController.text,
                         );
-                        if (mounted && model.isNotificationShouldMeShown) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: model.userNotification.isError
-                                  ? Theme.of(context).colorScheme.error
-                                  : null,
-                              content: Text(model.userNotification.content),
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
-                          context.router.pop();
+                        if (mounted) {
+                          showNotificationToUser(context, model, true);
                         }
                       }
                     },

@@ -4,6 +4,7 @@ import 'package:notes_app/authentication/business_logic/sign_in_view_model.dart'
 import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/service_locator.dart';
 import 'package:notes_app/shared/enums/view_state.dart';
+import 'package:notes_app/shared/notification.dart';
 
 @RoutePage()
 class SignInPage extends StatefulWidget {
@@ -70,24 +71,10 @@ class _SignInPageState extends State<SignInPage> {
                                       await model.signInUser(
                                           _emailController.text,
                                           _passwordController.text);
-                                      if (model.userNotification.content
-                                          .isNotEmpty) {
-                                        if (mounted &&
-                                            model.isNotificationShouldMeShown) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            backgroundColor:
-                                                model.userNotification.isError
-                                                    ? Theme.of(context)
-                                                        .colorScheme
-                                                        .error
-                                                    : null,
-                                            content: Text(
-                                                model.userNotification.content),
-                                            duration: const Duration(
-                                                milliseconds: 2000),
-                                          ));
-                                        }
+
+                                      if (mounted) {
+                                        showNotificationToUser(
+                                            context, model, false);
                                       }
                                     }
                                   },
