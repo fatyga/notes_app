@@ -28,7 +28,7 @@ class _NoteListPageState extends State<NoteListPage> {
   final _fabKey = GlobalKey<ExpandableFabState>();
 
   void _showFilters() {
-    showDialog(
+    showModalBottomSheet(
         context: context, builder: (context) => NotesFilters(model: model));
   }
 
