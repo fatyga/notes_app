@@ -10,7 +10,6 @@ import 'models/tag.dart';
 
 class NotesListViewModel extends ViewModel {
   final NotesRepository _notesRepo = serviceLocator<NotesRepository>();
-  final AvatarViewModel avatarViewModel = serviceLocator<AvatarViewModel>();
 
   late StreamSubscription notesSubscription;
   late StreamSubscription tagsSubscription;
@@ -21,7 +20,6 @@ class NotesListViewModel extends ViewModel {
   List<Note> _notes = [];
 
   void startNotesSubscription() {
-    avatarViewModel.startAvatarChangesSubscription();
     notesSubscription = _notesRepo.notesChanges.listen((notes) {
       _notes = notes;
       notesToDisplay = _notes;
@@ -35,7 +33,6 @@ class NotesListViewModel extends ViewModel {
   }
 
   void stopNotesSubscription() {
-    avatarViewModel.stopAvatarChangesSubscription();
     notesSubscription.cancel();
     tagsSubscription.cancel();
   }

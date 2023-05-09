@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:notes_app/notes/domain/notes_list_wrapper_view_model.dart';
 import 'package:notes_app/notes/domain/notes_list_view_model.dart';
 import 'package:notes_app/notes/widgets/notes_list.dart';
 import 'package:notes_app/service_locator.dart';
@@ -22,25 +23,26 @@ class NoteListPage extends StatefulWidget {
 }
 
 class _NoteListPageState extends State<NoteListPage> {
-  final model = serviceLocator<NotesListViewModel>();
+  final modelsWrapper = serviceLocator<NotesListWrapperViewModel>();
   NotesViewType currentNotesViewType = NotesViewType.list;
 
   final _fabKey = GlobalKey<ExpandableFabState>();
 
   void _showFilters() {
     showModalBottomSheet(
-        context: context, builder: (context) => NotesFilters(model: model));
+        context: context,
+        builder: (context) => NotesFilters(model: modelsWrapper.notes));
   }
 
   @override
   void initState() {
-    model.startNotesSubscription();
+    modelsWrapper.startSubscriptions();
     super.initState();
   }
 
   @override
   void dispose() {
-    model.stopNotesSubscription();
+    modelsWrapper.stopSubscriptions();
     super.dispose();
   }
 
@@ -51,7 +53,7 @@ class _NoteListPageState extends State<NoteListPage> {
           title: const Text('Notes'),
           centerTitle: true,
           leading: AnimatedBuilder(
-              animation: model.avatarViewModel,
+              animation: modelsWrapper.avatar,
               builder: (context, _) => GestureDetector(
                     onTap: () {
                       context.router.push(const AccountRouter());
@@ -60,9 +62,9 @@ class _NoteListPageState extends State<NoteListPage> {
                       alignment: Alignment.center,
                       child: UserAvatar(
                         radius: 22,
-                        avatarUrl: model.avatarViewModel.avatarUrl.isEmpty
+                        avatarUrl: modelsWrapper.avatar.avatarUrl.isEmpty
                             ? null
-                            : model.avatarViewModel.avatarUrl,
+                            : modelsWrapper.avatar.avatarUrl,
                       ),
                     ),
                   )),
@@ -85,9 +87,9 @@ class _NoteListPageState extends State<NoteListPage> {
           ],
         ),
         body: AnimatedBuilder(
-            animation: model,
+            animation: modelsWrapper.notes,
             builder: (context, _) {
-              if (model.status == ViewState.busy) {
+              if (modelsWrapper.notes.status == ViewState.busy) {
                 return const Center(child: CircularProgressIndicator());
               }
 
@@ -100,18 +102,19 @@ class _NoteListPageState extends State<NoteListPage> {
                             padding: const EdgeInsets.only(
                                 top: 16.0, left: 16.0, right: 16.0),
                             child: NotesList(
-                                notes: model.notesToDisplay,
+                                notes: modelsWrapper.notes.notesToDisplay,
                                 viewType: currentNotesViewType)),
                       ),
                     ],
                   ),
-                  (model.isFiltersApplied)
+                  (modelsWrapper.notes.isFiltersApplied)
                       ? Positioned.fill(
                           bottom: 16,
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             child: FilledButton(
-                                onPressed: () => model.clearFilters(),
+                                onPressed: () =>
+                                    modelsWrapper.notes.clearFilters(),
                                 child: const Text('Clear filters')),
                           ),
                         )
