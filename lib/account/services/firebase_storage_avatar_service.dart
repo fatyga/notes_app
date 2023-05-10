@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:notes_app/account/services/avatar_service.dart';
-import 'package:notes_app/authentication/services/authentication_service.dart';
-import 'package:notes_app/service_locator.dart';
+
+import '../../authentication/authentication.dart';
+import '../../service_locator.dart';
+import 'avatar_service.dart';
 
 class FirebaseAvatarService implements AvatarService {
   final FirebaseStorage _storage = FirebaseStorage.instance;

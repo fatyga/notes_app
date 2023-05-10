@@ -1,4 +1,4 @@
-import 'package:notes_app/authentication/business_logic/models/app_user.dart';
+import 'package:notes_app/authentication/domain/models/app_user.dart';
 import 'package:notes_app/service_locator.dart';
 
 import 'authentication_service.dart';

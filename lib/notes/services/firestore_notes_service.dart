@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:notes_app/notes/domain/models/note.dart';
-import 'package:notes_app/notes/domain/models/tag.dart';
-import 'package:notes_app/service_locator.dart';
-import '../../authentication/services/authentication_service.dart';
-import 'notes_service.dart';
+
+import '../../authentication/authentication.dart';
+import '../../service_locator.dart';
+import '../notes.dart';
 
 class FirestoreNotesService implements NotesService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

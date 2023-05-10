@@ -1,8 +1,7 @@
-import 'package:notes_app/notes/domain/notes_list_view_model.dart';
-import 'package:notes_app/shared/view_model.dart';
-
-import '../../account/domain/avatar_view_model.dart';
+import '../../account/account.dart';
 import '../../service_locator.dart';
+import '../../shared/view_model.dart';
+import '../notes.dart';
 
 class NotesListWrapperViewModel extends ViewModel {
   final AvatarViewModel avatarViewModel = serviceLocator<AvatarViewModel>();

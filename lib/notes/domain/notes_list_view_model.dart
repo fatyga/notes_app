@@ -1,12 +1,8 @@
 import 'dart:async';
-import 'package:notes_app/account/domain/avatar_view_model.dart';
-import 'package:notes_app/notes/domain/models/note.dart';
-import 'package:notes_app/notes/services/notes_repository.dart';
-import 'package:notes_app/notes/widgets/notes_filters.dart';
-import 'package:notes_app/service_locator.dart';
-import 'package:notes_app/shared/view_model.dart';
 
-import 'models/tag.dart';
+import '../../service_locator.dart';
+import '../../shared/view_model.dart';
+import '../notes.dart';
 
 class NotesListViewModel extends ViewModel {
   final NotesRepository _notesRepo = serviceLocator<NotesRepository>();

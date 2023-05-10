@@ -1,14 +1,11 @@
 import 'dart:io';
 
-import 'package:notes_app/account/services/account_repository.dart';
-
-import 'package:notes_app/authentication/services/authentication_repository.dart';
-import 'package:notes_app/notes/services/notes_repository.dart';
-import 'package:notes_app/service_locator.dart';
-import 'package:notes_app/shared/enums/view_state.dart';
-import 'package:notes_app/shared/view_model.dart';
-
-import 'models/user_account.dart';
+import '../../authentication/authentication.dart';
+import '../../notes/notes.dart';
+import '../../service_locator.dart';
+import '../../shared/enums/view_state.dart';
+import '../../shared/view_model.dart';
+import '../account.dart';
 
 class NewAccountViewModel extends ViewModel {
   final AuthenticationRepository _authenticationRepo =

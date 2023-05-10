@@ -1,4 +1,4 @@
-import '../business_logic/models/app_user.dart';
+import '../domain/models/app_user.dart';
 
 abstract class AuthenticationService {
   AppUser? getCurrentUser();

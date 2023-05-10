@@ -1,12 +1,9 @@
 import 'dart:async';
 
-import 'package:notes_app/shared/enums/view_state.dart';
-import 'package:notes_app/shared/view_model.dart';
-
 import '../../service_locator.dart';
-import '../services/notes_repository.dart';
-import 'models/note.dart';
-import 'models/tag.dart';
+import '../../shared/enums/view_state.dart';
+import '../../shared/view_model.dart';
+import '../notes.dart';
 
 class NotesPreviewViewModel extends ViewModel {
   final NotesRepository _notesRepo = serviceLocator<NotesRepository>();

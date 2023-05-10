@@ -1,16 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
-import 'package:notes_app/notes/domain/notes_list_wrapper_view_model.dart';
-import 'package:notes_app/notes/domain/notes_list_view_model.dart';
-import 'package:notes_app/notes/widgets/notes_list.dart';
-import 'package:notes_app/service_locator.dart';
-import 'package:notes_app/shared/widgets/avatar.dart';
 
-import 'package:notes_app/route/app_router.gr.dart';
-import 'package:notes_app/shared/enums/view_state.dart';
-
-import '../widgets/notes_filters.dart';
+import '../../route/app_router.gr.dart';
+import '../../service_locator.dart';
+import '../../shared/enums/view_state.dart';
+import '../../shared/widgets/avatar.dart';
+import '../notes.dart';
 
 enum NotesViewType { grid, list }
 

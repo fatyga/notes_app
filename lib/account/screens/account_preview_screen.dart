@@ -1,11 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/account/domain/user_account_preview_view_model.dart';
-import 'package:notes_app/account/widgets/account_detail.dart';
-import 'package:notes_app/route/app_router.gr.dart';
-import 'package:notes_app/service_locator.dart';
-import 'package:notes_app/shared/widgets/avatar.dart';
-import 'package:notes_app/shared/enums/view_state.dart';
+
+import '../../route/app_router.gr.dart';
+import '../../service_locator.dart';
+import '../../shared/enums/view_state.dart';
+import '../../shared/widgets/avatar.dart';
+import '../domain/user_account_preview_view_model.dart';
+import '../widgets/account_detail.dart';
 
 @RoutePage()
 class UserAccountPreviewPage extends StatefulWidget {

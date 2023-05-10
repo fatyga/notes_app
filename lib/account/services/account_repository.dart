@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:notes_app/account/domain/models/user_account.dart';
-import 'package:notes_app/account/services/account_service.dart';
-import 'package:notes_app/account/services/avatar_service.dart';
-import 'package:notes_app/service_locator.dart';
+import '../../service_locator.dart';
+import '../account.dart';
 
 class AccountRepository {
   final AccountService _accountService = serviceLocator<AccountService>();

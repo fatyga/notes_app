@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:notes_app/account/domain/models/user_account.dart';
-import 'package:notes_app/account/services/account_service.dart';
-import 'package:notes_app/authentication/services/authentication_service.dart';
-import 'package:notes_app/service_locator.dart';
+
+import '../../authentication/authentication.dart';
+import '../../service_locator.dart';
+import '../account.dart';
 
 class FirebaseAccountService implements AccountService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

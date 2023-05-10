@@ -1,6 +1,4 @@
-import 'package:notes_app/notes/domain/models/tag.dart';
-
-import '../domain/models/note.dart';
+import '../notes.dart';
 
 abstract class NotesService {
   // notes

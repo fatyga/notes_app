@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/notes/domain/models/tag.dart';
-import 'package:notes_app/notes/domain/tags_manage_view_model.dart';
-import 'package:notes_app/service_locator.dart';
-import 'package:notes_app/shared/enums/view_state.dart';
-import 'package:notes_app/shared/notification.dart';
-import 'package:notes_app/shared/widgets/tags.dart';
+
+import '../../service_locator.dart';
+import '../../shared/enums/view_state.dart';
+import '../../shared/notification.dart';
+import '../../shared/widgets/tags.dart';
+import '../notes.dart';
 
 @RoutePage()
 class TagsManagePage extends StatefulWidget {

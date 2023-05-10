@@ -3,11 +3,12 @@ import 'dart:io';
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:notes_app/account/domain/new_account_view_model.dart';
-import 'package:notes_app/service_locator.dart';
-import 'package:notes_app/shared/notification.dart';
-import 'package:notes_app/shared/widgets/avatar.dart';
-import 'package:notes_app/shared/enums/view_state.dart';
+
+import '../../account/account.dart';
+import '../../service_locator.dart';
+import '../../shared/enums/view_state.dart';
+import '../../shared/notification.dart';
+import '../../shared/widgets/avatar.dart';
 
 @RoutePage()
 class RegisterPage extends StatefulWidget {

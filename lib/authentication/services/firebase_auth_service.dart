@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:notes_app/authentication/business_logic/models/app_user.dart';
+import 'package:notes_app/authentication/domain/models/app_user.dart';
 
 import 'authentication_service.dart';
 

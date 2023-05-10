@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 
 import 'package:flutter/material.dart';
-import 'package:notes_app/route/app_router.gr.dart';
-import 'package:notes_app/service_locator.dart';
-import 'package:notes_app/shared/enums/view_state.dart';
-import 'package:notes_app/shared/notification.dart';
 
-import '../domain/note_preview_view_model.dart';
+import '../../route/app_router.gr.dart';
+import '../../service_locator.dart';
+import '../../shared/enums/view_state.dart';
+import '../../shared/notification.dart';
+import '../notes.dart';
 
 @RoutePage()
 class NotePreviewPage extends StatefulWidget {

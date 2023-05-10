@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../shared/widgets/tags.dart';
-import '../domain/notes_list_view_model.dart';
+import '../notes.dart';
 
 enum StringFilteringOrder { ascending, descending }
 

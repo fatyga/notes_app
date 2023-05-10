@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'package:notes_app/account/services/account_repository.dart';
-import 'package:notes_app/service_locator.dart';
-import 'package:notes_app/shared/view_model.dart';
+
+import '../../service_locator.dart';
+import '../../shared/view_model.dart';
+import '../account.dart';
 
 class AvatarViewModel extends ViewModel {
   final AccountRepository _accountRepo = serviceLocator<AccountRepository>();

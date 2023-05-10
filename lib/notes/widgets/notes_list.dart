@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/notes/notes.dart';
 
-import 'package:notes_app/notes/widgets/note.dart';
-import 'package:notes_app/notes/domain/models/note.dart';
+import '../notes.dart';
 
 class NotesList extends StatelessWidget {
   const NotesList({super.key, required this.notes, required this.viewType});
