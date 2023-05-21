@@ -82,10 +82,12 @@ class NotesFilters extends StatelessWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: FilledButton(
-                      onPressed: () {
-                        model.filterNotes();
-                        Navigator.of(context).pop();
-                      },
+                      onPressed: model.canFilter
+                          ? () {
+                              model.filterNotes();
+                              Navigator.of(context).pop();
+                            }
+                          : null,
                       child: const Text('APPLY')),
                 )
               ])
