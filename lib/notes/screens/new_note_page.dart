@@ -21,9 +21,21 @@ class _NewNotePageState extends State<NewNotePage> {
   final titleController = TextEditingController();
   final contentController = TextEditingController();
 
+  bool edited = false;
+
+  void change() {
+    if (mounted) {
+      setState(() {
+        edited = true;
+      });
+    }
+  }
+
   @override
   void initState() {
     model.startTagsSubscription();
+    titleController.addListener(change);
+    contentController.addListener(change);
     super.initState();
   }
 
@@ -69,30 +81,66 @@ class _NewNotePageState extends State<NewNotePage> {
               if (model.status == ViewState.busy) {
                 return const Center(child: CircularProgressIndicator());
               }
-              return Column(
-                children: <Widget>[
-                  Tags(
-                    availableTags: model.tags,
-                    selectedTags: model.selectedTags,
-                    onTagSelect: model.selectTag,
-                    oneline: true,
-                  ),
-                  TextField(
-                    controller: titleController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    autofocus: true,
-                    decoration: const InputDecoration(hintText: ("Title")),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: contentController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    decoration:
-                        const InputDecoration(hintText: ("Type here..")),
-                  ),
-                ],
+              return Form(
+                onWillPop: () async {
+                  if (edited &&
+                      (titleController.text.isNotEmpty ||
+                          contentController.text.isNotEmpty)) {
+                    final confirmed = await showDialog<bool>(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                                title: const Text('Discard Changes?'),
+                                content: const Text(
+                                    'Are you sure you want to discard your changes?'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        context.router.pop(false);
+                                      },
+                                      child: const Text('No')),
+                                  TextButton(
+                                      onPressed: () {
+                                        context.router.pop(true);
+                                      },
+                                      style: TextButton.styleFrom(
+                                          foregroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .error),
+                                      child: const Text('Yes'))
+                                ]));
+                    if (confirmed == true) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  }
+
+                  return true;
+                },
+                child: Column(
+                  children: <Widget>[
+                    Tags(
+                      availableTags: model.tags,
+                      selectedTags: model.selectedTags,
+                      onTagSelect: model.selectTag,
+                      oneline: true,
+                    ),
+                    TextField(
+                      controller: titleController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: const InputDecoration(hintText: ("Title")),
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: contentController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration:
+                          const InputDecoration(hintText: ("Type here..")),
+                    ),
+                  ],
+                ),
               );
             }),
       ),

@@ -38,7 +38,9 @@ class TagsManageViewModel extends ViewModel {
 
   void startTagsSubscription() {
     tagsSubscription = _notesRepo.tagsChanges.listen((tagsList) {
-      _availableTags = tagsList;
+      _availableTags = tagsList
+          .where((tag) => tag.name != 'pinned')
+          .toList(); // prevent from modyfing 'pinned' tag
       notifyListeners();
     });
   }

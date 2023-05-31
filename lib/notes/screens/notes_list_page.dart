@@ -95,26 +95,23 @@ class _NoteListPageState extends State<NoteListPage> {
                     children: [
                       Expanded(
                         child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 16.0, left: 16.0, right: 16.0),
+                            padding: const EdgeInsets.all(16.0),
                             child: NotesList(
                                 notes: modelsWrapper.notes.notesToDisplay,
                                 viewType: currentNotesViewType)),
                       ),
                     ],
                   ),
-                  (modelsWrapper.notes.isFiltersApplied)
-                      ? Positioned.fill(
-                          bottom: 16,
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: FilledButton(
-                                onPressed: () =>
-                                    modelsWrapper.notes.clearFilters(),
-                                child: const Text('Clear filters')),
-                          ),
-                        )
-                      : Container()
+                  if (modelsWrapper.notes.isFiltersApplied)
+                    Positioned.fill(
+                      bottom: 16,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: FilledButton(
+                            onPressed: () => modelsWrapper.notes.clearFilters(),
+                            child: const Text('Clear filters')),
+                      ),
+                    )
                 ],
               );
             }),

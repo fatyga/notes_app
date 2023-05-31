@@ -38,7 +38,8 @@ class NotesListViewModel extends ViewModel {
   bool get canFilter =>
       titleFilterOrder != null ||
       contentFilterOrder != null ||
-      dateFilterOrder != null;
+      dateFilterOrder != null ||
+      selectedTags.isNotEmpty;
 
   void filterNotes() {
     List<Note> filteredNotes = _notes;

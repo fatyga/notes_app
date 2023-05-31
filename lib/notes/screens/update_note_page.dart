@@ -23,6 +23,10 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
 
   String errorContent = '';
 
+  bool get noteEdited =>
+      titleController.text != model.note.title ||
+      contentController.text != model.note.content;
+
   @override
   void initState() {
     model.startTagsSubscription();
@@ -84,36 +88,74 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
             if (model.status == ViewState.busy) {
               return const Center(child: CircularProgressIndicator());
             }
-            return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: <Widget>[
-                    Tags(
-                      availableTags: model.availableTags,
-                      selectedTags: model.selectedTags,
-                      onTagSelect: model.selectTag,
-                      oneline: true,
-                    ),
-                    Text(errorContent,
-                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                            color: Theme.of(context).colorScheme.error)),
-                    TextField(
-                      controller: titleController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      autofocus: true,
-                      decoration: const InputDecoration(hintText: ("Title")),
-                    ),
-                    const SizedBox(height: 20),
-                    TextField(
-                      controller: contentController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration:
-                          const InputDecoration(hintText: ("Type here..")),
-                    ),
-                  ],
-                ));
+            return Form(
+              onWillPop: () async {
+                if (noteEdited) {
+                  final confirmed = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                              title: const Text('Discard Changes?'),
+                              content: const Text(
+                                  'Are you sure you want to discard your changes?'),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      context.router.pop(false);
+                                    },
+                                    child: const Text('No')),
+                                TextButton(
+                                    onPressed: () {
+                                      context.router.pop(true);
+                                    },
+                                    style: TextButton.styleFrom(
+                                        foregroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .error),
+                                    child: const Text('Yes'))
+                              ]));
+                  if (confirmed == true) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                }
+
+                return true;
+              },
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: <Widget>[
+                      Tags(
+                        availableTags: model.availableTags,
+                        selectedTags: model.selectedTags,
+                        onTagSelect: model.selectTag,
+                        oneline: true,
+                      ),
+                      Text(errorContent,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall!
+                              .copyWith(
+                                  color: Theme.of(context).colorScheme.error)),
+                      TextField(
+                        controller: titleController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        autofocus: true,
+                        decoration: const InputDecoration(hintText: ("Title")),
+                      ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: contentController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration:
+                            const InputDecoration(hintText: ("Type here..")),
+                      ),
+                    ],
+                  )),
+            );
           }),
     );
   }
