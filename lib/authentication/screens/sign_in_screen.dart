@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_app/account/account.dart';
 
 import '../../route/app_router.gr.dart';
 import '../../service_locator.dart';
@@ -28,67 +29,88 @@ class _SignInPageState extends State<SignInPage> {
         body: AnimatedBuilder(
             animation: model,
             builder: (context, _) {
-              return ListView(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  children: <Widget>[
-                    const SizedBox(height: 120.0),
-                    Text('Sign in',
-                        style: Theme.of(context).textTheme.headlineMedium),
-                    const SizedBox(height: 20),
-                    Form(
-                        key: _formKey,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              TextFormField(
-                                controller: _emailController,
-                                enabled: model.status == ViewState.idle,
-                                validator: (value) =>
-                                    (value != null && value.isEmpty)
-                                        ? 'Enter an email'
-                                        : null,
-                                decoration: const InputDecoration(
-                                  filled: true,
-                                  labelText: 'Email',
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              TextFormField(
-                                  controller: _passwordController,
-                                  enabled: model.status == ViewState.idle,
-                                  validator: (value) =>
-                                      (value != null && value.length < 6)
-                                          ? 'Enter at least 6 characters'
-                                          : null,
-                                  obscureText: true,
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    labelText: 'Password',
-                                  )),
-                              const SizedBox(height: 20),
-                              ElevatedButton(
-                                  onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      await model.signInUser(
-                                          _emailController.text,
-                                          _passwordController.text);
+              return LayoutBuilder(
+                builder: (context, constraints) => ListView(children: <Widget>[
+                  Container(
+                      padding: const EdgeInsets.all(24),
+                      constraints:
+                          BoxConstraints(minHeight: constraints.maxHeight),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Sign in',
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium),
+                            const SizedBox(height: 20),
+                            Form(
+                                key: _formKey,
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      TextFormField(
+                                        controller: _emailController,
+                                        enabled: model.status == ViewState.idle,
+                                        validator: (value) {
+                                          if (value == null) {
+                                            return 'Enter an email';
+                                          } else if (value.isEmpty) {
+                                            return 'Enter an email';
+                                          } else if (!value.contains('@')) {
+                                            return 'Enter email in a proper format';
+                                          }
 
-                                      if (mounted) {
-                                        showNotificationToUser(
-                                            context, model, false);
-                                      }
-                                    }
-                                  },
-                                  child: model.status == ViewState.busy
-                                      ? const CircularProgressIndicator()
-                                      : const Text('Sign in')),
-                              TextButton(
-                                  onPressed: () {
-                                    context.router.push(const RegisterRoute());
-                                  },
-                                  child: const Text('Create an account'))
-                            ])),
-                  ]);
+                                          return null;
+                                        },
+                                        decoration: const InputDecoration(
+                                          filled: true,
+                                          labelText: 'Email',
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      TextFormField(
+                                          controller: _passwordController,
+                                          enabled:
+                                              model.status == ViewState.idle,
+                                          validator: (value) => (value !=
+                                                      null &&
+                                                  value.length < 6)
+                                              ? 'Enter at least 6 characters'
+                                              : null,
+                                          obscureText: true,
+                                          decoration: const InputDecoration(
+                                            filled: true,
+                                            labelText: 'Password',
+                                          )),
+                                      const SizedBox(height: 20),
+                                      AccountButton(
+                                        onPressed: () async {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            await model.signInUser(
+                                                _emailController.text,
+                                                _passwordController.text);
+
+                                            if (mounted) {
+                                              showNotificationToUser(
+                                                  context, model, false);
+                                            }
+                                          }
+                                        },
+                                        name: const Text('Sign in'),
+                                        inProgress:
+                                            model.status == ViewState.busy,
+                                      ),
+                                      TextButton(
+                                          onPressed: () {
+                                            context.router
+                                                .push(const RegisterRoute());
+                                          },
+                                          child:
+                                              const Text('Create an account'))
+                                    ]))
+                          ])),
+                ]),
+              );
             }));
   }
 }

@@ -77,16 +77,15 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: const Text('Create an account'),
+        ),
         body: AnimatedBuilder(
             animation: model,
             builder: (context, _) {
               return ListView(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   children: <Widget>[
-                    const SizedBox(height: 120.0),
-                    Text('Register',
-                        style: Theme.of(context).textTheme.headlineMedium),
-                    const SizedBox(height: 28),
                     Center(
                       child: UserAvatar(
                           selectedAvatar: model.selectedAvatar,
@@ -150,8 +149,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     labelText: 'Password',
                                   )),
                               const SizedBox(height: 20),
-                              const SizedBox(height: 20),
-                              ElevatedButton(
+                              AccountButton(
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
                                       await model.createAccount(
@@ -167,9 +165,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                       }
                                     }
                                   },
-                                  child: model.status == ViewState.busy
-                                      ? const CircularProgressIndicator()
-                                      : const Text('Register'))
+                                  inProgress: model.status == ViewState.busy,
+                                  name: const Text('Register'))
                             ])),
                   ]);
             }));

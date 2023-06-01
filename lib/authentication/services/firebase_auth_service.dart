@@ -33,6 +33,7 @@ class FirebaseAuthenticationService implements AuthenticationService {
       if (credential.user != null) {
         return AppUser.fromFirebase(credential.user!);
       }
+
       return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
