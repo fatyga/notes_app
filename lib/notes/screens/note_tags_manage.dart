@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../service_locator.dart';
 import '../../shared/enums/view_state.dart';
-import '../../shared/notification.dart';
+import '../../shared/toasts.dart';
 import '../../shared/widgets/tags.dart';
 import '../notes.dart';
 
@@ -40,10 +40,10 @@ class _MyWidgetState extends State<TagsManagePage> {
           actions: [
             IconButton(
                 onPressed: () async {
-                  await tagsViewModel.updateTags();
-                  if (mounted) {
-                    showNotificationToUser(context, tagsViewModel, true);
-                  }
+                  await tagsViewModel.updateTags().then((_) {
+                    context.showToast('Tags updated!');
+                    context.router.pop();
+                  });
                 },
                 icon: const Icon(Icons.save))
           ],

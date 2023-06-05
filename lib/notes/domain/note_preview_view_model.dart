@@ -54,14 +54,13 @@ class NotesPreviewViewModel extends ViewModel {
       _note.tags.insert(0, pinnedTag.id);
     }
     await _notesRepo.updateNote(_note);
-    setNotification(userNotification.copyWith(
-        content:
-            'Note ${note.tags.contains('pinned') ? "pinned" : "unpinned"} successfully.'));
+
+    setViewState(ViewState.idle);
   }
+
+  bool get isNotePinned => note.tags.contains('pinned');
 
   Future<void> deleteNote(String noteId) async {
     await _notesRepo.deleteNote(noteId);
-    setNotification(
-        userNotification.copyWith(content: 'Note deleted successfully.'));
   }
 }

@@ -25,8 +25,7 @@ class FirebaseAuthenticationService implements AuthenticationService {
       });
 
   @override
-  Future<AppUser?> signInUser(
-      String email, String password, Function(String message) onError) async {
+  Future<AppUser?> signInUser(String email, String password) async {
     try {
       final credential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -37,17 +36,16 @@ class FirebaseAuthenticationService implements AuthenticationService {
       return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        onError('No user found for that email.');
+        throw Exception('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        onError('Wrong password provided for that user.');
+        throw Exception('Wrong password provided for that user.');
       }
     }
     return null;
   }
 
   @override
-  Future<AppUser?> registerUser(
-      String email, String password, Function onError) async {
+  Future<AppUser?> registerUser(String email, String password) async {
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -60,9 +58,9 @@ class FirebaseAuthenticationService implements AuthenticationService {
       return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        onError('The password provided is too weak.');
+        throw Exception('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        onError('The account already exists for that email.');
+        throw Exception('The account already exists for that email.');
       }
     }
     return null;

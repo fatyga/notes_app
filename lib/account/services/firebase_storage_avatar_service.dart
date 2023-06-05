@@ -12,7 +12,7 @@ class FirebaseAvatarService implements AvatarService {
       serviceLocator<AuthenticationService>();
 
   @override
-  Future<String> uploadAvatar(File file, Function(String) onError) async {
+  Future<String> uploadAvatar(File file) async {
     try {
       final reference = _storage.ref().child(
           'avatar/${_authenticationService.getCurrentUser()!.uid}/avatar.png');
@@ -21,7 +21,7 @@ class FirebaseAvatarService implements AvatarService {
       final url = await uploadTask.ref.getDownloadURL();
       return url;
     } on FirebaseException catch (e) {
-      onError(e.message!);
+      throw Exception(e.message ?? 'Unknown error');
     }
     throw 'Error';
   }

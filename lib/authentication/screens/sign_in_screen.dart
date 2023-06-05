@@ -5,7 +5,7 @@ import 'package:notes_app/account/account.dart';
 import '../../route/app_router.gr.dart';
 import '../../service_locator.dart';
 import '../../shared/enums/view_state.dart';
-import '../../shared/notification.dart';
+import '../../shared/toasts.dart';
 import '../authentication.dart';
 
 @RoutePage()
@@ -86,14 +86,18 @@ class _SignInPageState extends State<SignInPage> {
                                         onPressed: () async {
                                           if (_formKey.currentState!
                                               .validate()) {
-                                            await model.signInUser(
-                                                _emailController.text,
-                                                _passwordController.text);
-
-                                            if (mounted) {
-                                              showNotificationToUser(
-                                                  context, model, false);
-                                            }
+                                            await model
+                                                .signInUser(
+                                                    _emailController.text,
+                                                    _passwordController.text)
+                                                .then((_) {
+                                              context
+                                                  .showToast('User logged in!');
+                                            }).catchError((error, stackTrace) {
+                                              context.showToast(
+                                                  (error as Exception)
+                                                      .toString());
+                                            });
                                           }
                                         },
                                         name: const Text('Sign in'),

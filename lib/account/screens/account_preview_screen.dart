@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_app/shared/toasts.dart';
 
 import '../../route/app_router.gr.dart';
 import '../../service_locator.dart';

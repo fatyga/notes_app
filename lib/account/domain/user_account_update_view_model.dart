@@ -46,16 +46,9 @@ class UserAccountUpdateViewModel extends ViewModel {
     UserAccount accountDetails,
   ) async {
     setViewState(ViewState.busy);
-    await _accountRepo.updateUserAccount(
-        accountDetails, _selectedAvatar, setError);
-    if (userNotification.isError == true) {
-      setViewState(
-          ViewState.idle,
-          userNotification.copyWith(
-              content: 'Failed to update account.', isError: true));
-      return;
-    }
-    setViewState(ViewState.idle,
-        userNotification.copyWith(content: 'Account updated successfully.'));
+    await _accountRepo.updateUserAccount(accountDetails, _selectedAvatar);
+    setViewState(
+      ViewState.idle,
+    );
   }
 }

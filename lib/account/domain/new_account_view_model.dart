@@ -24,28 +24,20 @@ class NewAccountViewModel extends ViewModel {
       String email, String password, String firstName, String lastName) async {
     setViewState(ViewState.busy);
 
-    await _authenticationRepo.register(email, password, setError);
-    if (userNotification.isError == true) {
-      setViewState(
-          ViewState.idle,
-          userNotification.copyWith(
-              content: 'Failed to register a user.', isError: true));
-      return;
-    }
-    await _accountRepo.addUserAccount(
-        UserAccount(firstName: firstName, lastName: lastName),
-        _selectedAvatar,
-        setError);
-    if (userNotification.isError == true) {
-      setViewState(
-          ViewState.idle,
-          const UserNotification(
-              content: 'Failed to create account.', isError: true));
-      return;
-    }
+    try {
+      await _authenticationRepo.register(email, password);
 
-    await _notesRepo.initializeTags(); // create defaulult tag
-    setViewState(ViewState.idle,
-        userNotification.copyWith(content: 'User created successfully.'));
+      await _accountRepo.addUserAccount(
+          UserAccount(firstName: firstName, lastName: lastName),
+          _selectedAvatar);
+
+      await _notesRepo.initializeTags(); // create defaulult tag
+
+      setViewState(
+        ViewState.idle,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 }

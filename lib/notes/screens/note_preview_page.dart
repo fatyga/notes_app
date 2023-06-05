@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../route/app_router.gr.dart';
 import '../../service_locator.dart';
 import '../../shared/enums/view_state.dart';
-import '../../shared/notification.dart';
+import '../../shared/toasts.dart';
 import '../notes.dart';
 
 @RoutePage()
@@ -48,10 +48,10 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                 return Row(children: [
                   IconButton(
                       onPressed: () async {
-                        await model.deleteNote(widget.noteId);
-                        if (mounted) {
-                          showNotificationToUser(context, model, true);
-                        }
+                        await model.deleteNote(widget.noteId).then((_) {
+                          context.showToast('Note deleted!');
+                          context.router.pop();
+                        });
                       },
                       icon: const Icon(Icons.delete)),
                   IconButton(
@@ -62,10 +62,11 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                       icon: const Icon(Icons.edit)),
                   IconButton(
                       onPressed: () async {
-                        await model.pinUnpinNote();
-                        if (mounted) {
-                          showNotificationToUser(context, model, false);
-                        }
+                        await model.pinUnpinNote().then((_) {
+                          context.showToast(model.isNotePinned
+                              ? 'Note pinned!'
+                              : 'Note unpinned!');
+                        });
                       },
                       icon: model.isNoteContainTag('pinned')
                           ? const Icon(Icons.push_pin_rounded)

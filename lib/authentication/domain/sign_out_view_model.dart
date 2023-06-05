@@ -9,8 +9,15 @@ class SignOutViewModel extends ViewModel {
 
   Future<void> signOutUser() async {
     setViewState(ViewState.busy);
-    await _authRepo.logOut();
-    setViewState(ViewState.idle,
-        userNotification.copyWith(content: 'User successfuly is logged out.'));
+
+    try {
+      await _authRepo.logOut();
+    } catch (e) {
+      setViewState(ViewState.idle);
+      rethrow;
+    }
+    setViewState(
+      ViewState.idle,
+    );
   }
 }

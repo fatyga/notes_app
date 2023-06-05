@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../service_locator.dart';
 import '../../shared/enums/view_state.dart';
-import '../../shared/notification.dart';
+import '../../shared/toasts.dart';
 import '../../shared/widgets/tags.dart';
 import '../notes.dart';
 
@@ -67,13 +67,18 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                           errorContent = 'You need to fill both fields';
                         });
                       } else {
-                        await model.updateNote(
+                        await model
+                            .updateNote(
                           title: titleController.text,
                           content: contentController.text,
-                        );
-                        if (mounted) {
-                          showNotificationToUser(context, model, true);
-                        }
+                        )
+                            .then((_) {
+                          context.showToast('Note updated!');
+                          context.router.pop();
+                        });
+                        // if (mounted) {
+                        //   showNotificationToUser(context, model, true);
+                        // }
                       }
                     },
                     icon: const Icon(Icons.save_outlined),

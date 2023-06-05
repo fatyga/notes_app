@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../account/account.dart';
 import '../../service_locator.dart';
 import '../../shared/enums/view_state.dart';
-import '../../shared/notification.dart';
+import '../../shared/toasts.dart';
 import '../../shared/widgets/avatar.dart';
 
 @RoutePage()
@@ -158,11 +158,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                         _firstNameController.text,
                                         _lastNameController.text,
                                       );
-
-                                      if (mounted) {
-                                        showNotificationToUser(
-                                            context, model, false);
-                                      }
                                     }
                                   },
                                   inProgress: model.status == ViewState.busy,

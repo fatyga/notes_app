@@ -30,9 +30,8 @@ class NewNoteViewModel extends ViewModel {
   Future<void> addNote(String title, String content) async {
     if (title.isEmpty || content.isEmpty) {
       setViewState(
-          ViewState.idle,
-          userNotification.copyWith(
-              content: 'You need to fill both fields', isError: true));
+        ViewState.idle,
+      );
       return;
     }
     setViewState(ViewState.busy);
@@ -41,8 +40,10 @@ class NewNoteViewModel extends ViewModel {
         NewNoteTemplate(title: title, content: content, tags: selectedTags);
 
     await _notesRepo.addNote(noteTemplate);
-    setViewState(ViewState.idle,
-        userNotification.copyWith(content: 'Note created successfully'));
+
+    setViewState(
+      ViewState.idle,
+    );
   }
 
   //tags

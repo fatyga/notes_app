@@ -46,8 +46,7 @@ class NoteUpdateViewModel extends ViewModel {
     final updatedNote =
         note.copyWith(title: title, content: content, tags: _selectedTags);
     await _notesRepo.updateNote(updatedNote);
-    setNotification(
-        userNotification.copyWith(content: 'Note updated successfully'));
+    setViewState(ViewState.idle);
   }
 
   //tags

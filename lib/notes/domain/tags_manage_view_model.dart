@@ -128,7 +128,8 @@ class TagsManageViewModel extends ViewModel {
     }
     await _notesRepo.updateTags(tags);
 
-    setViewState(ViewState.idle,
-        const UserNotification(content: 'Tags updated succesfully'));
+    setViewState(
+      ViewState.idle,
+    );
   }
 }

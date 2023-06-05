@@ -9,7 +9,12 @@ class SignInViewModel extends ViewModel {
 
   Future<void> signInUser(String email, String password) async {
     setViewState(ViewState.busy);
-    await _authRepo.signIn(email, password, setError);
+    try {
+      await _authRepo.signIn(email, password);
+    } catch (e) {
+      setViewState(ViewState.idle);
+      rethrow;
+    }
     setViewState(ViewState.idle);
   }
 }

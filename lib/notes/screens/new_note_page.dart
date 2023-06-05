@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../service_locator.dart';
 import '../../shared/enums/view_state.dart';
-import '../../shared/notification.dart';
+import '../../shared/toasts.dart';
 import '../../shared/widgets/tags.dart';
 import '../notes.dart';
 
@@ -58,11 +58,12 @@ class _NewNotePageState extends State<NewNotePage> {
             onPressed: (model.status == ViewState.busy)
                 ? null
                 : () async {
-                    await model.addNote(
-                        titleController.text, contentController.text);
-                    if (mounted) {
-                      showNotificationToUser(context, model, true);
-                    }
+                    await model
+                        .addNote(titleController.text, contentController.text)
+                        .then((_) {
+                      context.showToast('Note created successfully.');
+                      context.router.pop();
+                    });
                   },
             icon: (model.status == ViewState.busy)
                 ? const Icon(

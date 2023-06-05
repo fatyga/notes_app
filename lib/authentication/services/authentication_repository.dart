@@ -8,14 +8,12 @@ class AuthenticationRepository {
 
   Stream<AppUser?> get authenticationChanges => _auth.authenticationChanges;
 
-  Future<AppUser?> signIn(
-      String email, String password, Function(String message) onError) async {
-    return await _auth.signInUser(email, password, onError);
+  Future<AppUser?> signIn(String email, String password) async {
+    return await _auth.signInUser(email, password);
   }
 
-  Future<AppUser?> register(
-      String email, String password, Function(String message) onError) async {
-    return await _auth.registerUser(email, password, onError);
+  Future<AppUser?> register(String email, String password) async {
+    return await _auth.registerUser(email, password);
   }
 
   Future<void> logOut() async {

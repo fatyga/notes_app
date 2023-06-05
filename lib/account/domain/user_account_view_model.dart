@@ -10,17 +10,21 @@ class UserAccountViewModel extends ViewModel {
 
   Stream<UserAccount> get userAccountChanges => _accountRepo.userAccountChanges;
 
-  Future<void> addUserAccount(UserAccount accountDetails, File? avatar,
-      Function(String) onError) async {
+  Future<void> addUserAccount(
+    UserAccount accountDetails,
+    File? avatar,
+  ) async {
     setViewState(ViewState.busy);
-    await _accountRepo.addUserAccount(accountDetails, avatar, onError);
+    await _accountRepo.addUserAccount(accountDetails, avatar);
     setViewState(ViewState.idle);
   }
 
-  Future<void> updateUserAccount(UserAccount accountDetails, File? avatar,
-      Function(String) onError) async {
+  Future<void> updateUserAccount(
+    UserAccount accountDetails,
+    File? avatar,
+  ) async {
     setViewState(ViewState.busy);
-    await _accountRepo.addUserAccount(accountDetails, avatar, onError);
+    await _accountRepo.addUserAccount(accountDetails, avatar);
     setViewState(ViewState.idle);
   }
 }

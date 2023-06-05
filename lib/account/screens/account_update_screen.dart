@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../authentication/authentication.dart';
 import '../../service_locator.dart';
 import '../../shared/enums/view_state.dart';
-import '../../shared/notification.dart';
+import '../../shared/toasts.dart';
 import '../../shared/widgets/avatar.dart';
 import '../account.dart';
 
@@ -103,15 +103,16 @@ class _UserAccountUpdatePageState extends State<UserAccountUpdatePage> {
               IconButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      await model.updateUserAccount(
+                      await model
+                          .updateUserAccount(
                         model.account.copyWith(
                             firstName: _firstNameController.text,
                             lastName: _lastNameController.text),
-                      );
-
-                      if (mounted) {
-                        showNotificationToUser(context, model, true);
-                      }
+                      )
+                          .then((_) {
+                        context.showToast('Account updated successfully.');
+                        context.router.pop();
+                      });
                     }
                   },
                   icon: const Icon(Icons.save))
