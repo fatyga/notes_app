@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../account/account.dart';
 import '../../service_locator.dart';
 import '../../shared/enums/view_state.dart';
-import '../../shared/toasts.dart';
 import '../../shared/widgets/avatar.dart';
 
 @RoutePage()

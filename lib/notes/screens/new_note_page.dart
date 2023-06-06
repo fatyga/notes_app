@@ -16,6 +16,7 @@ class NewNotePage extends StatefulWidget {
 }
 
 class _NewNotePageState extends State<NewNotePage> {
+  final _formKey = GlobalKey<FormState>();
   final model = serviceLocator<NewNoteViewModel>();
 
   final titleController = TextEditingController();
@@ -57,13 +58,18 @@ class _NewNotePageState extends State<NewNotePage> {
           IconButton(
             onPressed: (model.status == ViewState.busy)
                 ? null
-                : () async {
-                    await model
-                        .addNote(titleController.text, contentController.text)
-                        .then((_) {
-                      context.showToast('Note created successfully.');
-                      context.router.pop();
-                    });
+                : () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      model
+                          .addNote(titleController.text, contentController.text)
+                          .then((_) {
+                        if (mounted) {
+                          context.showToast('Note created successfully.');
+                          context.router.pop();
+                        }
+                      });
+                    }
                   },
             icon: (model.status == ViewState.busy)
                 ? const Icon(
@@ -83,6 +89,7 @@ class _NewNotePageState extends State<NewNotePage> {
                 return const Center(child: CircularProgressIndicator());
               }
               return Form(
+                key: _formKey,
                 onWillPop: () async {
                   if (edited &&
                       (titleController.text.isNotEmpty ||
@@ -126,20 +133,28 @@ class _NewNotePageState extends State<NewNotePage> {
                       onTagSelect: model.selectTag,
                       oneline: true,
                     ),
-                    TextField(
-                      controller: titleController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: const InputDecoration(hintText: ("Title")),
-                    ),
+                    TextFormField(
+                        controller: titleController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration: const InputDecoration(hintText: ("Title")),
+                        validator: (value) {
+                          return (value != null && value.isEmpty)
+                              ? 'Enter a title'
+                              : null;
+                        }),
                     const SizedBox(height: 20),
-                    TextField(
-                      controller: contentController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration:
-                          const InputDecoration(hintText: ("Type here..")),
-                    ),
+                    TextFormField(
+                        controller: contentController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration:
+                            const InputDecoration(hintText: ("Type here..")),
+                        validator: (value) {
+                          return (value != null && value.isEmpty)
+                              ? 'Enter a note content'
+                              : null;
+                        }),
                   ],
                 ),
               );

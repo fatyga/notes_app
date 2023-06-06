@@ -23,6 +23,5 @@ class FirebaseAvatarService implements AvatarService {
     } on FirebaseException catch (e) {
       throw Exception(e.message ?? 'Unknown error');
     }
-    throw 'Error';
   }
 }

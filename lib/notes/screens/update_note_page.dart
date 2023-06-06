@@ -17,11 +17,10 @@ class UpdateNotePage extends StatefulWidget {
 }
 
 class _UpdateNotePageState extends State<UpdateNotePage> {
+  final _formKey = GlobalKey<FormState>();
   final model = serviceLocator<NoteUpdateViewModel>();
   final titleController = TextEditingController();
   final contentController = TextEditingController();
-
-  String errorContent = '';
 
   bool get noteEdited =>
       titleController.text != model.note.title ||
@@ -60,14 +59,10 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
 
                 return Row(children: [
                   IconButton(
-                    onPressed: () async {
-                      if (titleController.text.isEmpty ||
-                          contentController.text.isEmpty) {
-                        setState(() {
-                          errorContent = 'You need to fill both fields';
-                        });
-                      } else {
-                        await model
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        model
                             .updateNote(
                           title: titleController.text,
                           content: contentController.text,
@@ -76,9 +71,6 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                           context.showToast('Note updated!');
                           context.router.pop();
                         });
-                        // if (mounted) {
-                        //   showNotificationToUser(context, model, true);
-                        // }
                       }
                     },
                     icon: const Icon(Icons.save_outlined),
@@ -94,6 +86,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
               return const Center(child: CircularProgressIndicator());
             }
             return Form(
+              key: _formKey,
               onWillPop: () async {
                 if (noteEdited) {
                   final confirmed = await showDialog<bool>(
@@ -137,27 +130,30 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                         onTagSelect: model.selectTag,
                         oneline: true,
                       ),
-                      Text(errorContent,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleSmall!
-                              .copyWith(
-                                  color: Theme.of(context).colorScheme.error)),
-                      TextField(
-                        controller: titleController,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        autofocus: true,
-                        decoration: const InputDecoration(hintText: ("Title")),
-                      ),
+                      TextFormField(
+                          controller: titleController,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          autofocus: true,
+                          decoration:
+                              const InputDecoration(hintText: ("Title")),
+                          validator: (value) {
+                            return (value != null && value.isEmpty)
+                                ? 'Enter a title'
+                                : null;
+                          }),
                       const SizedBox(height: 20),
-                      TextField(
-                        controller: contentController,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        decoration:
-                            const InputDecoration(hintText: ("Type here..")),
-                      ),
+                      TextFormField(
+                          controller: contentController,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          decoration:
+                              const InputDecoration(hintText: ("Type here..")),
+                          validator: (value) {
+                            return (value != null && value.isEmpty)
+                                ? 'Enter a note content'
+                                : null;
+                          }),
                     ],
                   )),
             );

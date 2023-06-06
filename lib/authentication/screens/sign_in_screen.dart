@@ -91,12 +91,16 @@ class _SignInPageState extends State<SignInPage> {
                                                     _emailController.text,
                                                     _passwordController.text)
                                                 .then((_) {
-                                              context
-                                                  .showToast('User logged in!');
+                                              if (mounted) {
+                                                context.showToast(
+                                                    'User logged in!');
+                                              }
                                             }).catchError((error, stackTrace) {
-                                              context.showToast(
-                                                  (error as Exception)
-                                                      .toString());
+                                              if (mounted) {
+                                                context.showToast(
+                                                    (error as Exception)
+                                                        .toString());
+                                              }
                                             });
                                           }
                                         },

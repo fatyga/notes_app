@@ -11,20 +11,20 @@
 import 'package:auto_route/auto_route.dart' as _i15;
 import 'package:flutter/material.dart' as _i16;
 import 'package:notes_app/account/screens/account_preview_screen.dart' as _i1;
-import 'package:notes_app/account/screens/account_router.dart' as _i11;
+import 'package:notes_app/account/screens/account_router.dart' as _i10;
 import 'package:notes_app/account/screens/account_update_screen.dart' as _i2;
-import 'package:notes_app/account/screens/home_router.dart' as _i12;
+import 'package:notes_app/account/screens/home_router.dart' as _i11;
 import 'package:notes_app/authentication/screens/authentication_router.dart'
-    as _i14;
+    as _i13;
 import 'package:notes_app/authentication/screens/register_screen.dart' as _i3;
 import 'package:notes_app/authentication/screens/sign_in_screen.dart' as _i4;
 import 'package:notes_app/notes/screens/new_note_page.dart' as _i5;
 import 'package:notes_app/notes/screens/note_preview_page.dart' as _i7;
-import 'package:notes_app/notes/screens/note_tags_manage.dart' as _i8;
+import 'package:notes_app/notes/screens/note_tags_manage_page.dart' as _i14;
 import 'package:notes_app/notes/screens/notes_list_page.dart' as _i6;
-import 'package:notes_app/notes/screens/notes_router.dart' as _i13;
-import 'package:notes_app/notes/screens/update_note_page.dart' as _i9;
-import 'package:notes_app/splash/splash_screen.dart' as _i10;
+import 'package:notes_app/notes/screens/notes_router.dart' as _i12;
+import 'package:notes_app/notes/screens/update_note_page.dart' as _i8;
+import 'package:notes_app/splash/splash_screen.dart' as _i9;
 
 abstract class $AppRouter extends _i15.RootStackRouter {
   $AppRouter([_i16.GlobalKey<_i16.NavigatorState>? navigatorKey])
@@ -78,17 +78,11 @@ abstract class $AppRouter extends _i15.RootStackRouter {
         ),
       );
     },
-    TagsManageRoute.name: (routeData) {
-      return _i15.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i8.TagsManagePage(),
-      );
-    },
     UpdateNoteRoute.name: (routeData) {
       final args = routeData.argsAs<UpdateNoteRouteArgs>();
       return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i9.UpdateNotePage(
+        child: _i8.UpdateNotePage(
           key: args.key,
           noteId: args.noteId,
         ),
@@ -97,31 +91,37 @@ abstract class $AppRouter extends _i15.RootStackRouter {
     SplashRoute.name: (routeData) {
       return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i10.SplashPage(),
+        child: const _i9.SplashPage(),
       );
     },
     AccountRouter.name: (routeData) {
       return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i11.AccountRouterPage(),
+        child: const _i10.AccountRouterPage(),
       );
     },
     HomeRouter.name: (routeData) {
       return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i12.HomeRouterPage(),
+        child: const _i11.HomeRouterPage(),
       );
     },
     NotesRouter.name: (routeData) {
       return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i13.NotesRouterPage(),
+        child: const _i12.NotesRouterPage(),
       );
     },
     AuthenticationRouter.name: (routeData) {
       return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i14.AuthenticationRouterPage(),
+        child: const _i13.AuthenticationRouterPage(),
+      );
+    },
+    TagsManageRoute.name: (routeData) {
+      return _i15.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i14.TagsManagePage(),
       );
     },
   };
@@ -250,21 +250,7 @@ class NotePreviewRouteArgs {
 }
 
 /// generated route for
-/// [_i8.TagsManagePage]
-class TagsManageRoute extends _i15.PageRouteInfo<void> {
-  const TagsManageRoute({List<_i15.PageRouteInfo>? children})
-      : super(
-          TagsManageRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'TagsManageRoute';
-
-  static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i9.UpdateNotePage]
+/// [_i8.UpdateNotePage]
 class UpdateNoteRoute extends _i15.PageRouteInfo<UpdateNoteRouteArgs> {
   UpdateNoteRoute({
     _i16.Key? key,
@@ -302,7 +288,7 @@ class UpdateNoteRouteArgs {
 }
 
 /// generated route for
-/// [_i10.SplashPage]
+/// [_i9.SplashPage]
 class SplashRoute extends _i15.PageRouteInfo<void> {
   const SplashRoute({List<_i15.PageRouteInfo>? children})
       : super(
@@ -316,7 +302,7 @@ class SplashRoute extends _i15.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i11.AccountRouterPage]
+/// [_i10.AccountRouterPage]
 class AccountRouter extends _i15.PageRouteInfo<void> {
   const AccountRouter({List<_i15.PageRouteInfo>? children})
       : super(
@@ -330,7 +316,7 @@ class AccountRouter extends _i15.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i12.HomeRouterPage]
+/// [_i11.HomeRouterPage]
 class HomeRouter extends _i15.PageRouteInfo<void> {
   const HomeRouter({List<_i15.PageRouteInfo>? children})
       : super(
@@ -344,7 +330,7 @@ class HomeRouter extends _i15.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i13.NotesRouterPage]
+/// [_i12.NotesRouterPage]
 class NotesRouter extends _i15.PageRouteInfo<void> {
   const NotesRouter({List<_i15.PageRouteInfo>? children})
       : super(
@@ -358,7 +344,7 @@ class NotesRouter extends _i15.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i14.AuthenticationRouterPage]
+/// [_i13.AuthenticationRouterPage]
 class AuthenticationRouter extends _i15.PageRouteInfo<void> {
   const AuthenticationRouter({List<_i15.PageRouteInfo>? children})
       : super(
@@ -367,6 +353,20 @@ class AuthenticationRouter extends _i15.PageRouteInfo<void> {
         );
 
   static const String name = 'AuthenticationRouter';
+
+  static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i14.TagsManagePage]
+class TagsManageRoute extends _i15.PageRouteInfo<void> {
+  const TagsManageRoute({List<_i15.PageRouteInfo>? children})
+      : super(
+          TagsManageRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TagsManageRoute';
 
   static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
 }

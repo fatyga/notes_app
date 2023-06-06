@@ -39,10 +39,12 @@ class _MyWidgetState extends State<TagsManagePage> {
           title: const Text('Manage your tags'),
           actions: [
             IconButton(
-                onPressed: () async {
-                  await tagsViewModel.updateTags().then((_) {
-                    context.showToast('Tags updated!');
-                    context.router.pop();
+                onPressed: () {
+                  tagsViewModel.updateTags().then((_) {
+                    if (mounted) {
+                      context.showToast('Tags updated!');
+                      context.router.pop();
+                    }
                   });
                 },
                 icon: const Icon(Icons.save))

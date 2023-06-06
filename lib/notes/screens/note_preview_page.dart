@@ -61,11 +61,13 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                       },
                       icon: const Icon(Icons.edit)),
                   IconButton(
-                      onPressed: () async {
-                        await model.pinUnpinNote().then((_) {
-                          context.showToast(model.isNotePinned
-                              ? 'Note pinned!'
-                              : 'Note unpinned!');
+                      onPressed: () {
+                        model.pinUnpinNote().then((_) {
+                          if (mounted) {
+                            context.showToast(model.isNotePinned
+                                ? 'Note pinned!'
+                                : 'Note unpinned!');
+                          }
                         });
                       },
                       icon: model.isNoteContainTag('pinned')

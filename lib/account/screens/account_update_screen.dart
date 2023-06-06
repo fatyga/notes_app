@@ -101,17 +101,20 @@ class _UserAccountUpdatePageState extends State<UserAccountUpdatePage> {
             leading: const AutoLeadingButton(),
             actions: [
               IconButton(
-                  onPressed: () async {
+                  onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      await model
+                      _formKey.currentState!.save();
+                      model
                           .updateUserAccount(
                         model.account.copyWith(
                             firstName: _firstNameController.text,
                             lastName: _lastNameController.text),
                       )
                           .then((_) {
-                        context.showToast('Account updated successfully.');
-                        context.router.pop();
+                        if (mounted) {
+                          context.showToast('Account updated successfully.');
+                          context.router.pop();
+                        }
                       });
                     }
                   },

@@ -34,11 +34,13 @@ class TagsManageViewModel extends ViewModel {
 
   final List<String> _deletedTagsIds = [];
   List<NoteTag> _availableTags = [];
-  List<NoteTag> get tags => _availableTags;
+  List<NoteTag> _modifableTags = [];
+  List<NoteTag> get tags => _modifableTags;
 
   void startTagsSubscription() {
     tagsSubscription = _notesRepo.tagsChanges.listen((tagsList) {
-      _availableTags = tagsList
+      _availableTags = tagsList;
+      _modifableTags = tagsList
           .where((tag) => tag.name != 'pinned')
           .toList(); // prevent from modyfing 'pinned' tag
       notifyListeners();
@@ -106,14 +108,14 @@ class TagsManageViewModel extends ViewModel {
 
   void deleteTag() {
     if (_selectedTagId != null &&
-        tags.map((tag) => tag.id).contains(_selectedTagId)) {
+        _availableTags.map((tag) => tag.id).contains(_selectedTagId)) {
       updateTagChanges(
           _selectedTagId!,
           TagDeleted(
               tagName: _availableTags
                   .firstWhere((tag) => tag.id == _selectedTagId!)
                   .name));
-      tags.removeWhere((tag) => tag.id == _selectedTagId);
+      _availableTags.removeWhere((tag) => tag.id == _selectedTagId);
       _deletedTagsIds.add(_selectedTagId!);
     }
     _selectedTagId = null;
@@ -126,7 +128,7 @@ class TagsManageViewModel extends ViewModel {
       final notes = await _notesRepo.savedNotes();
       await _notesRepo.removeReferencesToDeletedTag(notes, _deletedTagsIds);
     }
-    await _notesRepo.updateTags(tags);
+    await _notesRepo.updateTags(_availableTags);
 
     setViewState(
       ViewState.idle,

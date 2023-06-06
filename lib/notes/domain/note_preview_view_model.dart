@@ -41,9 +41,12 @@ class NotesPreviewViewModel extends ViewModel {
       .where((tag) => _note.tags.contains(tag.id))
       .map((e) => e.name)
       .toList();
+
   bool isNoteContainTag(String tagName) {
     return getTagsNames().contains(tagName);
   }
+
+  bool get isNotePinned => isNoteContainTag('pinned');
 
   Future<void> pinUnpinNote() async {
     setViewState(ViewState.busy);
@@ -54,11 +57,9 @@ class NotesPreviewViewModel extends ViewModel {
       _note.tags.insert(0, pinnedTag.id);
     }
     await _notesRepo.updateNote(_note);
-
+    print(note.tags);
     setViewState(ViewState.idle);
   }
-
-  bool get isNotePinned => note.tags.contains('pinned');
 
   Future<void> deleteNote(String noteId) async {
     await _notesRepo.deleteNote(noteId);
