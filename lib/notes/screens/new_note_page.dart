@@ -56,28 +56,31 @@ class _NewNotePageState extends State<NewNotePage> {
         elevation: 0,
         actions: [
           IconButton(
-            onPressed: (model.status == ViewState.busy)
-                ? null
-                : () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      model
-                          .addNote(titleController.text, contentController.text)
-                          .then((_) {
-                        if (mounted) {
-                          context.showToast('Note created successfully.');
-                          context.router.pop();
-                        }
-                      });
-                    }
-                  },
-            icon: (model.status == ViewState.busy)
-                ? const Icon(
-                    Icons.save_outlined,
-                    color: Colors.grey,
-                  )
-                : const Icon(Icons.save_outlined),
-          )
+              onPressed: (model.status == ViewState.busy)
+                  ? null
+                  : () {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        model
+                            .addNote(
+                                titleController.text, contentController.text)
+                            .then((_) {
+                          if (mounted) {
+                            context.showToast('Note created successfully.');
+                            context.router.pop();
+                          }
+                        });
+                      }
+                    },
+              icon: AnimatedBuilder(
+                animation: model,
+                builder: (context, _) => (model.status == ViewState.busy)
+                    ? const Icon(
+                        Icons.save_outlined,
+                        color: Colors.grey,
+                      )
+                    : const Icon(Icons.save_outlined),
+              ))
         ],
       ),
       body: Padding(

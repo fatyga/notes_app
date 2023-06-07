@@ -1,3 +1,4 @@
 import 'package:flutter/material.dart';
 
-ThemeData get darkTheme => ThemeData.dark(useMaterial3: true);
+ThemeData get darkTheme =>
+    ThemeData.dark(useMaterial3: true).copyWith(primaryColor: Colors.blue);

@@ -117,14 +117,15 @@ class _NoteListPageState extends State<NoteListPage> {
             }),
         floatingActionButtonLocation: ExpandableFab.location,
         floatingActionButton: ExpandableFab(
+            key: _fabKey,
             overlayStyle: ExpandableFabOverlayStyle(blur: 2.0),
             type: ExpandableFabType.up,
             children: [
               FloatingActionButton(
                 heroTag: null,
                 onPressed: () {
-                  _fabKey.currentState?.toggle();
                   context.router.push(const NewNoteRoute());
+                  _fabKey.currentState?.toggle();
                 },
                 child: const Icon(Icons.note_add, size: 28),
               ),

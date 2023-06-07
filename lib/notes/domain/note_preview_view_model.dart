@@ -57,7 +57,7 @@ class NotesPreviewViewModel extends ViewModel {
       _note.tags.insert(0, pinnedTag.id);
     }
     await _notesRepo.updateNote(_note);
-    print(note.tags);
+
     setViewState(ViewState.idle);
   }
 

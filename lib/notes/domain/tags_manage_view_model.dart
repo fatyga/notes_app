@@ -34,15 +34,13 @@ class TagsManageViewModel extends ViewModel {
 
   final List<String> _deletedTagsIds = [];
   List<NoteTag> _availableTags = [];
-  List<NoteTag> _modifableTags = [];
-  List<NoteTag> get tags => _modifableTags;
+  List<NoteTag> get tags => _availableTags
+      .where((tag) => tag.name != 'pinned')
+      .toList(); // showing only tags that can be modified
 
   void startTagsSubscription() {
     tagsSubscription = _notesRepo.tagsChanges.listen((tagsList) {
       _availableTags = tagsList;
-      _modifableTags = tagsList
-          .where((tag) => tag.name != 'pinned')
-          .toList(); // prevent from modyfing 'pinned' tag
       notifyListeners();
     });
   }
