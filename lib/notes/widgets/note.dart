@@ -5,9 +5,20 @@ import 'package:notes_app/route/app_router.gr.dart';
 import 'package:notes_app/notes/domain/models/note.dart';
 
 class NoteWidget extends StatelessWidget {
-  const NoteWidget({super.key, required this.note});
+  const NoteWidget(
+      {super.key,
+      required this.note,
+      required this.selectionMode,
+      required this.onNoteSelect,
+      required this.onEnterSelectionMode,
+      required this.inSelection});
 
   final Note note;
+
+  final bool selectionMode;
+  final bool inSelection;
+  final Function(Note) onNoteSelect;
+  final VoidCallback onEnterSelectionMode;
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +32,18 @@ class NoteWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Expanded(child: _NoteHeader(note)),
-              _NoteFooter(note)
+              Expanded(
+                  child: _NoteHeader(
+                      note: note,
+                      selectionMode: selectionMode,
+                      onNoteSelect: () => onNoteSelect(note),
+                      onEnterSelectionMode: onEnterSelectionMode)),
+              _NoteFooter(
+                note: note,
+                inSelection: inSelection,
+                selectionMode: selectionMode,
+                onNoteSelect: () => onNoteSelect(note),
+              )
             ]),
       ),
     );
@@ -30,8 +51,17 @@ class NoteWidget extends StatelessWidget {
 }
 
 class _NoteHeader extends StatelessWidget {
-  const _NoteHeader(this.note);
+  const _NoteHeader(
+      {required this.note,
+      required this.selectionMode,
+      required this.onNoteSelect,
+      required this.onEnterSelectionMode});
+
   final Note note;
+
+  final bool selectionMode;
+  final VoidCallback onNoteSelect;
+  final VoidCallback onEnterSelectionMode;
 
   Widget _showNoteContentIfPossible(BuildContext context) {
     if (note.title.length <= 30 && note.content.isNotEmpty) {
@@ -56,8 +86,18 @@ class _NoteHeader extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.yellow, borderRadius: BorderRadius.circular(12)),
         child: InkWell(
+          onLongPress: selectionMode
+              ? null
+              : () {
+                  onEnterSelectionMode();
+                  onNoteSelect();
+                },
           onTap: () {
-            context.router.push(NotePreviewRoute(noteId: note.id));
+            if (selectionMode) {
+              onNoteSelect();
+            } else {
+              context.router.push(NotePreviewRoute(noteId: note.id));
+            }
           },
           child: Padding(
             padding: const EdgeInsets.all(12),
@@ -79,16 +119,34 @@ class _NoteHeader extends StatelessWidget {
 }
 
 class _NoteFooter extends StatelessWidget {
-  const _NoteFooter(this.note);
+  const _NoteFooter(
+      {required this.note,
+      required this.onNoteSelect,
+      required this.selectionMode,
+      required this.inSelection});
   final Note note;
+
+  final bool selectionMode;
+  final bool inSelection;
+  final VoidCallback onNoteSelect;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Text(note.formattedTime, style: Theme.of(context).textTheme.titleSmall),
-        InkWell(onTap: () {}, child: const Icon(Icons.more_horiz))
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Text(note.formattedTime,
+              style: Theme.of(context).textTheme.titleSmall),
+        ),
+        selectionMode
+            ? SizedBox(
+                width: 24,
+                height: 24,
+                child: Checkbox(
+                    onChanged: (_) => onNoteSelect(), value: inSelection))
+            : InkWell(onTap: () {}, child: const Icon(Icons.more_horiz))
       ]),
     );
   }

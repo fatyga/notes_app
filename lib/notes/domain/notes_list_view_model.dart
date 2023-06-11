@@ -33,6 +33,38 @@ class NotesListViewModel extends ViewModel {
     tagsSubscription.cancel();
   }
 
+  // Selecting notes
+  bool selectionModeEnabled = false;
+  List<Note> notesInSelection = [];
+
+  void enterSelectionMode() {
+    if (selectionModeEnabled == false) {
+      selectionModeEnabled = true;
+      notesInSelection = notesInSelection;
+      notifyListeners();
+    }
+  }
+
+  void leaveSelectionMode() {
+    selectionModeEnabled = false;
+    notesInSelection = [];
+    notifyListeners();
+  }
+
+  void selectAllNotes() {
+    notesInSelection = [...notesToDisplay];
+    notifyListeners();
+  }
+
+  void switchNoteSelection(Note note) {
+    if (!notesInSelection.contains(note)) {
+      notesInSelection.add(note);
+    } else {
+      notesInSelection.remove(note);
+    }
+    notifyListeners();
+  }
+
   // Filtering notes
   bool isFiltersApplied = false;
   bool get canFilter =>
