@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:notes_app/shared/enums/view_state.dart';
+
 import '../../service_locator.dart';
 import '../../shared/view_model.dart';
 import '../notes.dart';
@@ -35,6 +37,9 @@ class NotesListViewModel extends ViewModel {
 
   // Selecting notes
   bool selectionModeEnabled = false;
+  bool get isAnyNoteSelected =>
+      notesInSelection.isNotEmpty; // used to obtain delete button state
+  bool selectAll = false;
   List<Note> notesInSelection = [];
 
   void enterSelectionMode() {
@@ -51,8 +56,15 @@ class NotesListViewModel extends ViewModel {
     notifyListeners();
   }
 
-  void selectAllNotes() {
-    notesInSelection = [...notesToDisplay];
+  void batchSelecting() {
+    if (selectAll) {
+      notesInSelection = [];
+      selectAll = false;
+    } else {
+      notesInSelection = [...notesToDisplay];
+      selectAll = true;
+    }
+
     notifyListeners();
   }
 
@@ -63,6 +75,16 @@ class NotesListViewModel extends ViewModel {
       notesInSelection.remove(note);
     }
     notifyListeners();
+  }
+
+  Future<void> deleteNotesInSelection() async {
+    setViewState(ViewState.busy);
+    if (notesInSelection.isNotEmpty) {
+      final ids = notesInSelection.map((note) => note.id).toList();
+      await _notesRepo.deleteNotes(ids);
+    }
+    leaveSelectionMode();
+    setViewState(ViewState.idle);
   }
 
   // Filtering notes

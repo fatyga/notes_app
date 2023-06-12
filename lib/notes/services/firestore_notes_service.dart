@@ -77,6 +77,21 @@ class FirestoreNotesService implements NotesService {
   }
 
   @override
+  Future deleteNotes(List<String> ids) async {
+    final batch = _firestore.batch();
+    for (String id in ids) {
+      final doc = _firestore
+          .collection('users')
+          .doc(_authenticationService.getCurrentUser()!.uid)
+          .collection('notes')
+          .doc(id);
+
+      batch.delete(doc);
+    }
+    await batch.commit();
+  }
+
+  @override
   Future updateNote(Note note) async {
     return await _firestore
         .collection('users')

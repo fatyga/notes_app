@@ -27,6 +27,8 @@ class NotesRepository {
     await _notesService.deleteNote(noteId);
   }
 
+  Future deleteNotes(List<String> ids) => _notesService.deleteNotes(ids);
+
   //tags
   Stream<List<NoteTag>> get tagsChanges => _notesService.tagsChanges;
   Future<void> updateTags(List<NoteTag> updatedTagsList) async {

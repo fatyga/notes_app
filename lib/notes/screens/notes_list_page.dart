@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:notes_app/account/account.dart';
+import 'package:notes_app/shared/toasts.dart';
 
 import '../../route/app_router.gr.dart';
 import '../../service_locator.dart';
@@ -81,10 +82,23 @@ class _NoteListPageState extends State<NoteListPage> {
                 actions: (notesViewModel.selectionModeEnabled)
                     ? [
                         IconButton(
+                            onPressed: (notesViewModel.isAnyNoteSelected)
+                                ? () {
+                                    notesViewModel
+                                        .deleteNotesInSelection()
+                                        .then((_) {
+                                      context.showToast('Notes deleted!');
+                                    });
+                                  }
+                                : null,
+                            icon: const Icon(Icons.delete)),
+                        IconButton(
                             onPressed: () {
-                              notesViewModel.selectAllNotes();
+                              notesViewModel.batchSelecting();
                             },
-                            icon: const Icon(Icons.select_all))
+                            icon: Icon(notesViewModel.selectAll
+                                ? Icons.deselect
+                                : Icons.select_all))
                       ]
                     : [
                         IconButton(

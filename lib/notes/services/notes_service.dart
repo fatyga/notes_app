@@ -9,6 +9,7 @@ abstract class NotesService {
   Future addNote(NewNoteTemplate note);
   Future updateNote(Note note);
   Future deleteNote(String noteId);
+  Future deleteNotes(List<String> ids);
 
   //tags
   Stream<List<NoteTag>> get tagsChanges;
