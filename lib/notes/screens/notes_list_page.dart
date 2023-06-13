@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:notes_app/account/account.dart';
+import 'package:notes_app/shared/dialogs.dart';
 import 'package:notes_app/shared/toasts.dart';
 
 import '../../route/app_router.gr.dart';
@@ -84,11 +85,11 @@ class _NoteListPageState extends State<NoteListPage> {
                         IconButton(
                             onPressed: (notesViewModel.isAnyNoteSelected)
                                 ? () {
-                                    notesViewModel
-                                        .deleteNotesInSelection()
-                                        .then((_) {
-                                      context.showToast('Notes deleted!');
-                                    });
+                                    context.deleteDialog(() => notesViewModel
+                                            .deleteNotesInSelection()
+                                            .then((_) {
+                                          context.showToast('Notes deleted!');
+                                        }));
                                   }
                                 : null,
                             icon: const Icon(Icons.delete)),
@@ -156,28 +157,30 @@ class _NoteListPageState extends State<NoteListPage> {
                       ],
                     ),
               floatingActionButtonLocation: ExpandableFab.location,
-              floatingActionButton: ExpandableFab(
-                  key: _fabKey,
-                  overlayStyle: ExpandableFabOverlayStyle(blur: 2.0),
-                  type: ExpandableFabType.up,
-                  children: [
-                    FloatingActionButton(
-                      heroTag: null,
-                      onPressed: () {
-                        context.router.push(const NewNoteRoute());
-                        _fabKey.currentState?.toggle();
-                      },
-                      child: const Icon(Icons.note_add, size: 28),
-                    ),
-                    FloatingActionButton(
-                        heroTag: null,
-                        onPressed: () {
-                          _fabKey.currentState?.toggle();
-                          context.router.push(const TagsManageRoute());
-                        },
-                        child:
-                            const Icon(Icons.collections_bookmark, size: 28)),
-                  ]));
+              floatingActionButton: notesViewModel.selectionModeEnabled
+                  ? null
+                  : ExpandableFab(
+                      key: _fabKey,
+                      overlayStyle: ExpandableFabOverlayStyle(blur: 2.0),
+                      type: ExpandableFabType.up,
+                      children: [
+                          FloatingActionButton(
+                            heroTag: null,
+                            onPressed: () {
+                              context.router.push(const NewNoteRoute());
+                              _fabKey.currentState?.toggle();
+                            },
+                            child: const Icon(Icons.note_add, size: 28),
+                          ),
+                          FloatingActionButton(
+                              heroTag: null,
+                              onPressed: () {
+                                _fabKey.currentState?.toggle();
+                                context.router.push(const TagsManageRoute());
+                              },
+                              child: const Icon(Icons.collections_bookmark,
+                                  size: 28)),
+                        ]));
         });
   }
 }
