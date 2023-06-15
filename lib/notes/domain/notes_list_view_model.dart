@@ -6,6 +6,16 @@ import '../../service_locator.dart';
 import '../../shared/view_model.dart';
 import '../notes.dart';
 
+enum SortingOption {
+  titleAlphabetical(displayName: 'Title: A-Z'),
+  titleAlphabeticalReversed(displayName: 'Title: Z-A'),
+  dateNewest(displayName: 'Date: Newest'),
+  dateOldest(displayName: 'Date: Oldest');
+
+  const SortingOption({required this.displayName});
+  final String displayName;
+}
+
 class NotesListViewModel extends ViewModel {
   final NotesRepository _notesRepo = serviceLocator<NotesRepository>();
 
@@ -87,24 +97,21 @@ class NotesListViewModel extends ViewModel {
     setViewState(ViewState.idle);
   }
 
-  // Filtering notes
+  // Filtering notes feature
   bool isFiltersApplied = false;
-  bool get canFilter =>
-      titleFilterOrder != null ||
-      contentFilterOrder != null ||
-      dateFilterOrder != null ||
-      selectedTags.isNotEmpty;
 
-  void filterNotes() {
-    List<Note> filteredNotes = _notes;
+  // bool get canFilter =>
+  //     titleFilterOrder != null ||
+  //     contentFilterOrder != null ||
+  //     dateFilterOrder != null ||
+  //     selectedTags.isNotEmpty;
 
-    filteredNotes = _filterNotesByTags(filteredNotes);
+  void applyFilters() {
+    List<Note> notesToFilter = [..._notes];
 
-    filteredNotes = _filterNotesByTitle(filteredNotes);
+    _sortNotes(notesToFilter);
 
-    filteredNotes = _filterNotesByDate(filteredNotes);
-
-    notesToDisplay = filteredNotes;
+    notesToDisplay = notesToFilter;
     isFiltersApplied = true;
     notifyListeners();
   }
@@ -112,59 +119,84 @@ class NotesListViewModel extends ViewModel {
   void clearFilters() {
     _selectedTags = [];
 
-    titleFilterOrder = null;
-    contentFilterOrder = null;
-    dateFilterOrder = null;
-
     notesToDisplay = _notes;
     isFiltersApplied = false;
     notifyListeners();
   }
 
+  // Sorting notes
+  SortingOption chosenSortingOption = SortingOption.titleAlphabetical;
+
+  void changeSortingOption(SortingOption? newOption) {
+    if (newOption != null) {
+      chosenSortingOption = newOption;
+      notifyListeners();
+    }
+  }
+
+  void _sortNotes(List<Note> notes) {
+    switch (chosenSortingOption) {
+      case SortingOption.titleAlphabetical:
+        notes.sort((prev, next) =>
+            prev.title.toLowerCase().compareTo(next.title.toLowerCase()));
+        break;
+      case SortingOption.titleAlphabeticalReversed:
+        notes.sort((prev, next) =>
+            -prev.title.toLowerCase().compareTo(next.title.toLowerCase()));
+        break;
+      case SortingOption.dateNewest:
+        notes.sort((prev, next) => -prev.createdAt.compareTo(next.createdAt));
+        break;
+      case SortingOption.dateOldest:
+        notes.sort((prev, next) => prev.createdAt.compareTo(next.createdAt));
+        break;
+    }
+  }
+
   // title and content
-  StringFilteringOrder? titleFilterOrder;
-  StringFilteringOrder? contentFilterOrder;
+  // StringFilteringOrder? titleFilterOrder;
+  // StringFilteringOrder? contentFilterOrder;
 
-  void setStringFilteringOrder(String name, StringFilteringOrder? order) {
-    if (name == 'title') {
-      titleFilterOrder = order;
-    } else if (name == 'content') {
-      contentFilterOrder = order;
-    }
-    notifyListeners();
-  }
+  // void setStringFilteringOrder(String name, StringFilteringOrder? order) {
+  //   if (name == 'title') {
+  //     titleFilterOrder = order;
+  //   } else if (name == 'content') {
+  //     contentFilterOrder = order;
+  //   }
+  //   notifyListeners();
+  // }
 
-  List<Note> _filterNotesByTitle(List<Note> notes) {
-    if (titleFilterOrder != null) {
-      var notesTitles = notes.map((e) => e.title).toList();
-      notesTitles.sort();
+  // List<Note> _filterNotesByTitle(List<Note> notes) {
+  //   if (titleFilterOrder != null) {
+  //     var notesTitles = notes.map((e) => e.title).toList();
+  //     notesTitles.sort();
 
-      if (titleFilterOrder == StringFilteringOrder.descending) {
-        notesTitles = notesTitles.reversed.toList();
-      }
-      return notesTitles
-          .map((title) => notes.firstWhere((note) => note.title == title))
-          .toList();
-    }
-    return notes;
-  }
+  //     if (titleFilterOrder == StringFilteringOrder.descending) {
+  //       notesTitles = notesTitles.reversed.toList();
+  //     }
+  //     return notesTitles
+  //         .map((title) => notes.firstWhere((note) => note.title == title))
+  //         .toList();
+  //   }
+  //   return notes;
+  // }
 
-  //date
-  DateFilteringOrder? dateFilterOrder;
-  void setDateFilteringOrder(DateFilteringOrder? order) {
-    dateFilterOrder = order;
-    notifyListeners();
-  }
+  // //date
+  // DateFilteringOrder? dateFilterOrder;
+  // void setDateFilteringOrder(DateFilteringOrder? order) {
+  //   dateFilterOrder = order;
+  //   notifyListeners();
+  // }
 
-  List<Note> _filterNotesByDate(List<Note> notes) {
-    // Firebase automaticlly sends notes form newest to oldest, so there is no need to sort when DateFilteringOrder.newest is set
-    if (dateFilterOrder != null) {
-      if (dateFilterOrder == DateFilteringOrder.oldest) {
-        return notes.reversed.toList();
-      }
-    }
-    return notes;
-  }
+  // List<Note> _filterNotesByDate(List<Note> notes) {
+  //   // Firebase automaticlly sends notes form newest to oldest, so there is no need to sort when DateFilteringOrder.newest is set
+  //   if (dateFilterOrder != null) {
+  //     if (dateFilterOrder == DateFilteringOrder.oldest) {
+  //       return notes.reversed.toList();
+  //     }
+  //   }
+  //   return notes;
+  // }
 
   // tags
   List<String> _selectedTags = [];

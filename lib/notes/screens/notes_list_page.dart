@@ -34,7 +34,7 @@ class _NoteListPageState extends State<NoteListPage> {
   void _showFilters() {
     showModalBottomSheet(
         context: context,
-        builder: (context) => NotesFilters(model: notesViewModel));
+        builder: (context) => NotesFilters(viewModel: notesViewModel));
   }
 
   @override

@@ -1,98 +1,110 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../shared/widgets/tags.dart';
 import '../notes.dart';
 
-enum StringFilteringOrder { ascending, descending }
-
-enum DateFilteringOrder { oldest, newest }
-
 class NotesFilters extends StatelessWidget {
   const NotesFilters({
     super.key,
-    required this.model,
+    required this.viewModel,
   });
 
-  final NotesListViewModel model;
+  final NotesListViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-        animation: model,
+        animation: viewModel,
         builder: (context, _) {
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(children: [
-              Center(
-                child: Text('Filter notes',
-                    style: Theme.of(context).textTheme.titleLarge),
-              ),
-              const SizedBox(height: 16),
-              Row(children: [
-                const Text('Title: '),
-                Wrap(
-                    spacing: 4.0,
-                    children: StringFilteringOrder.values
-                        .map((e) => ChoiceChip(
-                              label: Text(e.name),
-                              selected: model.titleFilterOrder == e,
-                              onSelected: (value) {
-                                model.setStringFilteringOrder(
-                                    'title', value ? e : null);
-                              },
-                            ))
-                        .toList())
-              ]),
-              Row(children: [
-                const Text('Date: '),
-                Wrap(
-                  spacing: 4.0,
-                  children: DateFilteringOrder.values
-                      .map((e) => ChoiceChip(
-                          label: Text(e.name),
-                          selected: model.dateFilterOrder == e,
-                          onSelected: (value) =>
-                              model.setDateFilteringOrder(value ? e : null)))
-                      .toList(),
-                )
-              ]),
-              const SizedBox(height: 16),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Tags: '),
-                  Expanded(
-                    child: Tags(
-                        availableTags: model.availableTags,
-                        selectedTags: model.selectedTags,
-                        onTagSelect: model.selectTag,
-                        oneline: false),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                Expanded(
-                  child: ElevatedButton(
-                      onPressed: () {
-                        model.clearFilters();
-                      },
-                      child: const Text('CLEAR')),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: FilledButton(
-                      onPressed: model.canFilter
-                          ? () {
-                              model.filterNotes();
-                              Navigator.of(context).pop();
-                            }
-                          : null,
-                      child: const Text('APPLY')),
-                )
-              ])
+              Text('Filters', style: Theme.of(context).textTheme.titleLarge),
+              Expanded(
+                  child: _Filters(
+                viewModel: viewModel,
+              )),
+              _Buttons(
+                  onFiltersApply: viewModel.applyFilters,
+                  onFiltersClear: viewModel.clearFilters)
             ]),
           );
         });
+  }
+}
+
+class _Filters extends StatelessWidget {
+  const _Filters({
+    super.key,
+    required this.viewModel,
+  });
+
+  final NotesListViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Sort by:', style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(width: 8),
+            DropdownButton<SortingOption>(
+                value: viewModel.chosenSortingOption,
+                items: SortingOption.values
+                    .map<DropdownMenuItem<SortingOption>>((option) =>
+                        DropdownMenuItem(
+                            value: option, child: Text(option.displayName)))
+                    .toList(),
+                onChanged: viewModel.changeSortingOption),
+          ],
+        ),
+        // ExpansionTile(
+        //     leading: Checkbox(
+        //       value: true,
+        //       onChanged: (value) {},
+        //     ),
+        //     title: const Text('Tags'),
+        //     children: [
+        //       Tags(
+        //           availableTags: viewModel.availableTags,
+        //           selectedTags: viewModel.selectedTags,
+        //           onTagSelect: viewModel.selectTag,
+        //           oneline: false),
+        //     ]),
+      ],
+    );
+  }
+}
+
+class _Buttons extends StatelessWidget {
+  const _Buttons({
+    super.key,
+    required this.onFiltersClear,
+    required this.onFiltersApply,
+  });
+
+  final VoidCallback onFiltersClear;
+  final VoidCallback onFiltersApply;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+      Expanded(
+        child: ElevatedButton(
+            onPressed: onFiltersClear, child: const Text('CLEAR')),
+      ),
+      const SizedBox(width: 16),
+      Expanded(
+        child: FilledButton(
+            onPressed: () {
+              onFiltersApply();
+              context.router.pop();
+            },
+            child: const Text('APPLY')),
+      )
+    ]);
   }
 }
