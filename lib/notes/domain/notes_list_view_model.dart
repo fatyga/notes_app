@@ -110,6 +110,7 @@ class NotesListViewModel extends ViewModel {
     List<Note> notesToFilter = [..._notes];
 
     _sortNotes(notesToFilter);
+    notesToFilter = _filterNotes(notesToFilter);
 
     notesToDisplay = notesToFilter;
     isFiltersApplied = true;
@@ -153,65 +154,20 @@ class NotesListViewModel extends ViewModel {
     }
   }
 
-  // title and content
-  // StringFilteringOrder? titleFilterOrder;
-  // StringFilteringOrder? contentFilterOrder;
-
-  // void setStringFilteringOrder(String name, StringFilteringOrder? order) {
-  //   if (name == 'title') {
-  //     titleFilterOrder = order;
-  //   } else if (name == 'content') {
-  //     contentFilterOrder = order;
-  //   }
-  //   notifyListeners();
-  // }
-
-  // List<Note> _filterNotesByTitle(List<Note> notes) {
-  //   if (titleFilterOrder != null) {
-  //     var notesTitles = notes.map((e) => e.title).toList();
-  //     notesTitles.sort();
-
-  //     if (titleFilterOrder == StringFilteringOrder.descending) {
-  //       notesTitles = notesTitles.reversed.toList();
-  //     }
-  //     return notesTitles
-  //         .map((title) => notes.firstWhere((note) => note.title == title))
-  //         .toList();
-  //   }
-  //   return notes;
-  // }
-
-  // //date
-  // DateFilteringOrder? dateFilterOrder;
-  // void setDateFilteringOrder(DateFilteringOrder? order) {
-  //   dateFilterOrder = order;
-  //   notifyListeners();
-  // }
-
-  // List<Note> _filterNotesByDate(List<Note> notes) {
-  //   // Firebase automaticlly sends notes form newest to oldest, so there is no need to sort when DateFilteringOrder.newest is set
-  //   if (dateFilterOrder != null) {
-  //     if (dateFilterOrder == DateFilteringOrder.oldest) {
-  //       return notes.reversed.toList();
-  //     }
-  //   }
-  //   return notes;
-  // }
+  List<Note> _filterNotes(List<Note> notes) {
+    // tags
+    if (selectedTags.isNotEmpty) {
+      notes = notes
+          .where((note) => note.tags.any((tag) => selectedTags.contains(tag)))
+          .toList();
+    }
+    return notes;
+  }
 
   // tags
   List<String> _selectedTags = [];
   List<String> get selectedTags => _selectedTags;
   List<Note> notesToDisplay = [];
-
-  List<Note> _filterNotesByTags(List<Note> notes) {
-    if (_selectedTags.isNotEmpty) {
-      return _notes
-          .where(
-              (note) => note.tags.any((tagId) => _selectedTags.contains(tagId)))
-          .toList();
-    }
-    return notes;
-  }
 
   void selectTag(String tagId) {
     if (_selectedTags.contains(tagId)) {
@@ -221,15 +177,4 @@ class NotesListViewModel extends ViewModel {
     }
     notifyListeners();
   }
-
-  // Future<void> addTag(NoteTag tag) async {
-  //   setViewState(ViewState.busy);
-  //   if (!availableTags.contains(tag)) {
-  //     availableTags.add(tag);
-  //     await _notesRepo.updateTags(availableTags);
-  //     setViewState(ViewState.idle);
-  //   }
-  //   setViewState(ViewState.idle,
-  //       const UserNotification(content: 'Tag added succesfully'));
-  // }
 }

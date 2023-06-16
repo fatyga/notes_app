@@ -20,7 +20,6 @@ class NotesFilters extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(children: [
-              Text('Filters', style: Theme.of(context).textTheme.titleLarge),
               Expanded(
                   child: _Filters(
                 viewModel: viewModel,
@@ -61,21 +60,62 @@ class _Filters extends StatelessWidget {
                 onChanged: viewModel.changeSortingOption),
           ],
         ),
-        // ExpansionTile(
-        //     leading: Checkbox(
-        //       value: true,
-        //       onChanged: (value) {},
-        //     ),
-        //     title: const Text('Tags'),
-        //     children: [
-        //       Tags(
-        //           availableTags: viewModel.availableTags,
-        //           selectedTags: viewModel.selectedTags,
-        //           onTagSelect: viewModel.selectTag,
-        //           oneline: false),
-        //     ]),
+        Text('Filter by:', style: Theme.of(context).textTheme.titleMedium),
+        const SizedBox(height: 8),
+        _FilteringOptions(viewModel: viewModel)
       ],
     );
+  }
+}
+
+class ExpansionPanelItem {
+  ExpansionPanelItem({required this.title, this.isExpanded = false});
+  String title;
+
+  bool isExpanded;
+}
+
+class _FilteringOptions extends StatefulWidget {
+  const _FilteringOptions({
+    super.key,
+    required this.viewModel,
+  });
+
+  final NotesListViewModel viewModel;
+
+  @override
+  State<_FilteringOptions> createState() => _FilteringOptionsState();
+}
+
+class _FilteringOptionsState extends State<_FilteringOptions> {
+  final List<ExpansionPanelItem> _options = [ExpansionPanelItem(title: 'Tags')];
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionPanelList(
+        elevation: 0,
+        expansionCallback: (panelIndex, isExpanded) {
+          setState(() {
+            _options[panelIndex].isExpanded = !isExpanded;
+          });
+        },
+        children: _options
+            .map((item) => ExpansionPanel(
+                headerBuilder: (context, isExpanded) {
+                  return ListTile(
+                      selected: widget.viewModel.selectedTags.isNotEmpty,
+                      title: widget.viewModel.selectedTags.isNotEmpty
+                          ? Text(
+                              'Tags (${widget.viewModel.selectedTags.length} selected)')
+                          : const Text('Tags '));
+                },
+                body: Tags(
+                    availableTags: widget.viewModel.availableTags,
+                    selectedTags: widget.viewModel.selectedTags,
+                    onTagSelect: widget.viewModel.selectTag,
+                    oneline: false),
+                isExpanded: item.isExpanded))
+            .toList());
   }
 }
 
