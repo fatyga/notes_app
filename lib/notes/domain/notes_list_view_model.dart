@@ -6,6 +6,8 @@ import '../../service_locator.dart';
 import '../../shared/view_model.dart';
 import '../notes.dart';
 
+enum NotesListMode { list, selection, search }
+
 enum SortingOption {
   titleAlphabetical(displayName: 'Title: A-Z'),
   titleAlphabeticalReversed(displayName: 'Title: Z-A'),
@@ -25,7 +27,15 @@ class NotesListViewModel extends ViewModel {
   List<NoteTag> _availableTags = [];
   List<NoteTag> get availableTags => _availableTags;
 
-  List<Note> _notes = [];
+  List<Note> _notes = []; // notes fetched from firebase
+  List<Note> notesToDisplay =
+      []; // notes with filters applied, containing searched phrase etc.
+
+  NotesListMode mode = NotesListMode.list;
+
+  bool get isListMode => mode == NotesListMode.list;
+  bool get isSelectionMode => mode == NotesListMode.selection;
+  bool get isSearchMode => mode == NotesListMode.search;
 
   void startNotesSubscription() {
     notesSubscription = _notesRepo.notesChanges.listen((notes) {
@@ -46,22 +56,21 @@ class NotesListViewModel extends ViewModel {
   }
 
   // Selecting notes
-  bool selectionModeEnabled = false;
   bool get isAnyNoteSelected =>
       notesInSelection.isNotEmpty; // used to obtain delete button state
   bool selectAll = false;
   List<Note> notesInSelection = [];
 
   void enterSelectionMode() {
-    if (selectionModeEnabled == false) {
-      selectionModeEnabled = true;
+    if (!isSelectionMode) {
+      mode = NotesListMode.selection;
       notesInSelection = notesInSelection;
       notifyListeners();
     }
   }
 
   void leaveSelectionMode() {
-    selectionModeEnabled = false;
+    mode = NotesListMode.list;
     notesInSelection = [];
     notifyListeners();
   }
@@ -99,12 +108,6 @@ class NotesListViewModel extends ViewModel {
 
   // Filtering notes feature
   bool isFiltersApplied = false;
-
-  // bool get canFilter =>
-  //     titleFilterOrder != null ||
-  //     contentFilterOrder != null ||
-  //     dateFilterOrder != null ||
-  //     selectedTags.isNotEmpty;
 
   void applyFilters() {
     List<Note> notesToFilter = [..._notes];
@@ -155,19 +158,22 @@ class NotesListViewModel extends ViewModel {
   }
 
   List<Note> _filterNotes(List<Note> notes) {
-    // tags
-    if (selectedTags.isNotEmpty) {
-      notes = notes
-          .where((note) => note.tags.any((tag) => selectedTags.contains(tag)))
-          .toList();
-    }
-    return notes;
+    return notes.where((note) {
+      final List<bool> appliedFilters = [];
+
+      // tags
+      if (selectedTags.isNotEmpty) {
+        appliedFilters.add(note.tags.any((tag) => selectedTags.contains(tag)));
+      }
+      return appliedFilters.isEmpty
+          ? true
+          : appliedFilters.every((element) => element == true);
+    }).toList();
   }
 
   // tags
   List<String> _selectedTags = [];
   List<String> get selectedTags => _selectedTags;
-  List<Note> notesToDisplay = [];
 
   void selectTag(String tagId) {
     if (_selectedTags.contains(tagId)) {
@@ -177,4 +183,20 @@ class NotesListViewModel extends ViewModel {
     }
     notifyListeners();
   }
+
+  // Searching note feature
+  void enterSearchingMode() {
+    mode = NotesListMode.search;
+    notifyListeners();
+  }
+
+  void leaveSearchingMode() {
+    mode = NotesListMode.list;
+    notifyListeners();
+  }
+
+  final StreamController<String> _searchingController =
+      StreamController<String>.broadcast();
+
+  Function(String) get searchNotes => _searchingController.add;
 }

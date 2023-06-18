@@ -2,13 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:notes_app/account/account.dart';
+import 'package:notes_app/notes/widgets/notes_list_page_app_bar.dart';
 import 'package:notes_app/shared/dialogs.dart';
 import 'package:notes_app/shared/toasts.dart';
 
 import '../../route/app_router.gr.dart';
 import '../../service_locator.dart';
 import '../../shared/enums/view_state.dart';
-import '../../shared/widgets/avatar.dart';
+
 import '../notes.dart';
 
 enum NotesViewType { grid, list }
@@ -37,6 +38,14 @@ class _NoteListPageState extends State<NoteListPage> {
         builder: (context) => NotesFilters(viewModel: notesViewModel));
   }
 
+  void changeViewType() {
+    setState(() {
+      currentNotesViewType = currentNotesViewType == NotesViewType.grid
+          ? NotesViewType.list
+          : NotesViewType.grid;
+    });
+  }
+
   @override
   void initState() {
     modelsWrapper.startSubscriptions();
@@ -55,69 +64,12 @@ class _NoteListPageState extends State<NoteListPage> {
         animation: notesViewModel,
         builder: (context, _) {
           return Scaffold(
-              appBar: AppBar(
-                title: Text(notesViewModel.selectionModeEnabled
-                    ? 'Select notes'
-                    : 'Notes'),
-                centerTitle: true,
-                leading: (notesViewModel.selectionModeEnabled)
-                    ? IconButton(
-                        onPressed: notesViewModel.leaveSelectionMode,
-                        icon: const Icon(Icons.close))
-                    : AnimatedBuilder(
-                        animation: avatarViewModel,
-                        builder: (context, _) => GestureDetector(
-                              onTap: () {
-                                context.router.push(const AccountRouter());
-                              },
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: UserAvatar(
-                                  radius: 22,
-                                  avatarUrl: avatarViewModel.avatarUrl.isEmpty
-                                      ? null
-                                      : avatarViewModel.avatarUrl,
-                                ),
-                              ),
-                            )),
-                actions: (notesViewModel.selectionModeEnabled)
-                    ? [
-                        IconButton(
-                            onPressed: (notesViewModel.isAnyNoteSelected)
-                                ? () {
-                                    context.deleteDialog(() => notesViewModel
-                                            .deleteNotesInSelection()
-                                            .then((_) {
-                                          context.showToast('Notes deleted!');
-                                        }));
-                                  }
-                                : null,
-                            icon: const Icon(Icons.delete)),
-                        IconButton(
-                            onPressed: () {
-                              notesViewModel.batchSelecting();
-                            },
-                            icon: Icon(notesViewModel.selectAll
-                                ? Icons.deselect
-                                : Icons.select_all))
-                      ]
-                    : [
-                        IconButton(
-                            onPressed: () => _showFilters(),
-                            icon: const Icon(Icons.filter_alt_rounded)),
-                        IconButton(
-                            onPressed: () {
-                              setState(() {
-                                currentNotesViewType =
-                                    currentNotesViewType == NotesViewType.grid
-                                        ? NotesViewType.list
-                                        : NotesViewType.grid;
-                              });
-                            },
-                            icon: (currentNotesViewType == NotesViewType.grid)
-                                ? const Icon(Icons.grid_view_outlined)
-                                : const Icon(Icons.view_stream_sharp))
-                      ],
+              appBar: NotesListAppBar(
+                notesViewModel: notesViewModel,
+                avatarViewModel: avatarViewModel,
+                changeViewType: changeViewType,
+                viewType: currentNotesViewType,
+                showFilters: _showFilters,
               ),
               body: (notesViewModel.status == ViewState.busy)
                   ? const Center(child: CircularProgressIndicator())
@@ -131,7 +83,7 @@ class _NoteListPageState extends State<NoteListPage> {
                                   child: NotesList(
                                     notes: notesViewModel.notesToDisplay,
                                     selectionMode:
-                                        notesViewModel.selectionModeEnabled,
+                                        notesViewModel.isSelectionMode,
                                     notesInSelection:
                                         notesViewModel.notesInSelection,
                                     viewType: currentNotesViewType,
@@ -157,7 +109,7 @@ class _NoteListPageState extends State<NoteListPage> {
                       ],
                     ),
               floatingActionButtonLocation: ExpandableFab.location,
-              floatingActionButton: notesViewModel.selectionModeEnabled
+              floatingActionButton: !notesViewModel.isListMode
                   ? null
                   : ExpandableFab(
                       key: _fabKey,
