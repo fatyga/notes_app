@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:notes_app/shared/enums/view_state.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../service_locator.dart';
+import '../../shared/notes_mode.dart';
 import '../../shared/view_model.dart';
 import '../notes.dart';
-
-enum NotesListMode { list, selection, search }
 
 enum SortingOption {
   titleAlphabetical(displayName: 'Title: A-Z'),
@@ -31,11 +31,7 @@ class NotesListViewModel extends ViewModel {
   List<Note> notesToDisplay =
       []; // notes with filters applied, containing searched phrase etc.
 
-  NotesListMode mode = NotesListMode.list;
-
-  bool get isListMode => mode == NotesListMode.list;
-  bool get isSelectionMode => mode == NotesListMode.selection;
-  bool get isSearchMode => mode == NotesListMode.search;
+  NotesMode mode = NotesMode.list;
 
   void startNotesSubscription() {
     notesSubscription = _notesRepo.notesChanges.listen((notes) {
@@ -62,15 +58,15 @@ class NotesListViewModel extends ViewModel {
   List<Note> notesInSelection = [];
 
   void enterSelectionMode() {
-    if (!isSelectionMode) {
-      mode = NotesListMode.selection;
+    if (!mode.isSelection) {
+      mode = NotesMode.selection;
       notesInSelection = notesInSelection;
       notifyListeners();
     }
   }
 
   void leaveSelectionMode() {
-    mode = NotesListMode.list;
+    mode = NotesMode.list;
     notesInSelection = [];
     notifyListeners();
   }
@@ -185,18 +181,45 @@ class NotesListViewModel extends ViewModel {
   }
 
   // Searching note feature
+  late StreamController<String> _searchingController;
+  late StreamSubscription searchedNotesSubscription;
+  late Stream<List<Note>> searchedNotes;
+
   void enterSearchingMode() {
-    mode = NotesListMode.search;
+    mode = NotesMode.search;
+    _searchingController = StreamController<String>.broadcast();
+    searchedNotes = _searchingController.stream
+        .debounceTime(const Duration(milliseconds: 500))
+        .map((String phrase) {
+      print(phrase);
+      searchedPhrase = phrase;
+      return searchNotesByPhrase(phrase);
+    });
+    searchedNotesSubscription = searchedNotes.listen((notes) {
+      notesToDisplay = notes;
+      notifyListeners();
+    });
     notifyListeners();
   }
 
   void leaveSearchingMode() {
-    mode = NotesListMode.list;
+    searchedNotesSubscription.cancel();
+    _searchingController.close();
+    searchedPhrase = null;
+
+    mode = NotesMode.list;
+    notesToDisplay = _notes;
     notifyListeners();
   }
 
-  final StreamController<String> _searchingController =
-      StreamController<String>.broadcast();
+  String? searchedPhrase;
+  List<Note> searchNotesByPhrase(String phrase) {
+    if (phrase.isEmpty) return _notes;
+    return _notes
+        .where((note) =>
+            note.title.contains(phrase) || note.content.contains(phrase))
+        .toList();
+  }
 
   Function(String) get searchNotes => _searchingController.add;
 }

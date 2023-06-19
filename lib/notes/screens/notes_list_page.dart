@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:notes_app/account/account.dart';
 import 'package:notes_app/notes/widgets/notes_list_page_app_bar.dart';
-import 'package:notes_app/shared/dialogs.dart';
-import 'package:notes_app/shared/toasts.dart';
+import 'package:notes_app/shared/notes_mode.dart';
 
 import '../../route/app_router.gr.dart';
 import '../../service_locator.dart';
@@ -82,15 +81,14 @@ class _NoteListPageState extends State<NoteListPage> {
                                   padding: const EdgeInsets.all(16.0),
                                   child: NotesList(
                                     notes: notesViewModel.notesToDisplay,
-                                    selectionMode:
-                                        notesViewModel.isSelectionMode,
-                                    notesInSelection:
-                                        notesViewModel.notesInSelection,
+                                    notesMode: notesViewModel.mode,
                                     viewType: currentNotesViewType,
                                     onNoteSelect:
                                         notesViewModel.switchNoteSelection,
                                     onEnterSelectionMode:
                                         notesViewModel.enterSelectionMode,
+                                    notesInSelection:
+                                        notesViewModel.notesInSelection,
                                   )),
                             ),
                           ],
@@ -109,7 +107,7 @@ class _NoteListPageState extends State<NoteListPage> {
                       ],
                     ),
               floatingActionButtonLocation: ExpandableFab.location,
-              floatingActionButton: !notesViewModel.isListMode
+              floatingActionButton: !notesViewModel.mode.isList
                   ? null
                   : ExpandableFab(
                       key: _fabKey,

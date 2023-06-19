@@ -5,6 +5,7 @@ import 'package:notes_app/shared/dialogs.dart';
 import 'package:notes_app/shared/toasts.dart';
 
 import '../../route/app_router.gr.dart';
+import '../../shared/notes_mode.dart';
 import '../../shared/widgets/avatar.dart';
 import '../notes.dart';
 
@@ -31,7 +32,7 @@ class NotesListAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     switch (notesViewModel.mode) {
-      case NotesListMode.list:
+      case NotesMode.list:
         return AppBar(
           title: const Text('Notes'),
           leading: AnimatedBuilder(
@@ -58,7 +59,9 @@ class NotesListAppBar extends StatelessWidget implements PreferredSizeWidget {
             IconButton(
                 tooltip: 'Show filters',
                 onPressed: () => showFilters(),
-                icon: const Icon(Icons.filter_alt_rounded)),
+                icon: Icon(notesViewModel.isFiltersApplied
+                    ? Icons.filter_alt_rounded
+                    : Icons.filter_alt_outlined)),
             IconButton(
                 tooltip: 'Change view type',
                 onPressed: changeViewType,
@@ -68,7 +71,7 @@ class NotesListAppBar extends StatelessWidget implements PreferredSizeWidget {
           ],
         );
 
-      case NotesListMode.selection:
+      case NotesMode.selection:
         return AppBar(
             title: const Text('Select notes'),
             leading: IconButton(
@@ -99,7 +102,7 @@ class NotesListAppBar extends StatelessWidget implements PreferredSizeWidget {
                       : Icons.select_all))
             ]);
 
-      case NotesListMode.search:
+      case NotesMode.search:
         return AppBar(
             title: TextField(
               onChanged: notesViewModel.searchNotes,

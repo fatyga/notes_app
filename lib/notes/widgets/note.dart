@@ -2,20 +2,22 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import 'package:notes_app/route/app_router.gr.dart';
-import 'package:notes_app/notes/domain/models/note.dart';
+
+import '../../shared/notes_mode.dart';
+import '../notes.dart';
 
 class NoteWidget extends StatelessWidget {
   const NoteWidget(
       {super.key,
       required this.note,
-      required this.selectionMode,
+      required this.notesMode,
       required this.onNoteSelect,
       required this.onEnterSelectionMode,
       required this.inSelection});
 
   final Note note;
 
-  final bool selectionMode;
+  final NotesMode notesMode;
   final bool inSelection;
   final Function(Note) onNoteSelect;
   final VoidCallback onEnterSelectionMode;
@@ -35,13 +37,13 @@ class NoteWidget extends StatelessWidget {
               Expanded(
                   child: _NoteHeader(
                       note: note,
-                      selectionMode: selectionMode,
+                      selectionMode: notesMode.isSelection,
                       onNoteSelect: () => onNoteSelect(note),
                       onEnterSelectionMode: onEnterSelectionMode)),
               _NoteFooter(
                 note: note,
                 inSelection: inSelection,
-                selectionMode: selectionMode,
+                selectionMode: notesMode.isSelection,
                 onNoteSelect: () => onNoteSelect(note),
               )
             ]),

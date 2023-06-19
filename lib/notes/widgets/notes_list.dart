@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../shared/notes_mode.dart';
 import '../notes.dart';
 
 class NotesList extends StatelessWidget {
@@ -8,18 +9,21 @@ class NotesList extends StatelessWidget {
       required this.notes,
       required this.notesInSelection,
       required this.viewType,
-      required this.selectionMode,
+      required this.notesMode,
       required this.onNoteSelect,
-      required this.onEnterSelectionMode});
+      required this.onEnterSelectionMode,
+      this.searchedPhrase});
 
   final List<Note> notes;
   final NotesViewType viewType;
-
-  final bool selectionMode;
-  final List<Note> notesInSelection;
   final Function(Note) onNoteSelect;
+
+  final NotesMode notesMode;
+
+  final List<Note> notesInSelection;
   final VoidCallback onEnterSelectionMode;
 
+  final String? searchedPhrase;
   @override
   Widget build(BuildContext context) {
     if (notes.isEmpty) {
@@ -33,7 +37,7 @@ class NotesList extends StatelessWidget {
           itemBuilder: (context, index) {
             return NoteWidget(
               note: notes[index],
-              selectionMode: selectionMode,
+              notesMode: notesMode,
               inSelection: notesInSelection.contains(notes[index]),
               onNoteSelect: onNoteSelect,
               onEnterSelectionMode: onEnterSelectionMode,
@@ -47,7 +51,7 @@ class NotesList extends StatelessWidget {
           children: notes
               .map((note) => NoteWidget(
                     note: note,
-                    selectionMode: selectionMode,
+                    notesMode: notesMode,
                     inSelection: notesInSelection.contains(note),
                     onNoteSelect: onNoteSelect,
                     onEnterSelectionMode: onEnterSelectionMode,
