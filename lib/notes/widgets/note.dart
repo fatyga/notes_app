@@ -13,7 +13,8 @@ class NoteWidget extends StatelessWidget {
       required this.notesMode,
       required this.onNoteSelect,
       required this.onEnterSelectionMode,
-      required this.inSelection});
+      required this.inSelection,
+      this.searchedPhrase});
 
   final Note note;
 
@@ -21,6 +22,8 @@ class NoteWidget extends StatelessWidget {
   final bool inSelection;
   final Function(Note) onNoteSelect;
   final VoidCallback onEnterSelectionMode;
+
+  final String? searchedPhrase;
 
   @override
   Widget build(BuildContext context) {

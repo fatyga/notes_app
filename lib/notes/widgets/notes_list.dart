@@ -26,8 +26,8 @@ class NotesList extends StatelessWidget {
   final String? searchedPhrase;
   @override
   Widget build(BuildContext context) {
-    if (notes.isEmpty) {
-      return const EmptyNotesInfo();
+    if (notes.isEmpty && notesMode != NotesMode.selection) {
+      return EmptyNotesInfo(mode: notesMode);
     }
 
     if (viewType == NotesViewType.list) {
@@ -36,12 +36,12 @@ class NotesList extends StatelessWidget {
           itemCount: notes.length,
           itemBuilder: (context, index) {
             return NoteWidget(
-              note: notes[index],
-              notesMode: notesMode,
-              inSelection: notesInSelection.contains(notes[index]),
-              onNoteSelect: onNoteSelect,
-              onEnterSelectionMode: onEnterSelectionMode,
-            );
+                note: notes[index],
+                notesMode: notesMode,
+                inSelection: notesInSelection.contains(notes[index]),
+                onNoteSelect: onNoteSelect,
+                onEnterSelectionMode: onEnterSelectionMode,
+                searchedPhrase: searchedPhrase);
           });
     } else {
       return GridView.count(
@@ -50,12 +50,12 @@ class NotesList extends StatelessWidget {
           mainAxisSpacing: 4,
           children: notes
               .map((note) => NoteWidget(
-                    note: note,
-                    notesMode: notesMode,
-                    inSelection: notesInSelection.contains(note),
-                    onNoteSelect: onNoteSelect,
-                    onEnterSelectionMode: onEnterSelectionMode,
-                  ))
+                  note: note,
+                  notesMode: notesMode,
+                  inSelection: notesInSelection.contains(note),
+                  onNoteSelect: onNoteSelect,
+                  onEnterSelectionMode: onEnterSelectionMode,
+                  searchedPhrase: searchedPhrase))
               .toList());
     }
   }

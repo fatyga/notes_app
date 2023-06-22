@@ -33,6 +33,7 @@ class NotesListAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     switch (notesViewModel.mode) {
       case NotesMode.list:
+      case NotesMode.filter:
         return AppBar(
           title: const Text('Notes'),
           leading: AnimatedBuilder(

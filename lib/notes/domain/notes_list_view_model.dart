@@ -113,6 +113,7 @@ class NotesListViewModel extends ViewModel {
 
     notesToDisplay = notesToFilter;
     isFiltersApplied = true;
+    mode = NotesMode.filter;
     notifyListeners();
   }
 
@@ -121,6 +122,7 @@ class NotesListViewModel extends ViewModel {
 
     notesToDisplay = _notes;
     isFiltersApplied = false;
+    mode = NotesMode.list;
     notifyListeners();
   }
 
@@ -187,11 +189,11 @@ class NotesListViewModel extends ViewModel {
 
   void enterSearchingMode() {
     mode = NotesMode.search;
+
     _searchingController = StreamController<String>.broadcast();
     searchedNotes = _searchingController.stream
         .debounceTime(const Duration(milliseconds: 500))
         .map((String phrase) {
-      print(phrase);
       searchedPhrase = phrase;
       return searchNotesByPhrase(phrase);
     });
@@ -207,14 +209,15 @@ class NotesListViewModel extends ViewModel {
     _searchingController.close();
     searchedPhrase = null;
 
-    mode = NotesMode.list;
     notesToDisplay = _notes;
+    mode = NotesMode.list;
+
     notifyListeners();
   }
 
   String? searchedPhrase;
   List<Note> searchNotesByPhrase(String phrase) {
-    if (phrase.isEmpty) return _notes;
+    if (phrase.isEmpty) return [];
     return _notes
         .where((note) =>
             note.title.contains(phrase) || note.content.contains(phrase))

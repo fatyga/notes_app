@@ -89,11 +89,14 @@ class _NoteListPageState extends State<NoteListPage> {
                                         notesViewModel.enterSelectionMode,
                                     notesInSelection:
                                         notesViewModel.notesInSelection,
+                                    searchedPhrase:
+                                        notesViewModel.searchedPhrase,
                                   )),
                             ),
                           ],
                         ),
-                        if (notesViewModel.isFiltersApplied)
+                        if (notesViewModel.isFiltersApplied &&
+                            notesViewModel.mode == NotesMode.filter)
                           Positioned.fill(
                             bottom: 16,
                             child: Align(
