@@ -81,12 +81,12 @@ class _NoteListPageState extends State<NoteListPage> {
                                   padding: const EdgeInsets.all(16.0),
                                   child: NotesList(
                                     notes: notesViewModel.notesToDisplay,
-                                    notesMode: notesViewModel.mode,
+                                    notesMode: notesViewModel.currentMode,
                                     viewType: currentNotesViewType,
                                     onNoteSelect:
                                         notesViewModel.switchNoteSelection,
-                                    onEnterSelectionMode:
-                                        notesViewModel.enterSelectionMode,
+                                    onEnterSelectionMode: () => notesViewModel
+                                        .enterMode(NotesListPageMode.selection),
                                     notesInSelection:
                                         notesViewModel.notesInSelection,
                                     searchedPhrase:
@@ -96,21 +96,22 @@ class _NoteListPageState extends State<NoteListPage> {
                           ],
                         ),
                         if (notesViewModel.isFiltersApplied &&
-                            notesViewModel.mode == NotesMode.filter)
+                            notesViewModel.currentMode ==
+                                NotesListPageMode.filter)
                           Positioned.fill(
                             bottom: 16,
                             child: Align(
                               alignment: Alignment.bottomCenter,
                               child: FilledButton(
                                   onPressed: () =>
-                                      notesViewModel.clearFilters(),
+                                      notesViewModel.restorePreviousMode(),
                                   child: const Text('Clear filters')),
                             ),
                           )
                       ],
                     ),
               floatingActionButtonLocation: ExpandableFab.location,
-              floatingActionButton: !notesViewModel.mode.isList
+              floatingActionButton: !notesViewModel.currentMode.isList
                   ? null
                   : ExpandableFab(
                       key: _fabKey,

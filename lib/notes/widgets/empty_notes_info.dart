@@ -4,33 +4,35 @@ import 'package:notes_app/shared/notes_mode.dart';
 class EmptyNotesInfo extends StatelessWidget {
   const EmptyNotesInfo({super.key, required this.mode});
 
-  final NotesMode mode;
+  final NotesListPageMode mode;
   IconData getIcon() {
     switch (mode) {
-      case NotesMode.list:
+      case NotesListPageMode.list:
         return Icons.note;
 
-      case NotesMode.selection: // TODO: This case can't be satisfied. Fix it.
+      case NotesListPageMode
+          .selection: // TODO: This case can't be satisfied. Fix it.
         return Icons.select_all;
 
-      case NotesMode.search:
+      case NotesListPageMode.search:
         return Icons.search_off;
-      case NotesMode.filter:
+      case NotesListPageMode.filter:
         return Icons.filter_alt_off_outlined;
     }
   }
 
   String getDescription() {
     switch (mode) {
-      case NotesMode.list:
+      case NotesListPageMode.list:
         return "There aren't any notes yet.";
 
-      case NotesMode.selection: // TODO: This case can't be satisfied. Fix it.
+      case NotesListPageMode
+          .selection: // TODO: This case can't be satisfied. Fix it.
         return '';
 
-      case NotesMode.search:
+      case NotesListPageMode.search:
         return "No results for searched phrase";
-      case NotesMode.filter:
+      case NotesListPageMode.filter:
         return "No results for given filters.";
     }
   }

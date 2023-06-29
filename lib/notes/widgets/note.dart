@@ -18,7 +18,7 @@ class NoteWidget extends StatelessWidget {
 
   final Note note;
 
-  final NotesMode notesMode;
+  final NotesListPageMode notesMode;
   final bool inSelection;
   final Function(Note) onNoteSelect;
   final VoidCallback onEnterSelectionMode;

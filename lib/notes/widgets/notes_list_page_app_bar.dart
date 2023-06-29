@@ -31,9 +31,9 @@ class NotesListAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    switch (notesViewModel.mode) {
-      case NotesMode.list:
-      case NotesMode.filter:
+    switch (notesViewModel.currentMode) {
+      case NotesListPageMode.list:
+      case NotesListPageMode.filter:
         return AppBar(
           title: const Text('Notes'),
           leading: AnimatedBuilder(
@@ -55,11 +55,12 @@ class NotesListAppBar extends StatelessWidget implements PreferredSizeWidget {
           actions: [
             IconButton(
                 tooltip: 'Search notes by phrase',
-                onPressed: () => notesViewModel.enterSearchingMode(),
+                onPressed: () =>
+                    notesViewModel.enterMode(NotesListPageMode.search),
                 icon: const Icon(Icons.search)),
             IconButton(
                 tooltip: 'Show filters',
-                onPressed: () => showFilters(),
+                onPressed: showFilters,
                 icon: Icon(notesViewModel.isFiltersApplied
                     ? Icons.filter_alt_rounded
                     : Icons.filter_alt_outlined)),
@@ -72,12 +73,12 @@ class NotesListAppBar extends StatelessWidget implements PreferredSizeWidget {
           ],
         );
 
-      case NotesMode.selection:
+      case NotesListPageMode.selection:
         return AppBar(
             title: const Text('Select notes'),
             leading: IconButton(
-                onPressed: notesViewModel.leaveSelectionMode,
-                tooltip: 'Leave selection mode',
+                onPressed: notesViewModel.restorePreviousMode,
+                tooltip: 'Leave selection currentMode',
                 icon: const Icon(Icons.close)),
             actions: [
               IconButton(
@@ -95,22 +96,22 @@ class NotesListAppBar extends StatelessWidget implements PreferredSizeWidget {
                   tooltip: notesViewModel.selectAll
                       ? 'Deselect all notes'
                       : 'Select all notes',
-                  onPressed: () {
-                    notesViewModel.batchSelecting();
-                  },
+                  onPressed: notesViewModel.batchSelecting,
                   icon: Icon(notesViewModel.selectAll
                       ? Icons.deselect
                       : Icons.select_all))
             ]);
 
-      case NotesMode.search:
+      case NotesListPageMode.search:
         return AppBar(
             title: TextField(
+              controller:
+                  TextEditingController(text: notesViewModel.searchedPhrase),
               onChanged: notesViewModel.searchNotes,
               decoration: const InputDecoration(hintText: 'Type something...'),
             ),
             leading: IconButton(
-                onPressed: notesViewModel.leaveSearchingMode,
+                onPressed: notesViewModel.restorePreviousMode,
                 tooltip: 'Stop searching',
                 icon: const Icon(Icons.close)));
     }

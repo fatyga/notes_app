@@ -31,17 +31,89 @@ class NotesListViewModel extends ViewModel {
   List<Note> notesToDisplay =
       []; // notes with filters applied, containing searched phrase etc.
 
-  NotesMode mode = NotesMode.list;
+  void resetNotesToDisplay() {
+    notesToDisplay = [..._notes];
+  }
+
+  NotesListPageMode get currentMode => _modes[_modes.length - 1];
+  final List<NotesListPageMode> _modes = [NotesListPageMode.list];
+
+  void _onEnterNewMode(NotesListPageMode mode) {
+    switch (mode) {
+      case NotesListPageMode.list:
+      case NotesListPageMode.selection:
+        break;
+      case NotesListPageMode.search:
+        prepareSearching();
+        break;
+      case NotesListPageMode.filter:
+        applyFilters();
+        break;
+    }
+  }
+
+  void _onCurrentModeLeave() {
+    switch (currentMode) {
+      case NotesListPageMode.list:
+        resetNotesToDisplay();
+        break;
+      case NotesListPageMode.selection:
+        clearSelection();
+        break;
+      case NotesListPageMode.search:
+        clearSearching();
+        break;
+      case NotesListPageMode.filter:
+        clearFilters();
+        break;
+    }
+  }
+
+  void _onCurrentModeUpdate() {
+    switch (currentMode) {
+      case NotesListPageMode.list:
+        resetNotesToDisplay();
+        break;
+      case NotesListPageMode.selection:
+        break;
+      case NotesListPageMode.search:
+        notesToDisplay = searchNotesByPhrase(searchedPhrase!);
+        break;
+      case NotesListPageMode.filter:
+        applyFilters();
+        break;
+    }
+  }
+
+  void restorePreviousMode() {
+    if (_modes.length > 1) {
+      _onCurrentModeLeave();
+      _modes.removeLast();
+      _onCurrentModeUpdate();
+      notifyListeners();
+    }
+  }
+
+  void enterMode(NotesListPageMode mode) {
+    if (currentMode != mode) {
+      _modes.add(mode);
+      _onEnterNewMode(mode);
+    } else {
+      _onCurrentModeUpdate();
+    }
+    notifyListeners();
+  }
 
   void startNotesSubscription() {
     notesSubscription = _notesRepo.notesChanges.listen((notes) {
       _notes = notes;
-      notesToDisplay = _notes;
+      _onCurrentModeUpdate();
       notifyListeners();
     });
 
     tagsSubscription = _notesRepo.tagsChanges.listen((tagsList) {
       _availableTags = tagsList;
+      _onCurrentModeUpdate();
       notifyListeners();
     });
   }
@@ -57,18 +129,8 @@ class NotesListViewModel extends ViewModel {
   bool selectAll = false;
   List<Note> notesInSelection = [];
 
-  void enterSelectionMode() {
-    if (!mode.isSelection) {
-      mode = NotesMode.selection;
-      notesInSelection = notesInSelection;
-      notifyListeners();
-    }
-  }
-
-  void leaveSelectionMode() {
-    mode = NotesMode.list;
+  void clearSelection() {
     notesInSelection = [];
-    notifyListeners();
   }
 
   void batchSelecting() {
@@ -79,7 +141,6 @@ class NotesListViewModel extends ViewModel {
       notesInSelection = [...notesToDisplay];
       selectAll = true;
     }
-
     notifyListeners();
   }
 
@@ -98,7 +159,7 @@ class NotesListViewModel extends ViewModel {
       final ids = notesInSelection.map((note) => note.id).toList();
       await _notesRepo.deleteNotes(ids);
     }
-    leaveSelectionMode();
+    restorePreviousMode();
     setViewState(ViewState.idle);
   }
 
@@ -108,22 +169,18 @@ class NotesListViewModel extends ViewModel {
   void applyFilters() {
     List<Note> notesToFilter = [..._notes];
 
-    _sortNotes(notesToFilter);
     notesToFilter = _filterNotes(notesToFilter);
+    _sortNotes(notesToFilter);
 
     notesToDisplay = notesToFilter;
     isFiltersApplied = true;
-    mode = NotesMode.filter;
-    notifyListeners();
   }
 
   void clearFilters() {
     _selectedTags = [];
 
-    notesToDisplay = _notes;
+    resetNotesToDisplay();
     isFiltersApplied = false;
-    mode = NotesMode.list;
-    notifyListeners();
   }
 
   // Sorting notes
@@ -187,9 +244,9 @@ class NotesListViewModel extends ViewModel {
   late StreamSubscription searchedNotesSubscription;
   late Stream<List<Note>> searchedNotes;
 
-  void enterSearchingMode() {
-    mode = NotesMode.search;
-
+  void prepareSearching() {
+    resetNotesToDisplay();
+    searchedPhrase = '';
     _searchingController = StreamController<String>.broadcast();
     searchedNotes = _searchingController.stream
         .debounceTime(const Duration(milliseconds: 500))
@@ -201,18 +258,22 @@ class NotesListViewModel extends ViewModel {
       notesToDisplay = notes;
       notifyListeners();
     });
-    notifyListeners();
   }
 
-  void leaveSearchingMode() {
+  void pauseSearching() {
+    searchedNotesSubscription.pause();
+  }
+
+  void resumeSearching() {
+    searchedNotesSubscription.resume();
+  }
+
+  void clearSearching() {
     searchedNotesSubscription.cancel();
     _searchingController.close();
     searchedPhrase = null;
 
-    notesToDisplay = _notes;
-    mode = NotesMode.list;
-
-    notifyListeners();
+    resetNotesToDisplay();
   }
 
   String? searchedPhrase;

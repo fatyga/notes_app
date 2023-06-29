@@ -18,7 +18,7 @@ class NotesList extends StatelessWidget {
   final NotesViewType viewType;
   final Function(Note) onNoteSelect;
 
-  final NotesMode notesMode;
+  final NotesListPageMode notesMode;
 
   final List<Note> notesInSelection;
   final VoidCallback onEnterSelectionMode;
@@ -26,7 +26,7 @@ class NotesList extends StatelessWidget {
   final String? searchedPhrase;
   @override
   Widget build(BuildContext context) {
-    if (notes.isEmpty && notesMode != NotesMode.selection) {
+    if (notes.isEmpty && notesMode != NotesListPageMode.selection) {
       return EmptyNotesInfo(mode: notesMode);
     }
 

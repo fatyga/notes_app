@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../shared/notes_mode.dart';
 import '../../shared/widgets/tags.dart';
 import '../notes.dart';
 
@@ -25,8 +26,9 @@ class NotesFilters extends StatelessWidget {
                 viewModel: viewModel,
               )),
               _Buttons(
-                  onFiltersApply: viewModel.applyFilters,
-                  onFiltersClear: viewModel.clearFilters)
+                  onFiltersApply: () =>
+                      viewModel.enterMode(NotesListPageMode.filter),
+                  onFiltersClear: () => viewModel.restorePreviousMode())
             ]),
           );
         });
