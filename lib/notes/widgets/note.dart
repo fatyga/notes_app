@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import 'package:notes_app/route/app_router.gr.dart';
+import 'package:substring_highlight/substring_highlight.dart';
 
 import '../../shared/notes_mode.dart';
 import '../notes.dart';
@@ -39,10 +40,12 @@ class NoteWidget extends StatelessWidget {
             children: <Widget>[
               Expanded(
                   child: _NoteHeader(
-                      note: note,
-                      selectionMode: notesMode.isSelection,
-                      onNoteSelect: () => onNoteSelect(note),
-                      onEnterSelectionMode: onEnterSelectionMode)),
+                note: note,
+                selectionMode: notesMode.isSelection,
+                onNoteSelect: () => onNoteSelect(note),
+                onEnterSelectionMode: onEnterSelectionMode,
+                searchedPhrase: searchedPhrase,
+              )),
               _NoteFooter(
                 note: note,
                 inSelection: inSelection,
@@ -60,15 +63,31 @@ class _NoteHeader extends StatelessWidget {
       {required this.note,
       required this.selectionMode,
       required this.onNoteSelect,
-      required this.onEnterSelectionMode});
+      required this.onEnterSelectionMode,
+      this.searchedPhrase});
 
   final Note note;
 
   final bool selectionMode;
   final VoidCallback onNoteSelect;
   final VoidCallback onEnterSelectionMode;
+  final String? searchedPhrase;
 
   Widget _showNoteContentIfPossible(BuildContext context) {
+    if (searchedPhrase != null) {
+      return Padding(
+          padding: const EdgeInsets.only(top: 12),
+          child: SubstringHighlight(
+              text: note.content,
+              term: searchedPhrase,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 3,
+              textStyle: Theme.of(context).textTheme.bodySmall!,
+              textStyleHighlight: Theme.of(context)
+                  .textTheme
+                  .bodySmall!
+                  .copyWith(color: Colors.red, backgroundColor: Colors.black)));
+    }
     if (note.title.length <= 30 && note.content.isNotEmpty) {
       return Padding(
           padding: const EdgeInsets.only(top: 12),
@@ -109,10 +128,25 @@ class _NoteHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(note.title,
+                if (searchedPhrase != null)
+                  SubstringHighlight(
+                      text: note.title,
+                      term: searchedPhrase,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                      textStyle: Theme.of(context).textTheme.titleLarge!,
+                      textStyleHighlight: Theme.of(context)
+                          .textTheme
+                          .titleLarge!
+                          .copyWith(
+                              color: Colors.red, backgroundColor: Colors.black))
+                else
+                  Text(
+                    note.title,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
-                    style: Theme.of(context).textTheme.titleLarge),
+                    style: Theme.of(context).textTheme.titleLarge!,
+                  ),
                 _showNoteContentIfPossible(context)
               ],
             ),

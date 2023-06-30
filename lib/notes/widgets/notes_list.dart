@@ -27,7 +27,12 @@ class NotesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (notes.isEmpty && notesMode != NotesListPageMode.selection) {
-      return EmptyNotesInfo(mode: notesMode);
+      return EmptyNotesInfo(
+        isListMode: notesMode.isList,
+        isFilterMode: notesMode.isFilter,
+        isSearchingMode: notesMode.isSearch,
+        searchedPhrase: searchedPhrase,
+      );
     }
 
     if (viewType == NotesViewType.list) {

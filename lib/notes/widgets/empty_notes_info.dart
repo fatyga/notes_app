@@ -1,39 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/shared/notes_mode.dart';
 
 class EmptyNotesInfo extends StatelessWidget {
-  const EmptyNotesInfo({super.key, required this.mode});
+  const EmptyNotesInfo(
+      {super.key,
+      required this.isListMode,
+      required this.isFilterMode,
+      required this.isSearchingMode,
+      required this.searchedPhrase});
 
-  final NotesListPageMode mode;
+  final bool isListMode;
+  final bool isFilterMode;
+  final bool isSearchingMode;
+
+  final String? searchedPhrase;
+
   IconData getIcon() {
-    switch (mode) {
-      case NotesListPageMode.list:
-        return Icons.note;
-
-      case NotesListPageMode
-          .selection: // TODO: This case can't be satisfied. Fix it.
-        return Icons.select_all;
-
-      case NotesListPageMode.search:
-        return Icons.search_off;
-      case NotesListPageMode.filter:
-        return Icons.filter_alt_off_outlined;
+    if (isListMode) {
+      return Icons.note;
+    } else if (isFilterMode) {
+      return Icons.filter_alt_off_outlined;
+    } else if (isSearchingMode) {
+      if (searchedPhrase != null) {
+        if (searchedPhrase!.isEmpty) {
+          return Icons.search;
+        } else {
+          return Icons.search_off;
+        }
+      }
+      return Icons.question_mark;
+    } else {
+      return Icons.question_mark;
     }
   }
 
   String getDescription() {
-    switch (mode) {
-      case NotesListPageMode.list:
-        return "There aren't any notes yet.";
-
-      case NotesListPageMode
-          .selection: // TODO: This case can't be satisfied. Fix it.
-        return '';
-
-      case NotesListPageMode.search:
-        return "No results for searched phrase";
-      case NotesListPageMode.filter:
-        return "No results for given filters.";
+    if (isListMode) {
+      return "There aren't any notes yet";
+    } else if (isFilterMode) {
+      return "No results for given filters";
+    } else if (isSearchingMode) {
+      if (searchedPhrase != null) {
+        if (searchedPhrase!.isEmpty) {
+          return "Start typing to search...";
+        } else {
+          return "No results for phrase: \"$searchedPhrase\"";
+        }
+      }
+      return "Unknown";
+    } else {
+      return "Unknown";
     }
   }
 

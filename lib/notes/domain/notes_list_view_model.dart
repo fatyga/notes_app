@@ -130,6 +130,7 @@ class NotesListViewModel extends ViewModel {
   List<Note> notesInSelection = [];
 
   void clearSelection() {
+    selectAll = false;
     notesInSelection = [];
   }
 
@@ -245,7 +246,7 @@ class NotesListViewModel extends ViewModel {
   late Stream<List<Note>> searchedNotes;
 
   void prepareSearching() {
-    resetNotesToDisplay();
+    notesToDisplay = [];
     searchedPhrase = '';
     _searchingController = StreamController<String>.broadcast();
     searchedNotes = _searchingController.stream
@@ -258,14 +259,6 @@ class NotesListViewModel extends ViewModel {
       notesToDisplay = notes;
       notifyListeners();
     });
-  }
-
-  void pauseSearching() {
-    searchedNotesSubscription.pause();
-  }
-
-  void resumeSearching() {
-    searchedNotesSubscription.resume();
   }
 
   void clearSearching() {

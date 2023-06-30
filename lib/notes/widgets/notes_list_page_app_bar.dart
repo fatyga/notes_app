@@ -103,17 +103,39 @@ class NotesListAppBar extends StatelessWidget implements PreferredSizeWidget {
             ]);
 
       case NotesListPageMode.search:
-        return AppBar(
-            title: TextField(
-              controller:
-                  TextEditingController(text: notesViewModel.searchedPhrase),
-              onChanged: notesViewModel.searchNotes,
-              decoration: const InputDecoration(hintText: 'Type something...'),
-            ),
-            leading: IconButton(
-                onPressed: notesViewModel.restorePreviousMode,
-                tooltip: 'Stop searching',
-                icon: const Icon(Icons.close)));
+        return SearchAppBar(notesViewModel: notesViewModel);
     }
+  }
+}
+
+class SearchAppBar extends StatefulWidget {
+  const SearchAppBar({
+    super.key,
+    required this.notesViewModel,
+  });
+
+  final NotesListViewModel notesViewModel;
+
+  @override
+  State<SearchAppBar> createState() => _SearchAppBarState();
+}
+
+class _SearchAppBarState extends State<SearchAppBar> {
+  late final TextEditingController searchController =
+      TextEditingController(text: widget.notesViewModel.searchedPhrase);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      leading: IconButton(
+          onPressed: widget.notesViewModel.restorePreviousMode,
+          tooltip: 'Stop searching',
+          icon: const Icon(Icons.close)),
+      title: TextField(
+        controller: searchController,
+        onChanged: widget.notesViewModel.searchNotes,
+        decoration: const InputDecoration(hintText: 'Type something...'),
+      ),
+    );
   }
 }
