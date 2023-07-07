@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:notes_app/notes_app.dart';
 
 import 'account/account.dart';
 import 'authentication/authentication.dart';
@@ -23,10 +24,14 @@ void setupServiceLocator() {
   serviceLocator
       .registerLazySingleton<NotesRepository>(() => NotesRepository());
 
-  serviceLocator.registerFactory<NotesListWrapperViewModel>(
-      () => NotesListWrapperViewModel());
+  serviceLocator.registerFactoryParam<NotesListViewModel, List<Note>, void>(
+      (initialNotes, _) => NotesListViewModel(initialNotes: initialNotes));
+
   serviceLocator
-      .registerFactory<NotesListViewModel>(() => NotesListViewModel());
+      .registerFactoryParam<NotesListWrapperViewModel, List<Note>, void>(
+          (initialNotes, _) =>
+              NotesListWrapperViewModel(initialNotes: initialNotes));
+
   serviceLocator
       .registerFactory<NotesPreviewViewModel>(() => NotesPreviewViewModel());
   serviceLocator

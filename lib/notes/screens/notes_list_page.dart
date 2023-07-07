@@ -15,14 +15,16 @@ enum NotesViewType { grid, list }
 
 @RoutePage()
 class NoteListPage extends StatefulWidget {
-  const NoteListPage({super.key});
+  const NoteListPage({required this.notesFromInitialFetch, super.key});
+
+  final List<Note> notesFromInitialFetch;
 
   @override
   State<NoteListPage> createState() => _NoteListPageState();
 }
 
 class _NoteListPageState extends State<NoteListPage> {
-  final modelsWrapper = serviceLocator<NotesListWrapperViewModel>();
+  late final NotesListWrapperViewModel modelsWrapper;
 
   NotesListViewModel get notesViewModel => modelsWrapper.notes;
   AvatarViewModel get avatarViewModel => modelsWrapper.avatar;
@@ -47,6 +49,8 @@ class _NoteListPageState extends State<NoteListPage> {
 
   @override
   void initState() {
+    modelsWrapper = serviceLocator.get<NotesListWrapperViewModel>(
+        param1: widget.notesFromInitialFetch);
     modelsWrapper.startSubscriptions();
     super.initState();
   }

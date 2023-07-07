@@ -19,6 +19,9 @@ enum SortingOption {
 }
 
 class NotesListViewModel extends ViewModel {
+  NotesListViewModel({List<Note> initialNotes = const []})
+      : _notes = initialNotes,
+        notesToDisplay = initialNotes;
   final NotesRepository _notesRepo = serviceLocator<NotesRepository>();
 
   late StreamSubscription notesSubscription;
@@ -27,9 +30,9 @@ class NotesListViewModel extends ViewModel {
   List<NoteTag> _availableTags = [];
   List<NoteTag> get availableTags => _availableTags;
 
-  List<Note> _notes = []; // notes fetched from firebase
-  List<Note> notesToDisplay =
-      []; // notes with filters applied, containing searched phrase etc.
+  late List<Note> _notes; // notes fetched from firebase
+  late List<Note> notesToDisplay;
+  // notes with filters applied, containing searched phrase etc.
 
   void resetNotesToDisplay() {
     notesToDisplay = [..._notes];
