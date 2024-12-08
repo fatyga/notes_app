@@ -13,10 +13,10 @@ class UpdateNotePage extends StatefulWidget {
   final String noteId;
 
   @override
-  _UpdateNotePageState createState() => _UpdateNotePageState();
+  UpdateNotePageState createState() => UpdateNotePageState();
 }
 
-class _UpdateNotePageState extends State<UpdateNotePage> {
+class UpdateNotePageState extends State<UpdateNotePage> {
   final _formKey = GlobalKey<FormState>();
   final model = serviceLocator<NoteUpdateViewModel>();
   final titleController = TextEditingController();
@@ -69,7 +69,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                         )
                             .then((_) {
                           context.showToast('Note updated!');
-                          context.router.pop();
+                          context.router.maybePop();
                         });
                       }
                     },
@@ -98,12 +98,12 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                               actions: [
                                 TextButton(
                                     onPressed: () {
-                                      context.router.pop(false);
+                                      context.router.maybePop(false);
                                     },
                                     child: const Text('No')),
                                 TextButton(
                                     onPressed: () {
-                                      context.router.pop(true);
+                                      context.router.maybePop(true);
                                     },
                                     style: TextButton.styleFrom(
                                         foregroundColor: Theme.of(context)

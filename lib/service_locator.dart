@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:notes_app/notes_app.dart';
 
 import 'account/account.dart';
 import 'authentication/authentication.dart';

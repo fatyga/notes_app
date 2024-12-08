@@ -10,7 +10,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   setupServiceLocator();
 
-  runApp(const MyApp());
+  runApp( NotesApp());
   // runApp(MultiProvider(providers: [
   //   StreamProvider<User?>.value(
   //       value: AuthenticationService.user, initialData: null),

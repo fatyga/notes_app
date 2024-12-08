@@ -113,7 +113,7 @@ class _UserAccountUpdatePageState extends State<UserAccountUpdatePage> {
                           .then((_) {
                         if (mounted) {
                           context.showToast('Account updated successfully.');
-                          context.router.pop();
+                          context.router.maybePop();
                         }
                       });
                     }

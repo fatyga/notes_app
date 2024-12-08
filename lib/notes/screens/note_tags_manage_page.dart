@@ -43,7 +43,7 @@ class _MyWidgetState extends State<TagsManagePage> {
                   tagsViewModel.updateTags().then((_) {
                     if (mounted) {
                       context.showToast('Tags updated!');
-                      context.router.pop();
+                      context.router.maybePop();
                     }
                   });
                 },

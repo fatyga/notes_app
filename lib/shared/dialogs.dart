@@ -11,12 +11,12 @@ extension Dialogs on BuildContext {
                 actions: [
                   TextButton(
                       onPressed: () {
-                        context.router.pop(false);
+                        context.router.maybePop(false);
                       },
                       child: const Text('No')),
                   TextButton(
                       onPressed: () {
-                        context.router.pop(true);
+                        context.router.maybePop(true);
                       },
                       style: TextButton.styleFrom(
                           foregroundColor: Theme.of(context).colorScheme.error),

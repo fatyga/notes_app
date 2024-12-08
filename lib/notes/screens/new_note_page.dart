@@ -67,7 +67,7 @@ class _NewNotePageState extends State<NewNotePage> {
                             .then((_) {
                           if (mounted) {
                             context.showToast('Note created successfully.');
-                            context.router.pop();
+                            context.router.maybePop();
                           }
                         });
                       }
@@ -106,12 +106,12 @@ class _NewNotePageState extends State<NewNotePage> {
                                 actions: [
                                   TextButton(
                                       onPressed: () {
-                                        context.router.pop(false);
+                                        context.router.maybePop(false);
                                       },
                                       child: const Text('No')),
                                   TextButton(
                                       onPressed: () {
-                                        context.router.pop(true);
+                                        context.router.maybePop(true);
                                       },
                                       style: TextButton.styleFrom(
                                           foregroundColor: Theme.of(context)

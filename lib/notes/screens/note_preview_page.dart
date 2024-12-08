@@ -52,7 +52,7 @@ class _NotePreviewPageState extends State<NotePreviewPage> {
                         context.deleteDialog(
                             () => model.deleteNote(widget.noteId).then((_) {
                                   context.showToast('Note deleted!');
-                                  context.router.pop();
+                                  context.router.maybePop();
                                 }));
                       },
                       icon: const Icon(Icons.delete)),

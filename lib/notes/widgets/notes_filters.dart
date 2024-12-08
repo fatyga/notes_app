@@ -37,9 +37,8 @@ class NotesFilters extends StatelessWidget {
 
 class _Filters extends StatelessWidget {
   const _Filters({
-    Key? key,
     required this.viewModel,
-  }) : super(key: key);
+  });
 
   final NotesListViewModel viewModel;
 
@@ -79,9 +78,8 @@ class ExpansionPanelItem {
 
 class _FilteringOptions extends StatefulWidget {
   const _FilteringOptions({
-    Key? key,
     required this.viewModel,
-  }) : super(key: key);
+  });
 
   final NotesListViewModel viewModel;
 
@@ -123,10 +121,9 @@ class _FilteringOptionsState extends State<_FilteringOptions> {
 
 class _Buttons extends StatelessWidget {
   const _Buttons({
-    Key? key,
     required this.onFiltersClear,
     required this.onFiltersApply,
-  }) : super(key: key);
+  });
 
   final VoidCallback onFiltersClear;
   final VoidCallback onFiltersApply;
@@ -143,7 +140,7 @@ class _Buttons extends StatelessWidget {
         child: FilledButton(
             onPressed: () {
               onFiltersApply();
-              context.router.pop();
+              context.router.maybePop();
             },
             child: const Text('APPLY')),
       )
